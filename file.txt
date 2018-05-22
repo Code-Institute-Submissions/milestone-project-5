@@ -1,0 +1,213 @@
+mysql> show databases;
++----------------------+
+| Database             |
++----------------------+
+| information_schema   |
+| c9                   |
+| milestoneProjectFour |
+| mysql                |
+| performance_schema   |
+| phpmyadmin           |
++----------------------+
+6 rows in set (0.00 sec)
+
+mysql> USE milestoneProjectFour
+Database changed
+mysql> CREATE TABLE Recipe (Name VARCHAR(40), Image VARCHAR(150), Blurb VARCHAR(100), PRIMARY KEY (RecipeId), FOREIGN KEY(UserId) REFERENCES Users(UserId), PrepTime TIME, CookTime TIME, Difficulty TINYINT(1), Serves TINYINT(1));
+ERROR 1072 (42000): Key column 'RecipeId' doesn't exist in table
+mysql> CREATE TABLE Recipe (Id INT NOT NULL AUTO_INCREMENT, Name VARCHAR(40), Image VARCHAR(150), Blurb VARCHAR(100),  PrepTime TIME, CookTime TIME, Difficulty TINYINT NOT NULL, Serves TINYINT NOT NULL);
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> CREATE TABLE Recipe (Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(40), Image VARCHAR(150), Blurb VARCHAR(100), PrepTime TIME, CookTime TIME, Difficulty TINYINT NOT NULL, Serves TINYINT NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables
+    -> ;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Recipe                         |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE Users (Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, Username VARCHAR(10), Password CHAR(32));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Recipe                         |
+| Users                          |
++--------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> RENAME TABLE Recipe to Recipes;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Recipes                        |
+| Users                          |
++--------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE RecipeCreators (UserId INT NOT NULL, RecipeId INT NOT NULL); 
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables
+    -> ;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| RecipeCreators                 |
+| Recipes                        |
+| Users                          |
++--------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE UserFavourites (UserId INT NOT NULL, RecipeId INT NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Reviews (UserId INT NOT NULL, RecipeId INT NOT NULL, Score TINYINT NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| RecipeCreators                 |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Recipes
+    -> 
+    -> dd;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dd' at line 3
+mysql> SELECT * FROM Recipes
+    -> ;
+Empty set (0.00 sec)
+
+mysql> SHOW CREATE VIEW Recipes
+    -> ;
+ERROR 1347 (HY000): 'milestoneProjectFour.Recipes' is not VIEW
+mysql> ALTER TABLE Recipies 
+    -> ADD UserId int NOT NULL FOREIGN KEY REFERENCES Users(Id);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FOREIGN KEY REFERENCES Users(Id)' at line 2
+mysql> ALTER TABLE Recipies 
+    -> ADD UserId INT ;
+ERROR 1146 (42S02): Table 'milestoneProjectFour.Recipies' doesn't exist
+mysql> ALTER TABLE Recipes  ADD UserId INT;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Recipes  ADD UserId INT;
+ERROR 1060 (42S21): Duplicate column name 'UserId'
+mysql> ALTER TABLE Recipes 
+    -> ADD FOREIGN KEY(UserId) REFERENCES Users(Id);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Categories (Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(20));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE RecipeCategories (RecipeId INT NOT NULL, CategoryId INT NOT NULL, FOREIGN KEY (RecipeId) REFERENCES Recipes(Id),  FOREIGN KEY (CategoryId) REFERENCES Categories(Id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables
+    -> ;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| RecipeCategories               |
+| RecipeCreators                 |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+7 rows in set (0.00 sec)
+
+mysql> ALTER TABLE UserFavourites
+    -> ADD FOREIGN KEY(UserId) REFERENCES Users(Id);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE UserFavourites ADD FOREIGN KEY(RecipeId) REFERENCES Recipes(Id);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Reviews  ADD FOREIGN KEY(UserId) REFERENCES Users(Id);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Reviews  ADD FOREIGN KEY(RecipeId) REFERENCES Recipes(Id);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE RecipeCreators  ADD FOREIGN KEY(RecipeId) REFERENCES Recipes(Id);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE RecipeCreators  ADD FOREIGN KEY(UserId) REFERENCES Users(Id);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Ingredients (Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(15));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE RecipeIngredients(RecipeId INT NOT NULL, IngredientId INT NOT NULL, Quantity VARCHAR(20), Additional VARCHAR(30),  FOREIGN KEY(RecipeId) REFERENCES Recipes(Id), FOREIGN KEY(IngredientId) REFERENCES Ingredients(Id);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> CREATE TABLE RecipeIngredients(RecipeId INT NOT NULL, IngredientId INT NOT NULL, Quantity VARCHAR(20), Additional VARCHAR(30),  FOREIGN KEY(RecipeId) REFERENCES Recipes(Id), FOREIGN KEY(IngredientId) REFERENCES Ingredients(Id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> view tables
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'view tables' at line 1
+mysql> view tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'view tables' at line 1
+mysql> show tables'
+    '> ;
+    '> sdd;
+    '> 
+    '> ;
+    '> ;'
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''
+;
+sdd;
+
+;
+;'' at line 1
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| Ingredients                    |
+| RecipeCategories               |
+| RecipeCreators                 |
+| RecipeIngredients              |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+9 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Recipes 
+    -> ADD Instructions JSON;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'JSON' at line 2
+mysql> ALTER TABLE Recipes
+    -> Add Instructions JSON;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'JSON' at line 2
+mysql> ALTER TABLE Recipes Add Instructions TEXT;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
