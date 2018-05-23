@@ -20,9 +20,12 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
     <script type="text/javascript">
-  myData = [
-		{tag: 'Apple iPhone'}
-  ];
+
+
+
+$(document).ready(function() {
+    $('select').material_select();
+});
 
 $(function() {
     
@@ -38,7 +41,7 @@ $(function() {
       minLength: 1
     }
   });
-        
+     
   
 });
     </script>

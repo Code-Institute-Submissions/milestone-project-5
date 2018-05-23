@@ -10,9 +10,60 @@
         <input type="file" name="recipe-img" id="recipe-img" accept="image/*">
     </div>
     <div class="row">
+        <div class="input-field col s12">
+            <select>
+      <option value="1" selected>Easy</option>
+      <option value="2">Normal</option>
+      <option value="3">Challenging</option>
+    </select>
+            <label>Difficulty</label>
 
-  <div class="chips chips-autocomplete"></div>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="input-field col s12">
+       <input id="serves" name="serves" type="number" value="4">
+            <label>Serves</label>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <label>Categories</label>
+        <div class="chips chips-autocomplete"></div>
+    </div>
+
+    <div class="row">
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="textarea1" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)"></textarea>
+                <label for="textarea1">Blub</label>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    <div class="row">
+            <div class="input-field col s12">
+       <input id="prep-hours" name="prep-hours" type="number" placeholder="Hours">
+              <input id="prep-mins" name="prep-mins" type="number" placeholder="Minutes ">
+
+                <label>Preparation Time</label>
+        </div>
+    </div>
+       
+    <div class="row">
+            <div class="input-field col s12">
+       <input id="cooking-hours" name="cooking-hours" type="number" placeholder="Hours">
+              <input id="cooking-mins" name="cooking-mins" type="number" placeholder="Minutes ">
+
+                <label>Cooking Time</label>
+        </div>
+    </div>
+    
 </form>
 
 
