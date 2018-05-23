@@ -43,12 +43,12 @@
     <div class="row">
         <div class="input-field col s6">
             <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="Hours" required>
-            <input id="prep-mins" name="prep-mins" type="number" class="col s4 offset-s1" placeholder="Minutes " required>
+            <input id="prep-mins" name="prep-mins" type="number"  max="59" class="col s4 offset-s1" placeholder="Minutes " required>
             <label>Preparation Time</label>
         </div>
         <div class="input-field col s6">
             <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="Hours" required>
-            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" placeholder="Minutes " required>
+            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Minutes " required>
             <label>Cooking Time</label>
         </div>
     </div>
