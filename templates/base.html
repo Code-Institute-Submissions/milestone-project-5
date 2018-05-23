@@ -25,7 +25,27 @@
 
 $(document).ready(function() {
     $('select').material_select();
+    
+    
+    $("#add-ingredient").click(function(){
+        $(this).before(' <label for="recipe-name">Quantity</label> <input type="text" name="quantity" id="quantity" placeholder="1/2 Teaspoon">  <label for="recipe-name">Ingredient</label>  <input type="text" name="ingredient" id="ingredient" placeholder="Honey">')
+    });
+    
+    
+    
 });
+
+$(document).add()
+
+//   $(document).ready(function() {
+//         $("#add").click(function() {
+//           $('#mytable tbody>tr:last').clone(true).insertAfter('#mytable tbody>tr:last');
+//           return false;
+//         });
+//     });
+
+
+
 
 $(function() {
     

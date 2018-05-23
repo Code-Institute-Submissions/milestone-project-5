@@ -1,6 +1,6 @@
  {% extends 'base.html' %} {% block content %} {{ testvalue }}
 <h1>Add Recipe</h1>
-<form method="POST" id="">
+<form method="POST" id="add-recipe">
     <div class="row">
         <label for="recipe-name">Recipe Name</label>
         <input type="text" name="recipe-name" id="recipe-name" placeholder="Flambéed chicken with asparagus">
@@ -17,15 +17,13 @@
       <option value="3">Challenging</option>
     </select>
             <label>Difficulty</label>
-
         </div>
     </div>
 
     <div class="row">
         <div class="input-field col s12">
-       <input id="serves" name="serves" type="number" value="4">
+            <input id="serves" name="serves" type="number" value="4">
             <label>Serves</label>
-
         </div>
     </div>
 
@@ -42,28 +40,50 @@
             </div>
         </div>
     </div>
-    
-    
-    
-    
-    <div class="row">
-            <div class="input-field col s12">
-       <input id="prep-hours" name="prep-hours" type="number" placeholder="Hours">
-              <input id="prep-mins" name="prep-mins" type="number" placeholder="Minutes ">
 
-                <label>Preparation Time</label>
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="prep-hours" name="prep-hours" type="number" placeholder="Hours">
+            <input id="prep-mins" name="prep-mins" type="number" placeholder="Minutes ">
+
+            <label>Preparation Time</label>
         </div>
     </div>
-       
-    <div class="row">
-            <div class="input-field col s12">
-       <input id="cooking-hours" name="cooking-hours" type="number" placeholder="Hours">
-              <input id="cooking-mins" name="cooking-mins" type="number" placeholder="Minutes ">
 
-                <label>Cooking Time</label>
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="cooking-hours" name="cooking-hours" type="number" placeholder="Hours">
+            <input id="cooking-mins" name="cooking-mins" type="number" placeholder="Minutes ">
+            <label>Cooking Time</label>
         </div>
     </div>
+
+ <div class="row">
+        <label for="recipe-name">Quantity</label>
+        <input type="text" name="quantity" id="quantity" placeholder="1/2 Teaspoon">
+              <label for="recipe-name">Ingredient</label>
+        <input type="text" name="ingredient" id="ingredient" placeholder="Honey">
+        <!--<input type="button" value="Add" class="add" id="add" />-->
+          <a class="btn-floating btn-large waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
+    </div>
     
+    
+    <button id="submit-recipe"></button>
+
+  <!--<a  id="add">+</a></td>-->
+  <!--<table id="mytable" width="300" border="1" cellspacing="0" cellpadding="2">-->
+  <!--<tbody>-->
+  <!--  <tr>-->
+  <!--    <td>Name</td>-->
+  <!--  </tr>-->
+  <!--  <tr class="person">-->
+  <!--    <td><input type="text" name="name" id="name" /></td>-->
+  <!--  </tr>-->
+  <!--  </tbody>-->
+  <!--</table>-->
+
+
+
 </form>
 
 
