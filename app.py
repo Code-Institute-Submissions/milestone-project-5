@@ -2,6 +2,8 @@ import os
 import requests
 import pymysql
 from  flask import Flask, render_template, request, redirect, url_for
+import datetime
+
 
 app = Flask(__name__)
 """
@@ -16,14 +18,32 @@ username = os.getenv("C9_USER")
 
 connection = pymysql.connect(host = 'localhost', user= username, password = "", db="milestoneProjectFour")
 
+
+def get_prep_time():
+    # https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
+    prep_hours = request.form["prep-hours"]
+    prep_mins = request.form["prep-mins"]
+    prep_time =   datetime.datetime.strptime('{0}:{1}'.format(prep_hours, prep_mins), '%H:%M').time()
+    
+    return prep_time
+    
+def get_cook_time():
+    # https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
+    cook_hours = request.form["cook-hours"]
+    cook_mins = request.form["cook-mins"]
+    cook_time =   datetime.datetime.strptime('{0}:{1}'.format(cook_hours, cook_mins), '%H:%M').time()
+    
+    return cook_time
+
 def get_form_values():
+
     values_dictionary = {
         "Name" : request.form["recipe-name"],
         "Difficulty": request.form["difficulty-select"],
         "Serves" : request.form["serves"],
         "Blurb" : request.form["blurb"],
-        "PrepTime": "{0}:{1}:00".format(request.form["prep-hours"], request.form["prep-mins"]),
-        "CookTime": "{0}:{1}:00".format(request.form["cook-hours"], request.form["cook-mins"])
+        "PrepTime": get_prep_time(),
+        "CookTime": get_cook_time()
     }
     return values_dictionary
 
