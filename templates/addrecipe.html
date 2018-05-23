@@ -1,0 +1,25 @@
+ {% extends 'base.html' %} {% block content %} {{ testvalue }}
+<h1>Add Recipe</h1>
+<form method="POST" id="">
+    <div class="row">
+        <label for="recipe-name">Recipe Name</label>
+        <input type="text" name="recipe-name" id="recipe-name" placeholder="Flambéed chicken with asparagus">
+    </div>
+    <div class="row">
+        <label for="recipe-img">Recipe Image</label>
+        <input type="file" name="recipe-img" id="recipe-img" accept="image/*">
+    </div>
+    <div class="row">
+  <div class="chips"></div>
+  <div class="chips chips-initial"></div>
+  <div class="chips chips-placeholder"></div>
+  <div class="chips chips-autocomplete"></div>
+    </div>
+</form>
+
+
+
+
+
+{% endblock %}
+ 

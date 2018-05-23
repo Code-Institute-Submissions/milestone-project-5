@@ -224,3 +224,5 @@ mysql> ALTER TABLE Recipes
 Query OK, 0 rows affected (0.03 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
+mysql> kill -9 $(lsof -i :8080 -t); 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '$(lsof -i :8080 -t)' at line 1
