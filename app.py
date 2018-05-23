@@ -16,6 +16,17 @@ username = os.getenv("C9_USER")
 
 connection = pymysql.connect(host = 'localhost', user= username, password = "", db="milestoneProjectFour")
 
+def get_form_values():
+    values_dictionary = {
+        "Name" : request.form["recipe-name"],
+        "Difficulty": request.form["difficulty-select"],
+        "Serves" : request.form["serves"],
+        "Blurb" : request.form["blurb"],
+        "PrepTime": "{0}:{1}:00".format(request.form["prep-hours"], request.form["prep-mins"]),
+        "CookTime": "{0}:{1}:00".format(request.form["cook-hours"], request.form["cook-mins"])
+    }
+    return values_dictionary
+
 def test_function():
     try:
         with connection.cursor() as cursor:
@@ -28,11 +39,18 @@ def test_function():
         connection.close()
     
 
-test_function()
+# test_function()
     
 @app.route("/",  methods=["POST", "GET"] )
 def add_recipe():
     if request.method == "POST":
+        values_dictionary = get_form_values()
+        print (values_dictionary["Name"])
+        print (values_dictionary["Serves"])
+        print (values_dictionary["Blurb"])
+        print (values_dictionary["PrepTime"])
+        print (values_dictionary["CookTime"])
+        print (values_dictionary["Difficulty"])
         return render_template("addrecipe.html", testvalue="POST")
     
   

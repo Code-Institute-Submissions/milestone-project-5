@@ -11,7 +11,7 @@
     </div>
     <div class="row">
         <div class="input-field col s6">
-            <select>
+            <select class="difficulty-select" name="difficulty-select">
       <option value="1" selected>Easy</option>
       <option value="2">Normal</option>
       <option value="3">Challenging</option>
@@ -34,7 +34,7 @@
     <div class="row">
         <div class="row">
             <div class="input-field col s12">
-                <textarea id="textarea1" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)" required></textarea>
+                <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)" required></textarea>
                 <label for="textarea1">Blub</label>
             </div>
         </div>
@@ -47,8 +47,8 @@
             <label>Preparation Time</label>
         </div>
         <div class="input-field col s6">
-            <input id="cooking-hours" name="cooking-hours" class="col s4" type="number" placeholder="Hours" required>
-            <input id="cooking-mins" name="cooking-mins" class="col s4 offset-s1" type="number" placeholder="Minutes " required>
+            <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="Hours" required>
+            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" placeholder="Minutes " required>
             <label>Cooking Time</label>
         </div>
     </div>
