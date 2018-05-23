@@ -23,18 +23,38 @@
         $(document).ready(function() {
             $('select').material_select();
 
-            count = 0;
 
+            let ingredientCount = 0;
+            
+            
             $("#add-ingredient").click(function() {
-                count++;
-                $(this).before(` <label for="recipe-name" class="label-${count}">Quantity</label> <input type="text" name="quantity" id="quantity-${count}" placeholder="1/2 Teaspoon">  <label for="recipe-name" class="label-${count}">Ingredient</label>  <input type="text" name="ingredient" id="ingredient-${count}" placeholder="Honey">`)
+                ingredientCount++;
+                $(this).before(` <label for="recipe-name" class="label-${ingredientCount}">Quantity</label> <input type="text" name="quantity" id="quantity-${ingredientCount}" placeholder="1/2 Teaspoon">  <label for="recipe-name" class="label-${ingredientCount}">Ingredient</label>  <input type="text" name="ingredient" id="ingredient-${ingredientCount}" placeholder="Honey">`)
             });
 
             $("#remove-ingredient").click(function() {
-                $(`#quantity-${count}`).remove();
-                $(`#ingredient-${count}`).remove();
-                $(`.label-${count}`).remove();
-                count--;
+                $(`#quantity-${ingredientCount}`).remove();
+                $(`#ingredient-${ingredientCount}`).remove();
+                $(`.label-${ingredientCount}`).remove();
+                ingredientCount--;
+            });
+            
+            let instructionCount = 1;
+            
+                 $("#add-instruction").click(function() {
+                instructionCount++;
+                $(this).before(`  <div class = "row"><li class = "instruction-item-${instructionCount}">
+                    <div class="input-field col s12">
+                        <textarea id="instructions-${ingredientCount}" class="materialize-textarea"></textarea>
+                        <!--<label for="textarea1">Textarea</label>-->
+                    </div>
+
+            </li></row>`)
+            });
+            
+            $("#remove-instruction").click(function() {
+                $(`.instruction-item-${instructionCount}`).remove();
+                instructionCount--;
             });
 
 
