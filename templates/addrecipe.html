@@ -10,7 +10,7 @@
         <input type="file" name="recipe-img" id="recipe-img" accept="image/*">
     </div>
     <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s6">
             <select>
       <option value="1" selected>Easy</option>
       <option value="2">Normal</option>
@@ -18,17 +18,16 @@
     </select>
             <label>Difficulty</label>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s6">
             <input id="serves" name="serves" type="number" value="4">
             <label>Serves</label>
         </div>
+
     </div>
 
+
     <div class="row">
-        <label>Categories</label>
+        <label>Categories(E.g. Mexican, Vegetarian)</label>
         <div class="chips chips-autocomplete"></div>
     </div>
 
@@ -42,48 +41,48 @@
     </div>
 
     <div class="row">
-        <div class="input-field col s12">
-            <input id="prep-hours" name="prep-hours" type="number" placeholder="Hours">
-            <input id="prep-mins" name="prep-mins" type="number" placeholder="Minutes ">
-
+        <div class="input-field col s6">
+            <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="Hours">
+            <input id="prep-mins" name="prep-mins" type="number" class="col s4 offset-s1" placeholder="Minutes ">
             <label>Preparation Time</label>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="input-field col s12">
-            <input id="cooking-hours" name="cooking-hours" type="number" placeholder="Hours">
-            <input id="cooking-mins" name="cooking-mins" type="number" placeholder="Minutes ">
+        <div class="input-field col s6">
+            <input id="cooking-hours" name="cooking-hours" class="col s4" type="number" placeholder="Hours">
+            <input id="cooking-mins" name="cooking-mins" class="col s4 offset-s1" type="number" placeholder="Minutes ">
             <label>Cooking Time</label>
         </div>
     </div>
 
-    <div class="row">
-        <label for="recipe-name">Quantity</label>
-        <input type="text" name="quantity" id="quantity" placeholder="1/2 Teaspoon">
-        <label for="recipe-name">Ingredient</label>
-        <input type="text" name="ingredient" id="ingredient" placeholder="Honey">
-        <a class="btn-floating btn-large waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
-        <a class="btn-floating btn-large waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
 
+    <h6>Ingredients:</h6>
+    <div class="row ingredient-row-0">
+        <div class="input-field col s4">
+            <label for="quantity">Quantity</label>
+            <input type="text" name="quantity" id="quantity" placeholder="1/2 Teaspoon">
+        </div>
+        <div class="input-field col s4">
+            <label for="ingredient">Ingredient</label>
+            <input type="text" name="ingredient" id="ingredient" placeholder="Honey">
+        </div>
     </div>
+    <a class="btn-floating btn-large waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
+    <a class="btn-floating btn-large waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
 
 
-    <div class="row">
-        <ol>
-            <div class="row">
-            <li class = "instruction-item-1">
-                    <div class="input-field col s12">
-                        <textarea id="instructions-1" class="materialize-textarea"></textarea>
-                        <!--<label for="textarea1">Textarea</label>-->
-                    </div>
-
+    <h6>Instructions:</h6>
+    <ol>
+        <div class="row instruction-row-1">
+            <li>
+                <div class="input-field col s12">
+                    <textarea id="instruction-1" class="materialize-textarea"></textarea>
+                </div>
             </li>
-            </div>
-             <a class="btn-floating btn-large waves-effect waves-light red" id="add-instruction"><i class="material-icons">add</i></a>
+        </div>
+        <a class="btn-floating btn-large waves-effect waves-light red" id="add-instruction"><i class="material-icons">add</i></a>
         <a class="btn-floating btn-large waves-effect waves-light red" id="remove-instruction"><i class="material-icons">remove</i></a>
-        </ol>
-    </div>
+    </ol>
+
+<input type="submit" value="Submit">
 
 
 </form>
