@@ -20,50 +20,46 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('select').material_select();
+
+            count = 0;
+
+            $("#add-ingredient").click(function() {
+                count++;
+                $(this).before(` <label for="recipe-name" class="label-${count}">Quantity</label> <input type="text" name="quantity" id="quantity-${count}" placeholder="1/2 Teaspoon">  <label for="recipe-name" class="label-${count}">Ingredient</label>  <input type="text" name="ingredient" id="ingredient-${count}" placeholder="Honey">`)
+            });
+
+            $("#remove-ingredient").click(function() {
+                $(`#quantity-${count}`).remove();
+                $(`#ingredient-${count}`).remove();
+                $(`.label-${count}`).remove();
+                count--;
+            });
 
 
 
-$(document).ready(function() {
-    $('select').material_select();
-    
-    
-    $("#add-ingredient").click(function(){
-        $(this).before(' <label for="recipe-name">Quantity</label> <input type="text" name="quantity" id="quantity" placeholder="1/2 Teaspoon">  <label for="recipe-name">Ingredient</label>  <input type="text" name="ingredient" id="ingredient" placeholder="Honey">')
-    });
-    
-    
-    
-});
+        });
 
-$(document).add()
+        $(document).add()
 
-//   $(document).ready(function() {
-//         $("#add").click(function() {
-//           $('#mytable tbody>tr:last').clone(true).insertAfter('#mytable tbody>tr:last');
-//           return false;
-//         });
-//     });
+        $(function() {
 
 
+            $('.chips-autocomplete').material_chip({
+                autocompleteOptions: {
+                    data: {
+                        'Apple': null,
+                        'Microsoft': null,
+                        'Google': null
+                    },
+                    limit: Infinity,
+                    minLength: 1
+                }
+            });
 
 
-$(function() {
-    
-
-  $('.chips-autocomplete').material_chip({
-    autocompleteOptions: {
-      data: {
-        'Apple': null,
-        'Microsoft': null,
-        'Google': null
-      },
-      limit: Infinity,
-      minLength: 1
-    }
-  });
-     
-  
-});
+        });
     </script>
 </body>
 
