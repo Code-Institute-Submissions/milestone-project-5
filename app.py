@@ -4,7 +4,10 @@ import pymysql
 from  flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
-
+"""
+ INSERT INTO Recipes (Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)
+ VALUES ("Chicken Fillet Role", "123", "1", "4", "From spar. Good chicken fillet", "11:12:00", "04:10:00", "['First do this', 'Then do that', 'Then this']");
+ """
 app.secret_key = 'some_secret'
 
 
@@ -13,20 +16,19 @@ username = os.getenv("C9_USER")
 
 connection = pymysql.connect(host = 'localhost', user= username, password = "", db="milestoneProjectFour")
 
-try:
-    print("Hello word")
+def test_function():
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SET FOREIGN_KEY_CHECKS=0")
+            insert_into = "(Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
+            values = '("Chicken Fillet Role", "123", "1", "4", "From spar. Good chicken fillet", "11:12:00", "04:10:00", "{}")'.format("['First do this', 'Then do that', 'Then this']")
+            cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
+            connection.commit()
+    finally:
+        connection.close()
+    
 
-finally:
-    connection.close()
-    
-    # https://stackoverflow.com/questions/17599035/django-how-can-i-call-a-view-function-from-template/19761466
-# def add_category(request):
-#     if(request.GET.get('mybtn')):
-#       recipe_name= "if worked"
-#     else:
-#         recipe_name = "if didn't work"
-#     return render_template("addrecipe.html", testvalue=recipe_name)
-    
+test_function()
     
 @app.route("/",  methods=["POST", "GET"] )
 def add_recipe():

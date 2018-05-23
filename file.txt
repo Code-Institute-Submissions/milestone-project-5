@@ -226,3 +226,64 @@ Records: 0  Duplicates: 0  Warnings: 0
 
 mysql> kill -9 $(lsof -i :8080 -t); 
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '$(lsof -i :8080 -t)' at line 1
+mysql> INSERT INTO Recipes
+    -> VALUES "a dish name";
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    173
+Current database: milestoneProjectFour
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"a dish name"' at line 2
+mysql> INSERT INTO Recipes VALUES dish;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dish' at line 1
+mysql> INSERT INTO Recipes (Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)
+    -> VALUES ("Chicken Fillet Role", "123", "1", "4", "From spar. Good chicken fillet", "11:12:00", "04:10:00", "['First do this', 'Then do that', 'Then this']");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`milestoneProjectFour`.`Recipes`, CONSTRAINT `Recipes_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`))
+mysql> SET FOREIGN_KEY_CHECKS=0
+    -> ;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO Recipes (Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions) VALUES ("Chicken Fillet Role", "123", "1", "4", "From spar. Good chicken fillet", "11:12:00", "04:10:00", "['First do this', 'Then do that', 'Then this']");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show index from recipes 
+    -> l
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'l' at line 2
+mysql> show index from Recipes;
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table   | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Recipes |          0 | PRIMARY  |            1 | Id          | A         |           3 |     NULL | NULL   |      | BTREE      |         |               |
+| Recipes |          1 | UserId   |            1 | UserId      | A         |           3 |     NULL | NULL   |      | BTREE      |         |               |
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> describe Recipes;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| Id           | int(11)      | NO   | PRI | NULL    | auto_increment |
+| Name         | varchar(40)  | NO   |     | NULL    |                |
+| UserId       | int(11)      | NO   | MUL | NULL    |                |
+| Image        | blob         | YES  |     | NULL    |                |
+| Difficulty   | tinyint(4)   | NO   |     | NULL    |                |
+| Serves       | tinyint(4)   | NO   |     | NULL    |                |
+| Blurb        | varchar(100) | NO   |     | NULL    |                |
+| PrepTime     | time         | NO   |     | NULL    |                |
+| CookTime     | time         | NO   |     | NULL    |                |
+| Instructions | text         | NO   |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+10 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Recipes
+    -> ;
++----+---------------------+--------+-------+------------+--------+--------------------------------+----------+----------+------------------------------------------------+
+| Id | Name                | UserId | Image | Difficulty | Serves | Blurb                          | PrepTime | CookTime | Instructions                                   |
++----+---------------------+--------+-------+------------+--------+--------------------------------+----------+----------+------------------------------------------------+
+|  2 | Chicken Fillet Role |    123 | NULL  |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this'] |
+|  5 | Chicken Fillet Role |    123 | NULL  |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this'] |
+|  6 | Chicken Fillet Role |    123 | NULL  |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this'] |
++----+---------------------+--------+-------+------------+--------+--------------------------------+----------+----------+------------------------------------------------+
+3 rows in set (0.00 sec)
+
