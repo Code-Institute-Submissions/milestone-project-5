@@ -34,6 +34,27 @@ def get_cook_time():
     cook_time =   datetime.datetime.strptime('{0}:{1}'.format(cook_hours, cook_mins), '%H:%M').time()
     
     return cook_time
+    
+def get_instructions_list():
+    
+    end_of_instructions = False
+    instructions_list = []
+    counter = 1
+    
+    while not end_of_instructions:
+        try:
+            instructions_list.append(request.form["instruction-{}".format(counter)])
+        except Exception as e:
+            end_of_instructions = True
+            
+        counter+=1
+        
+    return instructions_list
+        
+        
+        
+        
+    
 
 def get_form_values():
 
@@ -43,7 +64,8 @@ def get_form_values():
         "Serves" : request.form["serves"],
         "Blurb" : request.form["blurb"],
         "PrepTime": get_prep_time(),
-        "CookTime": get_cook_time()
+        "CookTime": get_cook_time(),
+        "Instructions": get_instructions_list()
     }
     return values_dictionary
 
@@ -71,6 +93,7 @@ def add_recipe():
         print (values_dictionary["PrepTime"])
         print (values_dictionary["CookTime"])
         print (values_dictionary["Difficulty"])
+        print (values_dictionary["Instructions"])
         return render_template("addrecipe.html", testvalue="POST")
     
   
