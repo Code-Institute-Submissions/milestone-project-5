@@ -79,21 +79,45 @@ def test_function():
             connection.commit()
     finally:
         connection.close()
+        
+        
+def insert_dictionary_into_recipes_table(values_dictionary):
+    """
+    function to insert the retrieved dictionary of 
+    form values into the MySQL database
+    """
     
+    dummy_userid = "123"
+    dummy_instructions = {}
+    
+    insert_into = "(Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
+    
+    #must use double quotes inside values string 
+    values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}")'.format( 
+    values_dictionary["Name"], 
+    dummy_userid, 
+    values_dictionary["Difficulty"], 
+    values_dictionary["Serves"], 
+    values_dictionary["Blurb"], 
+    values_dictionary["PrepTime"], 
+    values_dictionary["CookTime"], 
+    values_dictionary["Instructions"])
 
-# test_function()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SET FOREIGN_KEY_CHECKS=0")
+            cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
+            connection.commit()
+    except:
+        connection.close()
+            
     
 @app.route("/",  methods=["POST", "GET"] )
 def add_recipe():
     if request.method == "POST":
         values_dictionary = get_form_values()
-        print (values_dictionary["Name"])
-        print (values_dictionary["Serves"])
-        print (values_dictionary["Blurb"])
-        print (values_dictionary["PrepTime"])
-        print (values_dictionary["CookTime"])
-        print (values_dictionary["Difficulty"])
-        print (values_dictionary["Instructions"])
+        insert_dictionary_into_recipes_table(values_dictionary)
+        
         return render_template("addrecipe.html", testvalue="POST")
     
   
