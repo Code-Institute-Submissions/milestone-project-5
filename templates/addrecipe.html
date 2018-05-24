@@ -26,15 +26,26 @@
     </div>
 
 
+    <!--<div class="row">-->
+    <!--    <label>Categories(E.g. Mexican, Vegetarian)</label>-->
+    <!--    <div class="chips chips-autocomplete"></div>-->
+    <!--</div>-->
+    
     <div class="row">
-        <label>Categories(E.g. Mexican, Vegetarian)</label>
-        <div class="chips chips-autocomplete"></div>
+        <div class="input-field col s4">
+            <label for="categories">Categories</label>
+            <input type="text" name="category-0" id="category-0"  placeholder="Mexican, Vegetarian" required>
+        </div>
+         <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
+    <a class="btn-floating btn-large waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
     </div>
+  
+
 
     <div class="row">
         <div class="row">
             <div class="input-field col s12">
-                <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)" required></textarea>
+                <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)" required>A short Blurb</textarea>
                 <label for="textarea1">Blub</label>
             </div>
         </div>

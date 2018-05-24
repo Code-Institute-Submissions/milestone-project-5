@@ -474,3 +474,127 @@ mysql> SELECT * FROM Recipes ;
 +----+---------------------+--------+------------------------------------------------------------+------------+--------+--------------------------------+----------+----------+--------------------------------------------------------+
 19 rows in set (0.00 sec)
 
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| Ingredients                    |
+| RecipeCategories               |
+| RecipeCreators                 |
+| RecipeIngredients              |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+9 rows in set (0.02 sec)
+
+mysql> describe Categories;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| Id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Name  | varchar(20) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.07 sec)
+
+mysql> describe RecipeCatagories;
+ERROR 1146 (42S02): Table 'milestoneProjectFour.RecipeCatagories' doesn't exist
+mysql> describe RecipeCategorie; 
+ERROR 1146 (42S02): Table 'milestoneProjectFour.RecipeCategorie' doesn't exist
+mysql> describe RecipeCategories;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| RecipeId   | int(11) | NO   | MUL | NULL    |       |
+| CategoryId | int(11) | NO   | MUL | NULL    |       |
++------------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO Categories VALUES ("Healthy");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO Categories(Name) VALUES ("Healthy");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Family & Kids");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Cakes & Baking");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Cuisines");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Events");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Everyday");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Seasonal");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Special Diets");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Vegetarian");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Breakfast");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Starter");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Main Course");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Desert");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Dinner");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name) VALUES ("Soup");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM Categories 
+    -> ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 31 | Jewish         |
++----+----------------+
+31 rows in set (0.01 sec)
+

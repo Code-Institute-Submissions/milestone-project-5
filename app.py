@@ -73,7 +73,18 @@ def get_instructions_list():
     return instructions_list
         
         
-        
+def get_categories():
+    # https://blog.miguelgrinberg.com/post/easy-web-scraping-with-python/page/2
+    
+    url= "https://milestone-project-4-paddywc.c9users.io/categories"
+    
+    response = requests.get(url)
+    soup =  bs4.BeautifulSoup(response.text, "lxml")
+    # categories = [i.get_text() for i in soup.select("div.chips")]
+    categories  = soup.select("div.row")
+    
+    print(categories)
+    return categories 
         
     
 
@@ -87,8 +98,10 @@ def get_form_values():
         "Blurb" : request.form["blurb"],
         "PrepTime": get_prep_time(),
         "CookTime": get_cook_time(),
-        "Instructions": get_instructions_list()
+        "Instructions": get_instructions_list(),
+        "Categories" : get_categories()
     }
+    print(values_dictionary["Categories"])
     return values_dictionary
 
 def test_function():
@@ -169,6 +182,7 @@ def insert_dictionary_into_recipes_table(values_dictionary):
 @app.route("/",  methods=["POST", "GET"] )
 def add_recipe():
     if request.method == "POST":
+        get_categories()
         values_dictionary = get_form_values()
         insert_dictionary_into_recipes_table(values_dictionary)
         
@@ -177,7 +191,11 @@ def add_recipe():
   
     return render_template("addrecipe.html", testvalue="NOT POST")
     
+@app.route("/categories",  methods=["POST", "GET"] )
+def enter_categories():
+    return render_template("categories.html", testvalue="POST")
     
+
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),

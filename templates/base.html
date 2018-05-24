@@ -24,6 +24,24 @@
             $('select').material_select();
 
 
+            
+            let categoryCount = 0;
+            $("#add-category").click(function() {
+                $(`#category-${categoryCount}`).after(`
+                 <input type="text" name="category-${++categoryCount}" id="category-${categoryCount}">
+                `)
+            });
+             $("#remove-category").click(function() {
+                 if (categoryCount > 0){
+                $(`#category-${categoryCount}`).remove();
+                categoryCount--;
+                 };
+            });
+                
+                
+                
+            
+            
             let ingredientCount = 0;
 
 
@@ -72,23 +90,23 @@
 
         $(document).add()
 
-        $(function() {
+        // $(function() {
 
 
-            $('.chips-autocomplete').material_chip({
-                autocompleteOptions: {
-                    data: {
-                        'Apple': null,
-                        'Microsoft': null,
-                        'Google': null
-                    },
-                    limit: Infinity,
-                    minLength: 1
-                }
-            });
+        //     $('.chips-autocomplete').material_chip({
+        //         autocompleteOptions: {
+        //             data: {
+        //                 'Apple': null,
+        //                 'Microsoft': null,
+        //                 'Google': null
+        //             },
+        //             limit: Infinity,
+        //             minLength: 1
+        //         }
+        //     });
 
 
-        });
+        // });
     </script>
 </body>
 
