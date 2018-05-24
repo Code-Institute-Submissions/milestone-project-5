@@ -1,9 +1,9 @@
  {% extends 'base.html' %} {% block content %} {{ testvalue }}
 <h1>Add Recipe</h1>
-<form method="POST" id="add-recipe">
+<form method="POST" id="add-recipe" enctype="multipart/form-data">
     <div class="row">
         <label for="recipe-name">Recipe Name</label>
-        <input type="text" name="recipe-name" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
+        <input type="text" name="recipe-name"  value="Chicken Curry" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
     </div>
     <div class="row">
         <label for="recipe-img">Recipe Image</label>
@@ -34,7 +34,7 @@
     <div class="row">
         <div class="row">
             <div class="input-field col s12">
-                <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" value="A short blurb" placeholder="A sentence or two about your dish(max 100 chars)" required></textarea>
+                <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)" required></textarea>
                 <label for="textarea1">Blub</label>
             </div>
         </div>

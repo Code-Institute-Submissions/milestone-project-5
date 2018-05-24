@@ -3,6 +3,7 @@ import requests
 import pymysql
 from  flask import Flask, render_template, request, redirect, url_for
 import datetime
+from werkzeug.utils import secure_filename #for uploading images 
 
 
 app = Flask(__name__)
@@ -19,6 +20,26 @@ username = os.getenv("C9_USER")
 connection = pymysql.connect(host = 'localhost', user= username, password = "", db="milestoneProjectFour")
 
 
+def get_recipe_image():
+    """
+    returns the image that the user uploads 
+    returns false if user didn't upload image
+    """
+    
+    try:
+        recipe_image = request.files["recipe-img"]
+        image_added = True
+    except Exception as e:
+        image_added = False
+        
+    if image_added:
+        return recipe_image 
+    else:
+        return False
+        
+    
+    
+    
 def get_prep_time():
     # https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     prep_hours = request.form["prep-hours"]
@@ -60,6 +81,7 @@ def get_form_values():
 
     values_dictionary = {
         "Name" : request.form["recipe-name"],
+        "Image": get_recipe_image(),
         "Difficulty": request.form["difficulty-select"],
         "Serves" : request.form["serves"],
         "Blurb" : request.form["blurb"],
@@ -81,16 +103,9 @@ def test_function():
         connection.close()
         
         
-def insert_dictionary_into_recipes_table(values_dictionary):
-    """
-    function to insert the retrieved dictionary of 
-    form values into the MySQL database
-    """
+def create_recipe_values_without_image(values_dictionary):
     
     dummy_userid = "123"
-    dummy_instructions = {}
-    
-    insert_into = "(Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
     
     #must use double quotes inside values string 
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}")'.format( 
@@ -102,13 +117,52 @@ def insert_dictionary_into_recipes_table(values_dictionary):
     values_dictionary["PrepTime"], 
     values_dictionary["CookTime"], 
     values_dictionary["Instructions"])
+    
+    return values
+    
+def create_recipe_values_with_image(values_dictionary):
+    
+    dummy_userid = "123"
+    
+    #must use double quotes inside values string 
+    values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}", "{8}")'.format( 
+    values_dictionary["Name"], 
+    dummy_userid, 
+    values_dictionary["Image"],
+    values_dictionary["Difficulty"], 
+    values_dictionary["Serves"], 
+    values_dictionary["Blurb"], 
+    values_dictionary["PrepTime"], 
+    values_dictionary["CookTime"], 
+    values_dictionary["Instructions"])
+    
+    return values
+    
+        
+def insert_dictionary_into_recipes_table(values_dictionary):
+    """
+    function to insert the retrieved dictionary of 
+    form values into the MySQL database
+    """
+    
+    
+    
+    if values_dictionary["Image"]:
+        insert_into = "(Name, UserId, Image, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
+        values = create_recipe_values_with_image(values_dictionary)
+    else:
+        insert_into = "(Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
+        values = create_recipe_values_without_image(values_dictionary)
+    
+    
 
     try:
         with connection.cursor() as cursor:
             cursor.execute("SET FOREIGN_KEY_CHECKS=0")
             cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
             connection.commit()
-    except:
+    except Exception as e:
+        print(e)
         connection.close()
             
     
