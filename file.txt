@@ -598,3 +598,457 @@ mysql> SELECT * FROM Categories
 +----+----------------+
 31 rows in set (0.01 sec)
 
+mysql> INSERT IGNORE INTO Categories(Name) Values ("Jewish");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 31 | Jewish         |
+| 32 | Jewish         |
++----+----------------+
+32 rows in set (0.00 sec)
+
+mysql> DELETE FROM Categories WHERE Id = "31";
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 32 | Jewish         |
++----+----------------+
+31 rows in set (0.00 sec)
+
+mysql> REPLACE INTO Categories(Name) Values ("Irish");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 32 | Jewish         |
+| 33 | Irish          |
++----+----------------+
+32 rows in set (0.00 sec)
+
+mysql> DELETE FROM Categories WHERE Id = "33";
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Categories(Name)
+    -> SELECT * FROM Categories AS tmp
+    -> WHERE ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> INSERT INTO Categories(Name) 
+    -> try:
+    ->             instructions_list.append(request.form["instruction-{}".format(counter)])
+    ->         except Exception as e:
+    ->             end_of_instructions = True
+    ->             
+    ->         counter+=1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'try:
+            instructions_list.append(request.form["instruction-{}".format(c' at line 2
+mysql> INSERT INTO Categories(Name) 
+    -> SELECT * FROM (SELECT 'John', 'Doe', '022') AS tmp
+    -> ;
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO Categories(Name) 
+    -> SELECT * FROM (SELECT "Irish" ) AS tmp
+    -> WHERE NOT EXISTS (SELECT Name FROM Categories WHERE name = "Irish") LIMIT 1;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Categories(Name)  SELECT * FROM (SELECT "Dutch" ) AS tmp WHERE NOT EXISTS (SELECT Name FROM Categories WHERE name = "Dutch") LIMIT 1;
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Categories ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 32 | Jewish         |
+| 34 | Dutch          |
++----+----------------+
+32 rows in set (0.00 sec)
+
+mysql> DELETE FROM Categories WHERE Id = "34";
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 32 | Jewish         |
++----+----------------+
+31 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 32 | Jewish         |
++----+----------------+
+31 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------------+
+| Id | Name                 |
++----+----------------------+
+|  1 | Healthy              |
+|  2 | Family & Kids        |
+|  3 | Cakes & Baking       |
+|  4 | Cuisines             |
+|  5 | Events               |
+|  6 | Everyday             |
+|  7 | Seasonal             |
+|  8 | Special Diets        |
+|  9 | Vegetarian           |
+| 10 | Breakfast            |
+| 11 | Starter              |
+| 12 | Main Course          |
+| 13 | Desert               |
+| 14 | Dinner               |
+| 15 | Soup                 |
+| 16 | Indian               |
+| 17 | Chinese              |
+| 18 | Thai                 |
+| 19 | Asian                |
+| 20 | Italian              |
+| 21 | French               |
+| 22 | Spanish              |
+| 23 | European             |
+| 24 | Mexican              |
+| 25 | Latin American       |
+| 26 | African              |
+| 27 | American             |
+| 28 | Australian           |
+| 29 | British              |
+| 30 | Irish                |
+| 32 | Jewish               |
+| 35 | <built-in method cap |
+| 36 | <built-in method cap |
+| 37 | <built-in method cap |
++----+----------------------+
+34 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------------+
+| Id | Name                 |
++----+----------------------+
+|  1 | Healthy              |
+|  2 | Family & Kids        |
+|  3 | Cakes & Baking       |
+|  4 | Cuisines             |
+|  5 | Events               |
+|  6 | Everyday             |
+|  7 | Seasonal             |
+|  8 | Special Diets        |
+|  9 | Vegetarian           |
+| 10 | Breakfast            |
+| 11 | Starter              |
+| 12 | Main Course          |
+| 13 | Desert               |
+| 14 | Dinner               |
+| 15 | Soup                 |
+| 16 | Indian               |
+| 17 | Chinese              |
+| 18 | Thai                 |
+| 19 | Asian                |
+| 20 | Italian              |
+| 21 | French               |
+| 22 | Spanish              |
+| 23 | European             |
+| 24 | Mexican              |
+| 25 | Latin American       |
+| 26 | African              |
+| 27 | American             |
+| 28 | Australian           |
+| 29 | British              |
+| 30 | Irish                |
+| 32 | Jewish               |
+| 35 | <built-in method cap |
+| 36 | <built-in method cap |
+| 37 | <built-in method cap |
+| 38 | <built-in method cap |
+| 39 | <built-in method cap |
+| 40 | <built-in method cap |
+| 41 | <built-in method cap |
++----+----------------------+
+38 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------------+
+| Id | Name                 |
++----+----------------------+
+|  1 | Healthy              |
+|  2 | Family & Kids        |
+|  3 | Cakes & Baking       |
+|  4 | Cuisines             |
+|  5 | Events               |
+|  6 | Everyday             |
+|  7 | Seasonal             |
+|  8 | Special Diets        |
+|  9 | Vegetarian           |
+| 10 | Breakfast            |
+| 11 | Starter              |
+| 12 | Main Course          |
+| 13 | Desert               |
+| 14 | Dinner               |
+| 15 | Soup                 |
+| 16 | Indian               |
+| 17 | Chinese              |
+| 18 | Thai                 |
+| 19 | Asian                |
+| 20 | Italian              |
+| 21 | French               |
+| 22 | Spanish              |
+| 23 | European             |
+| 24 | Mexican              |
+| 25 | Latin American       |
+| 26 | African              |
+| 27 | American             |
+| 28 | Australian           |
+| 29 | British              |
+| 30 | Irish                |
+| 32 | Jewish               |
+| 35 | <built-in method cap |
+| 36 | <built-in method cap |
+| 37 | <built-in method cap |
+| 38 | <built-in method cap |
+| 39 | <built-in method cap |
+| 40 | <built-in method cap |
+| 41 | <built-in method cap |
+| 42 | Test                 |
++----+----------------------+
+39 rows in set (0.00 sec)
+
+mysql> DELETE FROM Categories WHERE Name  = "<built-in method cap";
+Query OK, 7 rows affected (0.01 sec)
+
+mysql> SELECT * FROM Categories ;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 32 | Jewish         |
+| 42 | Test           |
+| 43 | Another test   |
++----+----------------+
+33 rows in set (0.00 sec)
+
+mysql> DELETE FROM Categories WHERE Name  = "Test";
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DELETE FROM Categories WHERE Name  = "Another Test";
+Query OK, 1 row affected (0.01 sec)
+

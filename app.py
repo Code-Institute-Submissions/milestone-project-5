@@ -56,6 +56,22 @@ def get_cook_time():
     
     return cook_time
     
+    
+def get_categories_list():
+    
+    end_of_categories = False
+    categories_list = []
+    counter = 0
+    
+    while not end_of_categories:
+        try:
+            categories_list.append(request.form["category-{}".format(counter)])
+        except Exception as e:
+            end_of_categories = True
+            
+        counter+=1
+    return categories_list
+    
 def get_instructions_list():
     
     end_of_instructions = False
@@ -73,18 +89,18 @@ def get_instructions_list():
     return instructions_list
         
         
-def get_categories():
-    # https://blog.miguelgrinberg.com/post/easy-web-scraping-with-python/page/2
+# def get_categories():
+#     # https://blog.miguelgrinberg.com/post/easy-web-scraping-with-python/page/2
     
-    url= "https://milestone-project-4-paddywc.c9users.io/categories"
+#     url= "https://milestone-project-4-paddywc.c9users.io/categories"
     
-    response = requests.get(url)
-    soup =  bs4.BeautifulSoup(response.text, "lxml")
-    # categories = [i.get_text() for i in soup.select("div.chips")]
-    categories  = soup.select("div.row")
+#     response = requests.get(url)
+#     soup =  bs4.BeautifulSoup(response.text, "lxml")
+#     # categories = [i.get_text() for i in soup.select("div.chips")]
+#     categories  = soup.select("div.row")
     
-    print(categories)
-    return categories 
+#     print(categories)
+#     return categories 
         
     
 
@@ -99,10 +115,26 @@ def get_form_values():
         "PrepTime": get_prep_time(),
         "CookTime": get_cook_time(),
         "Instructions": get_instructions_list(),
-        "Categories" : get_categories()
+        "Categories" : get_categories_list()
     }
     print(values_dictionary["Categories"])
     return values_dictionary
+    
+def add_to_categories_if_not_duplicate(category_list):
+    # https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table
+    try:
+        with connection.cursor() as cursor:
+            for category in category_list:
+                lower_case = category.lower()
+                capitalized = category.capitalize()
+                cursor.execute('INSERT INTO Categories(Name) SELECT * FROM (SELECT "{0}" ) AS tmp WHERE NOT EXISTS (SELECT Name FROM Categories WHERE Name = "{0}");'.format(capitalized))
+            connection.commit()
+        
+    except Exception as e:
+        print(e)
+        # connection.close()    
+        
+ 
 
 def test_function():
     try:
@@ -182,9 +214,9 @@ def insert_dictionary_into_recipes_table(values_dictionary):
 @app.route("/",  methods=["POST", "GET"] )
 def add_recipe():
     if request.method == "POST":
-        get_categories()
         values_dictionary = get_form_values()
         insert_dictionary_into_recipes_table(values_dictionary)
+        add_to_categories_if_not_duplicate(values_dictionary["Categories"])
         
         return render_template("addrecipe.html", testvalue="POST")
     
