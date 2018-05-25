@@ -6,8 +6,9 @@ import datetime
 
 
 # for managing logins
-from flask_login import LoginManager, current_user, login_user
+from flask_login import LoginManager, UserMixin,  current_user, login_user #https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins
 from passlib.hash import sha256_crypt # https://pythonprogramming.net/password-hashing-flask-tutorial/
+from wtforms import Form, BooleanField, StringField, validators, PasswordField #https://wtforms.readthedocs.io/en/stable/crash_course.html
 
 
 #for uploading images 
@@ -15,11 +16,11 @@ from werkzeug.utils import secure_filename
 
 
 
-# login_manager = LoginManager()
+login_manager = LoginManager()
 
 app = Flask(__name__)
 
-# login_manager.init_app(app)
+login_manager.init_app(app)
 
 
 app.secret_key = 'some_secret'
@@ -45,7 +46,7 @@ def get_encrypted_password():
     return encrypted_password
     
     
-    
+
 def add_to_users():
     """
     adds username and password entered in form
@@ -71,15 +72,58 @@ def register_user():
     
 
 
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.get(user_id)
+def check_if_username_exists(username):
+    """
+    checks if a username appears in the Users table
+    returns True if username exists, False otherwise
+    """
     
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Username FROM Users WHERE Username="{}";'.format(username))
+            username_tuple = cursor.fetchone()
+            if username_tuple == None:
+                return False
+            return True
+    except Exception as e:
+        print("ERROR check_if_username_exists: {}".format(e))
+        
+        
     
 
+@login_manager.user_loader
+def load_user(user_id):
+    print(User.get(user_id))
+    return User.get(user_id)
+    
+
+class LoginForm(Form):
+    username = StringField('Username')
+    password = PasswordField('Password')
 
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # Here we use a class of some kind to represent and validate our
+    # client-side form data. For example, WTForms is a library that will
+    # handle this for us, and we use a custom LoginForm to validate.
+    form = LoginForm()
+    if form.validate_on_submit():
+        # Login and validate the user.
+        # user should be an instance of your `User` class
+        login_user(user)
+
+        flask.flash('Logged in successfully.')
+
+        next = flask.request.args.get('next')
+        # is_safe_url should check if the url is safe for redirects.
+        # See http://flask.pocoo.org/snippets/62/ for an example.
+        if not is_safe_url(next):
+            return flask.abort(400)
+
+        return flask.redirect(next or flask.url_for('index'))
+    return render_template('login.html', form=form)
 """
 HELPER FUNCTIONS
 """
@@ -123,6 +167,7 @@ def get_cook_time():
     cook_time =   datetime.datetime.strptime('{0}:{1}'.format(cook_hours, cook_mins), '%H:%M').time()
     
     return cook_time
+    
     
     
 def get_categories_list():
