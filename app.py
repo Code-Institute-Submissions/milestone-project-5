@@ -247,8 +247,13 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
         # connection.close()
             
 def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
-
     
+    """
+    adds the ingredients in the ingredients_dictionary to
+    RecipeIngredients table. Each has a RecipeId value of 
+    the second argument 
+    """
+
     try:
         with connection.cursor() as cursor:
             for ingredient_dictionary in ingredients_dictionary_list:
@@ -264,9 +269,21 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
         # connection.close()
     
     
+def add_to_recipe_categories(categories_list, recipe_id):
     
+    """
+    adds each category in categories_list to RecipeCategories
+    table. Each has a RecipeId value of the second argument 
+    """
+    
+    try:
+        with connection.cursor() as cursor:
+            for category in categories_list:
+                cursor.execute('INSERT INTO RecipeCategories(RecipeId, CategoryId) VALUES ("{0}",  (SELECT Id FROM Categories WHERE Name="{1}"))'.format(recipe_id, category))
 
-       
+            connection.commit()
+    except Exception as e:
+        print("add to recipe categories error: {}".format(e))
 
     
 
@@ -316,6 +333,7 @@ def add_recipe():
         add_to_categories_if_not_duplicate(values_dictionary["Categories"])
         add_to_ingredients_if_not_duplicate(values_dictionary["Ingredients"])
         add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
+        add_to_recipe_categories(values_dictionary["Categories"],recipe_id )
         
         return render_template("addrecipe.html", testvalue="POST")
     

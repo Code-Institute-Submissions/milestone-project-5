@@ -1927,3 +1927,41 @@ mysql> SELECT * FROM Ingredients;
 +----+--------+
 6 rows in set (0.00 sec)
 
+mysql> tegories WHERE Name  = "Patrick";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tegories WHERE Name  = "Patrick"' at line 1
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| Ingredients                    |
+| RecipeCategories               |
+| RecipeCreators                 |
+| RecipeIngredients              |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM RecipeCategories;
+Empty set (0.01 sec)
+
+mysql> describe RecipeCategories;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| RecipeId   | int(11) | NO   | MUL | NULL    |       |
+| CategoryId | int(11) | NO   | MUL | NULL    |       |
++------------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM  RecipeCategories;
++----------+------------+
+| RecipeId | CategoryId |
++----------+------------+
+|      101 |         24 |
++----------+------------+
+1 row in set (0.00 sec)
+
