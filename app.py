@@ -7,17 +7,19 @@ import datetime
 
 # for managing logins
 from flask_login import LoginManager, current_user, login_user
-
+from passlib.hash import sha256_crypt # https://pythonprogramming.net/password-hashing-flask-tutorial/
 
 
 #for uploading images 
 from werkzeug.utils import secure_filename 
 
-login_manager = LoginManager()
+
+
+# login_manager = LoginManager()
 
 app = Flask(__name__)
 
-login_manager.init_app(app)
+# login_manager.init_app(app)
 
 
 app.secret_key = 'some_secret'
@@ -28,16 +30,29 @@ connection = pymysql.connect(host = 'localhost', user= username, password = "", 
 
 
 """
-ACCOUNT8 FUNCTIONS
+ACCOUNT FUNCTIONS
 """
 
+def get_encrypted_password():
+    """
+    returns the user password entered in the
+    registration form encrypted using SHA256 
+    """
+
+    password = request.form["password"]
+    encrypted_password =  sha256_crypt.encrypt(password)
+    # print(encrypted_password)
+    return encrypted_password
+    
+    
+    
 def add_to_users():
     """
     adds username and password entered in form
     to Users table
     """
     name = request.form["username"]
-    password = request.form["password"]
+    password = get_encrypted_password()
     
     try:
         with connection.cursor() as cursor:
@@ -57,9 +72,9 @@ def register_user():
 
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.get(user_id)
     
     
 

@@ -2173,3 +2173,142 @@ mysql> SELECT * FROM  Users;
 +----+------------+-----------+
 4 rows in set (0.00 sec)
 
+mysql> SELECT * FROM  Users;
++----+------------+----------------------------------+
+| Id | Username   | Password                         |
++----+------------+----------------------------------+
+|  1 | paddywc    | ddd                              |
+|  2 | paddywc    | PPPPFFDDE                        |
+|  3 | paddywc    | oo                               |
+|  4 | Not Paddyw | pppp                             |
+|  5 | Wilfred    | $5$rounds=535000$eYcKuIaEUYrc33w |
++----+------------+----------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> describe Users;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| Id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Username | varchar(10) | YES  |     | NULL    |                |
+| Password | char(32)    | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Users DROP COLUMN Password;
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> truncate table Users;
+ERROR 1701 (42000): Cannot truncate a table referenced in a foreign key constraint (`milestoneProjectFour`.`RecipeCreators`, CONSTRAINT `RecipeCreators_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `milestoneProjectFour`.`Users` (`Id`))
+mysql> DELETE FROM Users Where Id <=5;
+Query OK, 5 rows affected (0.02 sec)
+
+mysql> SELECT * FROM Users;
+Empty set (0.00 sec)
+
+mysql> ALTER TABLE Users ADD COLUMN Password CAR(64);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CAR(64)' at line 1
+mysql> ALTER TABLE Users ADD COLUMN Password CHAR(64);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe Users;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| Id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Username | varchar(10) | YES  |     | NULL    |                |
+| Password | char(64)    | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Users;
++----+----------+------------------------------------------------------------------+
+| Id | Username | Password                                                         |
++----+----------+------------------------------------------------------------------+
+|  6 | Paddywc  | $5$rounds=535000$QkiQtCyPRnrYhCur$vkW8i4KFb35QJ.8weLIRNqyWEMGuWT |
++----+----------+------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> DELETE FROM Users Where Id <=5;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE FROM Users Where Id <=10;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> ALTER TABLE Users DROP COLUMN Password;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe Users;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| Id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Username | varchar(10) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Users ADD COLUMN Password BINARY(64);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe Users;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| Id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Username | varchar(10) | YES  |     | NULL    |                |
+| Password | binary(64)  | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Users DROP COLUMN Password;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Users ADD COLUMN Password BINARY(32);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Users;
++----+----------+----------------------------------+
+| Id | Username | Password                         |
++----+----------+----------------------------------+
+|  8 | Paddywc  | $5$rounds=535000$zlsoA5b/FN1ihpc |
++----+----------+----------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE Users DROP COLUMN Password;
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Users ADD COLUMN Password CHAR(77);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> DELETE FROM Users Where Id <=50;
+Query OK, 2 rows affected (0.04 sec)
+
+mysql> ALTER TABLE Users DROP COLUMN Username;
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Users ADD COLUMN Username VARCHAR(15);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> DELETE FROM Users Where Id <=50;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> describe Users;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| Id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Password | char(77)    | YES  |     | NULL    |                |
+| Username | varchar(15) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
