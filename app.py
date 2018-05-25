@@ -87,6 +87,26 @@ def get_instructions_list():
         counter+=1
         
     return instructions_list
+    
+def get_ingredients_dictionary_list():
+    
+    end_of_ingredients = False
+    ingredients_dictionary_list = []
+    counter = 0
+    
+    while not end_of_ingredients:
+        try:
+            ingredient_dictionary = {
+                "Quantity" : request.form["quantity-{}".format(counter)],
+                "Name": request.form["ingredient-{}".format(counter)]
+            }
+            ingredients_dictionary_list.append(ingredient_dictionary)
+        except Exception as e:
+            end_of_ingredients = True
+            
+        counter+=1
+        
+    return ingredients_dictionary_list
         
         
 # def get_categories():
@@ -115,9 +135,11 @@ def get_form_values():
         "PrepTime": get_prep_time(),
         "CookTime": get_cook_time(),
         "Instructions": get_instructions_list(),
-        "Categories" : get_categories_list()
+        "Categories" : get_categories_list(),
+        "Ingredients" : get_ingredients_dictionary_list()
+        
     }
-    print(values_dictionary["Categories"])
+    print(values_dictionary["Ingredients"])
     return values_dictionary
     
 def add_to_categories_if_not_duplicate(category_list):
@@ -132,8 +154,21 @@ def add_to_categories_if_not_duplicate(category_list):
         
     except Exception as e:
         print(e)
-        # connection.close()    
+        connection.close()    
         
+def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
+    
+    
+    ingredients_name_list = [ingredient_dictionary["Name"] for ingredient_dictionary in ingredients_dictionary_list ]
+    try:
+        with connection.cursor() as cursor:
+            for ingredient_name in ingredients_name_list:
+                cursor.execute('INSERT INTO Ingredients(Name) SELECT * FROM (SELECT "{0}" ) AS tmp WHERE NOT EXISTS (SELECT Name FROM Ingredients WHERE Name = "{0}");'.format(ingredient_name))
+            connection.commit()
+    except Exception as e:
+        print(e)
+        connection.close()
+            
  
 
 def test_function():
@@ -217,6 +252,7 @@ def add_recipe():
         values_dictionary = get_form_values()
         insert_dictionary_into_recipes_table(values_dictionary)
         add_to_categories_if_not_duplicate(values_dictionary["Categories"])
+        add_to_ingredients_if_not_duplicate(values_dictionary["Ingredients"])
         
         return render_template("addrecipe.html", testvalue="POST")
     

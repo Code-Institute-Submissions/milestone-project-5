@@ -1052,3 +1052,27 @@ Query OK, 1 row affected (0.00 sec)
 mysql> DELETE FROM Categories WHERE Name  = "Another Test";
 Query OK, 1 row affected (0.01 sec)
 
+mysql> SELECT * FROM Ingredients;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    437
+Current database: milestoneProjectFour
+
++----+-------+
+| Id | Name  |
++----+-------+
+|  3 | Suger |
+|  4 | Salt  |
++----+-------+
+2 rows in set (0.04 sec)
+
+mysql> SELECT * FROM Ingredients;
++----+-------+
+| Id | Name  |
++----+-------+
+|  3 | Suger |
+|  4 | Salt  |
+|  5 | Water |
++----+-------+
+3 rows in set (0.00 sec)
+

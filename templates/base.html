@@ -46,16 +46,15 @@
 
 
             $("#add-ingredient").click(function() {
-                ingredientCount++;
                 $(this).before(`
-                    <div class="row ingredient-row-${ingredientCount}">
+                    <div class="row ingredient-row-${++ingredientCount}">
                          <div class="input-field col s4">
                             <label for="quantity">Quantity</label>
-                            <input type="text" name="quantity" id="quantity-${ingredientCount}" >
+                            <input type="text" name="quantity-${ingredientCount}" id="quantity-${ingredientCount}" >
                     </div>
                     <div class="input-field col s4">
                         <label for="ingredient">Ingredient</label>
-                        <input type="text" name="ingredient" id="ingredient-${ingredientCount}">
+                        <input type="text" name="ingredient-${ingredientCount}" id="ingredient-${ingredientCount}">
                     </div>
                     
                   </div>
@@ -70,8 +69,7 @@
             let instructionCount = 1;
 
             $("#add-instruction").click(function() {
-                instructionCount++;
-                $(this).before(`  <div class = "row instruction-row-${instructionCount}"><li>
+                $(this).before(`  <div class = "row instruction-row-${++instructionCount}"><li>
                     <div class="input-field col s12">
                         <textarea id="instruction-${instructionCount}" name= "instruction-${instructionCount}" class="materialize-textarea"></textarea>
                     </div>
@@ -80,8 +78,7 @@
             });
 
             $("#remove-instruction").click(function() {
-                $(`.instruction-row-${instructionCount}`).remove();
-                instructionCount--;
+                $(`.instruction-row-${instructionCount--}`).remove();
             });
 
 
