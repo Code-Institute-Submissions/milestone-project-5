@@ -89,7 +89,26 @@ def check_if_username_exists(username):
         print("ERROR check_if_username_exists: {}".format(e))
         
         
+def check_password_correct(username, password):
+    """
+    returns True if the password matches the username's password
+    in Users table. Returns false otherwise
+    """
     
+    try:
+        with connection.cursor() as cursor:
+          cursor.execute('SELECT Password FROM Users WHERE Username="{}";'.format(username))
+          table_password_tuple = cursor.fetchone()
+          table_password = table_password_tuple[0]
+          # below line of code from: https://pythonprogramming.net/password-hashing-flask-tutorial/
+          password_correct = sha256_crypt.verify(password, table_password)
+          return password_correct
+          
+    except Exception as e:
+      print("ERROR check_password_correct: {}".format(e))
+            
+        
+print(check_password_correct("Paddywc", "Passworii"))
 
 @login_manager.user_loader
 def load_user(user_id):
