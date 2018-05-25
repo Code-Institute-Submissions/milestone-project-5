@@ -1965,3 +1965,211 @@ mysql> SELECT * FROM  RecipeCategories;
 +----------+------------+
 1 row in set (0.00 sec)
 
+mysql> SELECT * FROM  Categories;
++----+----------------+
+| Id | Name           |
++----+----------------+
+|  1 | Healthy        |
+|  2 | Family & Kids  |
+|  3 | Cakes & Baking |
+|  4 | Cuisines       |
+|  5 | Events         |
+|  6 | Everyday       |
+|  7 | Seasonal       |
+|  8 | Special Diets  |
+|  9 | Vegetarian     |
+| 10 | Breakfast      |
+| 11 | Starter        |
+| 12 | Main Course    |
+| 13 | Desert         |
+| 14 | Dinner         |
+| 15 | Soup           |
+| 16 | Indian         |
+| 17 | Chinese        |
+| 18 | Thai           |
+| 19 | Asian          |
+| 20 | Italian        |
+| 21 | French         |
+| 22 | Spanish        |
+| 23 | European       |
+| 24 | Mexican        |
+| 25 | Latin American |
+| 26 | African        |
+| 27 | American       |
+| 28 | Australian     |
+| 29 | British        |
+| 30 | Irish          |
+| 32 | Jewish         |
+| 46 |                |
++----+----------------+
+32 rows in set (0.00 sec)
+
+mysql> SELECT * FROM  Recipes;
++-----+---------------------+--------+------------------------------------------------------------+------------+--------+--------------------------------+----------+----------+--------------------------------------------------------+
+| Id  | Name                | UserId | Image                                                      | Difficulty | Serves | Blurb                          | PrepTime | CookTime | Instructions                                           |
++-----+---------------------+--------+------------------------------------------------------------+------------+--------+--------------------------------+----------+----------+--------------------------------------------------------+
+|   2 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|   5 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|   6 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|   7 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|   8 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|   9 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|  10 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|  11 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | From spar. Good chicken fillet | 11:12:00 | 04:10:00 | ['First do this', 'Then do that', 'Then this']         |
+|  12 | Chicken Fillet Role |    123 | NULL                                                       |          1 |      4 | a short blurb                  | 04:20:00 | 01:00:00 | {}                                                     |
+|  13 | Pie                 |    123 | NULL                                                       |          1 |      4 | A short blurb                  | 01:00:00 | 03:15:00 | ['First Instruction ', 'Second ', 'And then a third '] |
+|  14 | Pasta               |    123 | NULL                                                       |          1 |      4 | Pasta dish                     | 02:20:00 | 03:15:00 | ['Cook the pasta', 'Eat the pasta']                    |
+|  15 | Chicken             |    123 | NULL                                                       |          1 |      4 | A short blurb                  | 02:20:00 | 03:15:00 | ['Here is an example']                                 |
+|  16 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | blurb                          | 02:20:00 | 03:15:00 | ['instruction']                                        |
+|  17 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | Burb blurb                     | 02:20:00 | 03:15:00 | ['Here is an instruction']                             |
+|  18 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | blurb                          | 02:20:00 | 03:15:00 | ['instruction ']                                       |
+|  19 |                     |      0 | <FileStorage: 'IMG_20170420_104258392.jpg' ('image/jpeg')> |          0 |      0 |                                | 00:00:00 | 00:00:00 |                                                        |
+|  20 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | no image upload                | 02:20:00 | 03:15:00 | ['f']                                                  |
+|  21 | Chicken Curry       |    123 | <FileStorage: 'ut4.PNG' ('image/png')>                     |          1 |      4 | no gab in pic img title        | 02:20:00 | 03:15:00 | ['dd']                                                 |
+|  22 | Chicken Curry       |    123 | <FileStorage: 'Visa photo.gif' ('image/gif')>              |          1 |      4 | Gab in title                   | 02:20:00 | 03:15:00 | ['ddddd']                                              |
+|  23 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['dd']                                                 |
+|  24 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['c']                                                  |
+|  25 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  26 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['dd']                                                 |
+|  27 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['ddd']                                                |
+|  28 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['xxx']                                                |
+|  29 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  30 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['c']                                                  |
+|  31 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['c']                                                  |
+|  32 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['fff']                                                |
+|  33 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['c']                                                  |
+|  34 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['ff']                                                 |
+|  35 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['dd']                                                 |
+|  36 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['cc']                                                 |
+|  37 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['ss']                                                 |
+|  38 | Chicken Curry       |    123 | NULL                                                       |          2 |      6 | TEST BLURB                     | 02:20:00 | 03:15:00 | ['An instruction']                                     |
+|  39 | Chicken Curry       |    123 | NULL                                                       |          2 |      6 | TEST BLURB                     | 02:20:00 | 03:15:00 | ['An instruction']                                     |
+|  40 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | TEST BLAH                      | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  41 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | TEST BLAH                      | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  42 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | TEST BLURB                     | 02:20:00 | 03:15:00 | ['D']                                                  |
+|  43 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | TEST BLURB                     | 02:20:00 | 03:15:00 | ['D']                                                  |
+|  44 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['dd']                                                 |
+|  45 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  46 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  47 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  48 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['dd']                                                 |
+|  49 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  50 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  51 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['s']                                                  |
+|  52 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  53 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  54 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  55 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  56 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  57 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  58 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  59 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  60 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['ssa']                                                |
+|  61 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['sss']                                                |
+|  62 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['d']                                                  |
+|  63 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  64 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  65 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  66 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  67 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  68 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  69 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  70 | Beef Curry          |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  71 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  72 | Stew                |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  73 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  74 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  75 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  76 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  77 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurbd                 | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  78 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  79 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  80 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  81 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  82 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  83 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  84 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  85 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  86 | Chicken Stew        |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  87 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  88 | Chicken Salad       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  89 | Lamb Curry          |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  90 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  91 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  92 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  93 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  94 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  95 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  96 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  97 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  98 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+|  99 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+| 100 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
+| 101 | Chicken Curry       |    123 | NULL                                                       |          1 |      4 | A short Blurb                  | 02:20:00 | 03:15:00 | ['Test Instructions']                                  |
++-----+---------------------+--------+------------------------------------------------------------+------------+--------+--------------------------------+----------+----------+--------------------------------------------------------+
+98 rows in set (0.00 sec)
+
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| Ingredients                    |
+| RecipeCategories               |
+| RecipeCreators                 |
+| RecipeIngredients              |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+9 rows in set (0.00 sec)
+
+mysql> describe Users;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| Id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Username | varchar(10) | YES  |     | NULL    |                |
+| Password | char(32)    | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM  Users;
++----+----------+----------+
+| Id | Username | Password |
++----+----------+----------+
+|  1 | paddywc  | ddd      |
++----+----------+----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT * FROM  Users;
++----+----------+-----------+
+| Id | Username | Password  |
++----+----------+-----------+
+|  1 | paddywc  | ddd       |
+|  2 | paddywc  | PPPPFFDDE |
++----+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM  Users;
++----+----------+-----------+
+| Id | Username | Password  |
++----+----------+-----------+
+|  1 | paddywc  | ddd       |
+|  2 | paddywc  | PPPPFFDDE |
+|  3 | paddywc  | oo        |
++----+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM  Users;
++----+------------+-----------+
+| Id | Username   | Password  |
++----+------------+-----------+
+|  1 | paddywc    | ddd       |
+|  2 | paddywc    | PPPPFFDDE |
+|  3 | paddywc    | oo        |
+|  4 | Not Paddyw | pppp      |
++----+------------+-----------+
+4 rows in set (0.00 sec)
+

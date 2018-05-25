@@ -3,16 +3,67 @@ import requests
 import pymysql
 from  flask import Flask, render_template, request, redirect, url_for
 import datetime
-from werkzeug.utils import secure_filename #for uploading images 
 
+
+# for managing logins
+from flask_login import LoginManager, current_user, login_user
+
+
+
+#for uploading images 
+from werkzeug.utils import secure_filename 
+
+login_manager = LoginManager()
 
 app = Flask(__name__)
+
+login_manager.init_app(app)
+
 
 app.secret_key = 'some_secret'
 
 username = os.getenv("C9_USER")
 
 connection = pymysql.connect(host = 'localhost', user= username, password = "", db="milestoneProjectFour")
+
+
+"""
+ACCOUNT8 FUNCTIONS
+"""
+
+def add_to_users():
+    """
+    adds username and password entered in form
+    to Users table
+    """
+    name = request.form["username"]
+    password = request.form["password"]
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('INSERT INTO Users(Username, Password) VALUES ("{0}", "{1}");'.format(name, password))
+            connection.commit()
+    except Exception as e:
+        print("Error: {}".format(e))
+    
+
+@app.route("/register",  methods=["POST", "GET"] )
+def register_user():
+    
+    if request.method == "POST":
+        add_to_users()
+    return render_template("register.html")
+    
+
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+    
+    
+
+
 
 """
 HELPER FUNCTIONS
@@ -216,7 +267,7 @@ def add_to_categories_if_not_duplicate(category_list):
     category name does not already exist in table
     code from: https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table
     """
-    print(category_list)
+    # print(category_list)
     try:
         with connection.cursor() as cursor:
             for category in category_list:
