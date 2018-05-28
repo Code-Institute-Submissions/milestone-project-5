@@ -363,6 +363,28 @@ def get_recipe_categories(recipe_id):
         print("GRC ERROR: {}".format(e))
         
         
+# print(get_recipe_categories(102))
+        
+        
+def get_recipe_user(recipe_id):
+    """
+    returns the username of the user who submitted the
+    recipe identified in the argument
+    """
+    try:
+         with connection.cursor() as cursor:
+            cursor.execute('SELECT Username FROM Users INNER JOIN Recipes on Users.Id = Recipes.UserId WHERE Recipes.Id = "{}";'.format(recipe_id))
+            returned_tuple = cursor.fetchone()
+            username = returned_tuple[0]
+            return username
+    
+    except Exception as e:
+        print("GRU ERROR: {}".format(e))
+        
+        
+# print(get_recipe_user(102))
+        
+        
 
 
         
@@ -445,7 +467,9 @@ def get_recipe_values(recipe_id):
     
     values_dictionary = {
         "Name": get_value_from_recipes_table("Name", recipe_id),
-        "Name": get_value_from_recipes_table("Name", recipe_id),
+        "Categories": get_recipe_categories(recipe_id),
+        "Image" : get_value_from_recipes_table("Image", recipe_id),
+        "Blurb" : get_value_from_recipes_table("Blurb", recipe_id),
         }
     
     
