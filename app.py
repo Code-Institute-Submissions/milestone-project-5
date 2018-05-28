@@ -328,6 +328,47 @@ def get_ingredients_dictionary_list():
         
     return ingredients_dictionary_list
     
+def get_value_from_recipes_table(column, recipe_id):
+    
+    """
+    finds the recipe in the Recipes table that has
+    the Id entered as argument. Returns the value for the
+    column entered in argument 
+    """
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT {0} FROM Recipes WHERE Id ="{1}";'.format(column, recipe_id))
+            returned_tuple = cursor.fetchone()
+            value = returned_tuple[0]
+            return value
+   
+    except Exception as e:
+        print("ERROR GVFRT: {}".format(e))
+        
+        
+def get_recipe_categories(recipe_id):
+    """
+    returns a list the names of all categories in RecipeCategories
+    that match the recipe_id. String names taken from Categories table
+    """
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(' SELECT Name FROM Categories INNER JOIN RecipeCategories on RecipeCategories.CategoryId = Categories.Id WHERE RecipeCategories.RecipeId = "{}";'.format(recipe_id))
+            returned_tuples = cursor.fetchall()
+            values_list = [individual_tuple[0] for individual_tuple in returned_tuples]
+            return values_list
+            
+    except Exception as e:
+        print("GRC ERROR: {}".format(e))
+        
+        
+
+
+        
+        
+        
+        
         
         
 def create_recipe_values_without_image(values_dictionary):
@@ -393,6 +434,20 @@ def get_form_values():
     }
     # print(values_dictionary["Ingredients"])
     return values_dictionary
+    
+    
+def get_recipe_values(recipe_id):
+    """
+    returns a dictionary with all the values required 
+    to render the recipe.html page. Recipe identified 
+    by the Id in argument
+    """
+    
+    values_dictionary = {
+        "Name": get_value_from_recipes_table("Name", recipe_id),
+        "Name": get_value_from_recipes_table("Name", recipe_id),
+        }
+    
     
 """
 INTERACTING WITH MYSQL
@@ -541,12 +596,14 @@ def add_recipe():
         add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
         add_to_recipe_categories(values_dictionary["Categories"],recipe_id )
         
-        return render_template("addrecipe.html", testvalue="POST")
+        return render_template("addrecipe.html")
     
   
-    return render_template("addrecipe.html", testvalue="NOT POST")
+    return render_template("addrecipe.html")
     
-
+@app.route("/recipe/<recipe_id>")
+def show_recipe(recipe_id):
+    return render_template("recipe.html")
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
