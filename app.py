@@ -1,14 +1,14 @@
 import os
 import requests
 import pymysql
-from  flask import Flask,  render_template, request, redirect, url_for
+from  flask import Flask, Response, render_template, request, redirect, url_for
 import datetime
 
 
 # for managing logins
-from flask_login import LoginManager, UserMixin,  current_user, login_user #https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins
+
 from passlib.hash import sha256_crypt # https://pythonprogramming.net/password-hashing-flask-tutorial/
-from wtforms import Form, BooleanField, StringField, validators, PasswordField #https://wtforms.readthedocs.io/en/stable/crash_course.html
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
 
 
 #for uploading images 
@@ -16,23 +16,41 @@ from werkzeug.utils import secure_filename
 
 
 
-login_manager = LoginManager()
-
 app = Flask(__name__)
-
-login_manager.init_app(app)
-
-
 app.secret_key = 'some_secret'
-
+login_manager = LoginManager()
+login_manager.init_app(app)
 username = os.getenv("C9_USER")
+connection = pymysql.connect(host='localhost', user= username, password = "", db="milestoneProjectFour")
 
-connection = pymysql.connect(host = 'localhost', user= username, password = "", db="milestoneProjectFour")
 
 
 """
 ACCOUNT FUNCTIONS
 """
+
+
+class User(UserMixin):
+    id = int
+    username = str
+    password= str
+    
+    is_enabled = False
+    def __init__(self, id, username, password):
+        self.id = id
+        self.username = username,
+        self.password = password
+        
+    def is_active(self):
+      return self.is_enabled
+      
+      
+#https://flask-login.readthedocs.io/en/latest/#how-it-works
+@login_manager.user_loader
+def load_user(current_user):
+    print ("inside login {}".format(current_user))
+    return User(current_user, "Cremen", "Password")
+
 
 def get_encrypted_password():
     """
@@ -64,7 +82,9 @@ def add_form_values_to_users():
     
 
 @app.route("/register",  methods=["POST", "GET"] )
+@login_required
 def register_user():
+    print(current_user.username)
     
     if request.method == "POST":
         add_form_values_to_users()
@@ -107,18 +127,6 @@ def check_password_correct(username, password):
     except Exception as e:
       print("ERROR check_password_correct: {}".format(e))
             
-        
-# print(check_password_correct("Paddywc", "Passworii"))
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     print(User.get(user_id))
-#     return User.get(user_id)
-    
-
-# class LoginForm(Form):
-#     username = StringField('Username')
-#     password = PasswordField('Password')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -137,33 +145,14 @@ def login():
         if not correct_password:
             error = "ERROR: Password incorrect"
             return render_template("login.html", error=error)
-            
+        
+    user = User(3, "Paddy", "Password")
+    login_user(user)
+    print (current_user.username)
     return render_template("login.html")
     
         
-    
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     # Here we use a class of some kind to represent and validate our
-#     # client-side form data. For example, WTForms is a library that will
-#     # handle this for us, and we use a custom LoginForm to validate.
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         # Login and validate the user.
-#         # user should be an instance of your `User` class
-#         login_user(user)
-
-#         flask.flash('Logged in successfully.')
-
-#         next = flask.request.args.get('next')
-#         # is_safe_url should check if the url is safe for redirects.
-#         # See http://flask.pocoo.org/snippets/62/ for an example.
-#         if not is_safe_url(next):
-#             return flask.abort(400)
-
-#         return flask.redirect(next or flask.url_for('index'))
-#     return render_template('login.html', form=form)
+  
 """
 HELPER FUNCTIONS
 """
