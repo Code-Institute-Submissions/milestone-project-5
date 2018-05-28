@@ -384,6 +384,20 @@ def get_recipe_user(recipe_id):
         
 # print(get_recipe_user(102))
 
+def get_converted_difficulty(recipe_id):
+    """
+    gets the difficulty of the argument recipe, 
+    converted to the appropriate string
+    """
+    int_id = get_value_from_recipes_table("Difficulty", recipe_id)
+    
+    if int_id == 0:
+        return "Easy"
+    elif int_id == 1:
+        return "Normal"
+    else:
+        return "Challenging"
+
 
 def get_recipe_ingredients(recipe_id):
     """
@@ -425,6 +439,41 @@ def get_recipe_instructions(recipe_id):
    
     except Exception as e:
         print("ERROR GRI: {}".format(e))
+        
+        
+def get_recipe_reviews(recipe_id):
+    """
+    returns a list of all scores from the 
+    Reviews table for the argument RecipeId
+    """
+    try:
+         with connection.cursor() as cursor:
+            cursor.execute('SELECT Score FROM Reviews INNER JOIN Recipes on Recipes.Id = Reviews.RecipeId  WHERE Recipes.Id = "{}";'.format(recipe_id))
+            returned_tuples = cursor.fetchall()
+            list_of_scores = [int(individual_tuple[0]) for individual_tuple in returned_tuples]
+            return list_of_scores
+    
+    except Exception as e:
+        print("GRR ERROR: {}".format(e))
+        
+        
+def get_average_review_score(list_of_scores):
+    """
+    returns the average of all values in the argument
+    """
+    length_of_list = len(list_of_scores)
+    sum_count = 0
+    for score in list_of_scores:
+        sum_count += score
+        
+    average_of_scores = int(sum_count/length_of_list)
+    
+    return average_of_scores
+    
+        
+        
+# print(get_recipe_reviews(105))
+    
         
         
 
@@ -510,12 +559,13 @@ def get_recipe_values(recipe_id):
         "Image" : get_value_from_recipes_table("Image", recipe_id),
         "Blurb" : get_value_from_recipes_table("Blurb", recipe_id),
         "Username": get_recipe_user(recipe_id),
-        "Difficulty" :get_value_from_recipes_table("Difficulty", recipe_id),
+        "Difficulty" :get_converted_difficulty(recipe_id),
         "PrepTime" : get_value_from_recipes_table("PrepTime", recipe_id),
         "CookTime" : get_value_from_recipes_table("CookTime", recipe_id),
         "Serves" : get_value_from_recipes_table("Serves", recipe_id),
         "Ingredients": get_recipe_ingredients(recipe_id),
-        "Instructions":get_recipe_instructions(recipe_id)
+        "Instructions":get_recipe_instructions(recipe_id),
+        "Reviews" : get_recipe_reviews(recipe_id)
         
         }
     return values_dictionary
@@ -679,7 +729,8 @@ def add_recipe():
 @app.route("/recipe/<recipe_id>")
 def show_recipe(recipe_id):
     recipe_values = get_recipe_values(recipe_id)
-    return render_template("recipe.html", recipe = recipe_values)
+    average_review_score = get_average_review_score(recipe_values["Reviews"])
+    return render_template("recipe.html", recipe = recipe_values, review_score = average_review_score)
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),

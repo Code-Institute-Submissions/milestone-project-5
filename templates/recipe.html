@@ -8,12 +8,15 @@
 {% endfor %}
 </h4>
 
-<p>{{ recipe["Burb"] }}</p>
+<p>{{ recipe["Blurb"] }}</p>
 <p>From user {{ recipe["Username"] }}</p>
+
+<p>Reivew Score: {{ review_score }}</p>
+<p>Number of Reviews: {{ recipe["Reviews"]|length }}</p>
 
 <p>Difficulty: {{ recipe["Difficulty"] }}</p>
 <p>{{ recipe["PrepTime"] }}
-{{ recipe["CookTime"] }}
+{{ recipe["CookTime"] }}</p>
 </p>
 <p>Serves {{ recipe["Serves"] }}</p>
 
