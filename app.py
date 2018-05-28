@@ -383,6 +383,28 @@ def get_recipe_user(recipe_id):
         
         
 # print(get_recipe_user(102))
+
+
+def get_recipe_ingredients(recipe_id):
+    """
+    returns a list the dictionaries for all ingredients in RecipeIngredients
+    that match the recipe_id. Each dictionary has Name and 
+    Quantity keys. String names taken from Ingredients table
+    """
+    
+   
+    try:
+         with connection.cursor() as cursor:
+            cursor.execute('SELECT Ingredients.Name, Quantity FROM RecipeIngredients INNER JOIN Ingredients on Ingredients.Id = RecipeIngredients.IngredientId INNER JOIN Recipes on RecipeIngredients.RecipeId = Recipes.Id WHERE Recipes.Id = "{}";'.format(recipe_id))
+            returned_tuples = cursor.fetchall()
+            values_list = [{individual_tuple[1]:individual_tuple[0]} for individual_tuple in returned_tuples]
+            return values_list
+    
+    except Exception as e:
+        print("GRI ERROR: {}".format(e))
+        
+        
+print(get_recipe_ingredients(103))
         
         
 
@@ -470,6 +492,12 @@ def get_recipe_values(recipe_id):
         "Categories": get_recipe_categories(recipe_id),
         "Image" : get_value_from_recipes_table("Image", recipe_id),
         "Blurb" : get_value_from_recipes_table("Blurb", recipe_id),
+        "Username": get_recipe_user(recipe_id),
+        "Difficulty" :get_value_from_recipes_table("Difficulty", recipe_id),
+        "PrepTime" : get_value_from_recipes_table("PrepTime", recipe_id),
+        "CookTime" : get_value_from_recipes_table("CookTime", recipe_id),
+        "Serves" : get_value_from_recipes_table("Serves"),
+        
         }
     
     
