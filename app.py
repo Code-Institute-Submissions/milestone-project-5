@@ -8,7 +8,7 @@ import datetime
 # for managing logins
 
 from passlib.hash import sha256_crypt # https://pythonprogramming.net/password-hashing-flask-tutorial/
-from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user #https://www.youtube.com/watch?v=2dEM-s3mRLE
 
 
 #for uploading images 
@@ -207,7 +207,14 @@ def login():
    
     return render_template("login.html")
     
-        
+    
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return "You are now logged out"
+    # from https://www.youtube.com/watch?v=2dEM-s3mRLE
+
   
 """
 HELPER FUNCTIONS
