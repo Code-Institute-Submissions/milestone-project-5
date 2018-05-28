@@ -1,5 +1,32 @@
  {% extends 'base.html' %} {% block content %} 
 
-<h1>{{ recipe["Name" }}</h1>
+<h1>{{ recipe["Name"] }}</h1>
+
+<h4>
+{% for category in recipe["Categories"] %}
+{{ category }}, 
+{% endfor %}
+</h4>
+
+<p>{{ recipe["Burb"] }}</p>
+<p>From user {{ recipe["Username"] }}</p>
+
+<p>Difficulty: {{ recipe["Difficulty"] }}</p>
+<p>{{ recipe["PrepTime"] }}
+{{ recipe["CookTime"] }}
+</p>
+<p>Serves {{ recipe["Serves"] }}</p>
+
+<ul>
+    {% for ingredient in recipe["Ingredients"] %}
+    <li>{{ ingredient["Quantity"] }} {{ ingredient["Ingredient"] }}</li>
+    {% endfor %}
+</ul>
+
+<ol>
+    {% for instruction in recipe["Instructions"] %}
+    <li>{{ instruction }}</li>
+    {% endfor %}
+</ol>
 
 {% endblock %}

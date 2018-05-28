@@ -3,7 +3,7 @@ import requests
 import pymysql
 from  flask import Flask, Response, render_template, request, redirect, url_for
 import datetime
-
+import ast #for converting string to list
 
 # for managing logins
 
@@ -409,9 +409,26 @@ def get_recipe_ingredients(recipe_id):
         
 
 
+def get_recipe_instructions(recipe_id):
+    """
+    returns the argument recipe's instructions as list 
+    """
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Instructions FROM Recipes WHERE Id ="{}";'.format(recipe_id))
+            returned_tuple = cursor.fetchone()
+            list_as_string = returned_tuple[0]
+            # below line from https://www.tutorialspoint.com/How-to-convert-string-representation-of-list-to-list-in-Python
+            list_as_list = ast.literal_eval(list_as_string)
+            return list_as_list
+   
+    except Exception as e:
+        print("ERROR GRI: {}".format(e))
         
         
-        
+
+# print(get_recipe_instructions(105))   
         
         
         
@@ -498,13 +515,13 @@ def get_recipe_values(recipe_id):
         "CookTime" : get_value_from_recipes_table("CookTime", recipe_id),
         "Serves" : get_value_from_recipes_table("Serves", recipe_id),
         "Ingredients": get_recipe_ingredients(recipe_id),
-        "Instructions": get_value_from_recipes_table("Instructions", recipe_id)
+        "Instructions":get_recipe_instructions(recipe_id)
         
         }
     return values_dictionary
     
 
-print(get_recipe_values(105))
+# print(get_recipe_values(105))
 
     
 """
@@ -661,7 +678,8 @@ def add_recipe():
     
 @app.route("/recipe/<recipe_id>")
 def show_recipe(recipe_id):
-    return render_template("recipe.html")
+    recipe_values = get_recipe_values(recipe_id)
+    return render_template("recipe.html", recipe = recipe_values)
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
