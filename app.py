@@ -397,14 +397,14 @@ def get_recipe_ingredients(recipe_id):
          with connection.cursor() as cursor:
             cursor.execute('SELECT Ingredients.Name, Quantity FROM RecipeIngredients INNER JOIN Ingredients on Ingredients.Id = RecipeIngredients.IngredientId INNER JOIN Recipes on RecipeIngredients.RecipeId = Recipes.Id WHERE Recipes.Id = "{}";'.format(recipe_id))
             returned_tuples = cursor.fetchall()
-            values_list = [{individual_tuple[1]:individual_tuple[0]} for individual_tuple in returned_tuples]
+            values_list = [{"Quantity": individual_tuple[1], "Ingredient" :individual_tuple[0]} for individual_tuple in returned_tuples]
             return values_list
     
     except Exception as e:
         print("GRI ERROR: {}".format(e))
         
         
-print(get_recipe_ingredients(103))
+# print(get_recipe_ingredients(103))
         
         
 
@@ -417,7 +417,7 @@ print(get_recipe_ingredients(103))
         
 def create_recipe_values_without_image(values_dictionary):
     
-    dummy_userid = "123"
+    dummy_userid = "12"
     
     #must use double quotes inside values string 
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}")'.format( 
@@ -434,7 +434,7 @@ def create_recipe_values_without_image(values_dictionary):
     
 def create_recipe_values_with_image(values_dictionary):
     
-    dummy_userid = "123"
+    dummy_userid = "12"
     
     #must use double quotes inside values string 
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}", "{8}")'.format( 
@@ -496,10 +496,16 @@ def get_recipe_values(recipe_id):
         "Difficulty" :get_value_from_recipes_table("Difficulty", recipe_id),
         "PrepTime" : get_value_from_recipes_table("PrepTime", recipe_id),
         "CookTime" : get_value_from_recipes_table("CookTime", recipe_id),
-        "Serves" : get_value_from_recipes_table("Serves"),
+        "Serves" : get_value_from_recipes_table("Serves", recipe_id),
+        "Ingredients": get_recipe_ingredients(recipe_id),
+        "Instructions": get_value_from_recipes_table("Instructions", recipe_id)
         
         }
+    return values_dictionary
     
+
+print(get_recipe_values(105))
+
     
 """
 INTERACTING WITH MYSQL
