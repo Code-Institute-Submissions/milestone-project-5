@@ -50,6 +50,39 @@ class User(UserMixin):
 def load_user(current_user):
     print ("inside login {}".format(current_user))
     return User(current_user, "Cremen", "Password")
+    
+    
+def get_username_for_id(userId):
+    """
+    returns the username from Users table that
+    is on the same row as the argument userId
+    """
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Username FROM Users WHERE Id ="{}";'.format(userId))
+            table_username_tuple = cursor.fetchone()
+            table_username = table_username_tuple[0]
+            return table_username
+   
+    except Exception as e:
+        print("ERROR: {}".format(e))
+        
+        
+def get_password_for_id(userId):
+    """
+    returns the (encrypted) password for the
+    user in Users with the argument Id
+    """
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Password FROM Users WHERE Id ="{}";'.format(userId))
+            table_password_tuple = cursor.fetchone()
+            table_password = table_password_tuple[0]
+            return table_password
+    except Exception as e:
+        print("ERROR: {}".format(e))
+
 
 
 def get_encrypted_password():
