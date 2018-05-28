@@ -20,6 +20,7 @@ app = Flask(__name__)
 app.secret_key = 'some_secret'
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login' #from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
 username = os.getenv("C9_USER")
 connection = pymysql.connect(host='localhost', user= username, password = "", db="milestoneProjectFour")
 
@@ -28,6 +29,7 @@ connection = pymysql.connect(host='localhost', user= username, password = "", db
 """
 ACCOUNT FUNCTIONS
 """
+
 
 
 class User(UserMixin):
@@ -43,7 +45,7 @@ class User(UserMixin):
     def is_active(self):
       return self.is_enabled
       
-      
+  
 #https://flask-login.readthedocs.io/en/latest/#how-it-works
 @login_manager.user_loader
 def load_user(current_user):
@@ -68,20 +70,7 @@ def get_username_for_id(userId):
     except Exception as e:
         print("ERROR: {}".format(e))
         
-        
-# def get_password_for_id(userId):
-#     """
-#     returns the (encrypted) password for the
-#     user in Users with the argument Id
-#     """
-#     try:
-#         with connection.cursor() as cursor:
-#             cursor.execute('SELECT Password FROM Users WHERE Id ="{}";'.format(userId))
-#             table_password_tuple = cursor.fetchone()
-#             table_password = table_password_tuple[0]
-#             return table_password
-#     except Exception as e:
-#         print("ERROR: {}".format(e))
+    
         
         
 def get_id_for_username(username):
@@ -101,9 +90,6 @@ def get_id_for_username(username):
         print("GIFU ERROR: {}".format(e))
         
         
-    
-    
-
 
 
 def get_encrypted_password():
@@ -116,7 +102,6 @@ def get_encrypted_password():
     encrypted_password =  sha256_crypt.encrypt(password)
     # print(encrypted_password)
     return encrypted_password
-    
     
 
 
@@ -146,16 +131,20 @@ def register_user():
         
         if not already_exists:
             add_form_values_to_users()
-            return render_template("register.html")
+            return render_template("addrecipe.html")
+            
         
         else: 
             print("This is running")
             error_message = "ERROR: Username already exists. Please try a different username"
             return render_template("register.html", error=error_message)
+           
+    
+    return render_template("register.html")
             
         
         
-    return render_template("register.html")
+    
     
 
 
@@ -216,6 +205,7 @@ def login():
         user_id = get_id_for_username(username)
         user = User(user_id, username)
         login_user(user)
+        return render_template("addrecipe.html")
         
    
     return render_template("login.html")
