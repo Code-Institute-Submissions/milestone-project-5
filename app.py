@@ -36,11 +36,10 @@ class User(UserMixin):
     password= str
     
     is_enabled = False
-    def __init__(self, id, username, password):
+    def __init__(self, id, username):
         self.id = id
         self.username = username,
-        self.password = password
-        
+
     def is_active(self):
       return self.is_enabled
       
@@ -48,8 +47,9 @@ class User(UserMixin):
 #https://flask-login.readthedocs.io/en/latest/#how-it-works
 @login_manager.user_loader
 def load_user(current_user):
-    print ("inside login {}".format(current_user))
-    return User(current_user, "Cremen", "Password")
+    username = get_username_for_id(current_user)
+    print("Username: {0}, id: {1}".format(username, current_user))
+    return User(current_user, username)
     
     
 def get_username_for_id(userId):
@@ -69,19 +69,40 @@ def get_username_for_id(userId):
         print("ERROR: {}".format(e))
         
         
-def get_password_for_id(userId):
+# def get_password_for_id(userId):
+#     """
+#     returns the (encrypted) password for the
+#     user in Users with the argument Id
+#     """
+#     try:
+#         with connection.cursor() as cursor:
+#             cursor.execute('SELECT Password FROM Users WHERE Id ="{}";'.format(userId))
+#             table_password_tuple = cursor.fetchone()
+#             table_password = table_password_tuple[0]
+#             return table_password
+#     except Exception as e:
+#         print("ERROR: {}".format(e))
+        
+        
+def get_id_for_username(username):
     """
-    returns the (encrypted) password for the
-    user in Users with the argument Id
+    returns the Id from Ssers that matches the 
+    argument username
     """
+    
     try:
         with connection.cursor() as cursor:
-            cursor.execute('SELECT Password FROM Users WHERE Id ="{}";'.format(userId))
-            table_password_tuple = cursor.fetchone()
-            table_password = table_password_tuple[0]
-            return table_password
+            cursor.execute('SELECT Id FROM Users WHERE Username ="{}";'.format(username))
+            table_id_tuple = cursor.fetchone()
+            table_id = table_id_tuple[0]
+            return table_id
+   
     except Exception as e:
-        print("ERROR: {}".format(e))
+        print("GIFU ERROR: {}".format(e))
+        
+        
+    
+    
 
 
 
@@ -178,10 +199,12 @@ def login():
         if not correct_password:
             error = "ERROR: Password incorrect"
             return render_template("login.html", error=error)
+            
+        user_id = get_id_for_username(username)
+        user = User(user_id, username)
+        login_user(user)
         
-    user = User(3, "Paddy", "Password")
-    login_user(user)
-    print (current_user.username)
+   
     return render_template("login.html")
     
         
