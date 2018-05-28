@@ -2350,3 +2350,24 @@ mysql> SELECT * FROM Users;
 +----+-------------------------------------------------------------------------------+----------+
 3 rows in set (0.00 sec)
 
+mysql> SELECT * FROM Users;
++----+-------------------------------------------------------------------------------+----------+
+| Id | Password                                                                      | Username |
++----+-------------------------------------------------------------------------------+----------+
+| 12 | $5$rounds=535000$x4Sx2EEpC.FdzyQl$Lc3JN8Nhge7L0iN1Sdu8ydp52z5JyFuxohUXv4RXe.C | Paddywc  |
+| 13 | $5$rounds=535000$if3SgeyN3T4BeeaK$UF0lq6NuRYTwlzUvtcaWyZZcvLLYH9CjtUpwQpo/rl6 | Cremen   |
+| 14 | $5$rounds=535000$pZbmynuFWWyMfG8t$oPbvG4ZaMaKuulxkjNnO6XbpMpaCnAy1.TAjJotAaxB | Patrick  |
++----+-------------------------------------------------------------------------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Users;
++----+-------------------------------------------------------------------------------+-----------------+
+| Id | Password                                                                      | Username        |
++----+-------------------------------------------------------------------------------+-----------------+
+| 12 | $5$rounds=535000$x4Sx2EEpC.FdzyQl$Lc3JN8Nhge7L0iN1Sdu8ydp52z5JyFuxohUXv4RXe.C | Paddywc         |
+| 13 | $5$rounds=535000$if3SgeyN3T4BeeaK$UF0lq6NuRYTwlzUvtcaWyZZcvLLYH9CjtUpwQpo/rl6 | Cremen          |
+| 14 | $5$rounds=535000$pZbmynuFWWyMfG8t$oPbvG4ZaMaKuulxkjNnO6XbpMpaCnAy1.TAjJotAaxB | Patrick         |
+| 15 | $5$rounds=535000$2zu7YJqsHbdweh4o$lHMJxAdnE9GjTROUS3OkioOj5pe8haxpFF3VfoM9FJ0 | Unique Username |
++----+-------------------------------------------------------------------------------+-----------------+
+4 rows in set (0.00 sec)
+

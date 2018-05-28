@@ -119,6 +119,8 @@ def get_encrypted_password():
     
     
 
+
+
 def add_form_values_to_users():
     """
     adds username and password entered in registration
@@ -136,12 +138,23 @@ def add_form_values_to_users():
     
 
 @app.route("/register",  methods=["POST", "GET"] )
-@login_required
 def register_user():
-    print(current_user.username)
-    
+
     if request.method == "POST":
-        add_form_values_to_users()
+        username = request.form["username"]
+        already_exists = check_if_username_exists(username)
+        
+        if not already_exists:
+            add_form_values_to_users()
+            return render_template("register.html")
+        
+        else: 
+            print("This is running")
+            error_message = "ERROR: Username already exists. Please try a different username"
+            return render_template("register.html", error=error_message)
+            
+        
+        
     return render_template("register.html")
     
 
@@ -209,11 +222,11 @@ def login():
     
     
 @app.route("/logout")
+# from https://www.youtube.com/watch?v=2dEM-s3mRLE
 @login_required
 def logout():
     logout_user()
     return "You are now logged out"
-    # from https://www.youtube.com/watch?v=2dEM-s3mRLE
 
   
 """
