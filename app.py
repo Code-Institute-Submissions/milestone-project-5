@@ -471,15 +471,22 @@ def get_average_review_score(list_of_scores):
     return average_of_scores
     
         
-        
-# print(get_recipe_reviews(105))
-    
-        
-        
 
-# print(get_recipe_instructions(105))   
-        
-        
+def get_all_categories_from_table():
+    """
+    returns a list of all category names
+    from the Categories table
+    """
+    try:
+         with connection.cursor() as cursor:
+            cursor.execute('SELECT Name FROM Categories;')
+            returned_tuples = cursor.fetchall()
+            categories_list = [individual_tuple[0] for individual_tuple in returned_tuples]
+            return categories_list
+    
+    except Exception as e:
+        print("GACFT ERROR: {}".format(e))
+    
         
 def create_recipe_values_without_image(values_dictionary):
     
@@ -723,8 +730,8 @@ def add_recipe():
         
         return render_template("addrecipe.html")
     
-  
-    return render_template("addrecipe.html", varone="Paddy")
+    categories= get_all_categories_from_table()
+    return render_template("addrecipe.html", categories=categories)
 
 
     

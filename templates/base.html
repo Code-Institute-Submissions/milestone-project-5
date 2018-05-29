@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" media="screen,projection" />
+     
+     <!--Needs to be before jquery in script-->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <title>Recipes</title>
@@ -30,8 +32,9 @@
             let categoryCount = 0;
             $("#add-category").click(function() {
                 $(`#category-${categoryCount}`).after(`
-                 <input type="text" name="category-${++categoryCount}" id="category-${categoryCount}">
+                 <input type="text" name="category-${++categoryCount}" id="category-${categoryCount}" class="autocomplete">
                 `)
+                autocompleteFunction();
             });
              $("#remove-category").click(function() {
                  if (categoryCount > 0){
