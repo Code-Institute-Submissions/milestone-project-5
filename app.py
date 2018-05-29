@@ -205,10 +205,11 @@ def login():
         user_id = get_id_for_username(username)
         user = User(user_id, username)
         login_user(user)
-        return render_template("addrecipe.html")
         
-   
-    return render_template("login.html")
+        return redirect(url_for("add_recipe"))
+        
+    else:
+        return render_template("login.html")
     
     
 @app.route("/logout")
@@ -490,12 +491,12 @@ def get_all_categories_from_table():
         
 def create_recipe_values_without_image(values_dictionary):
     
-    dummy_userid = "12"
+    dummy_userid = current_user.id
     
     #must use double quotes inside values string 
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}")'.format( 
     values_dictionary["Name"], 
-    dummy_userid, 
+    current_user.id,
     values_dictionary["Difficulty"], 
     values_dictionary["Serves"], 
     values_dictionary["Blurb"], 
@@ -507,12 +508,12 @@ def create_recipe_values_without_image(values_dictionary):
     
 def create_recipe_values_with_image(values_dictionary):
     
-    dummy_userid = "12"
+
     
     #must use double quotes inside values string 
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}", "{8}")'.format( 
     values_dictionary["Name"], 
-    dummy_userid, 
+    current_user.id, 
     values_dictionary["Image"],
     values_dictionary["Difficulty"], 
     values_dictionary["Serves"], 
@@ -717,6 +718,7 @@ def insert_dictionary_into_recipes_table(values_dictionary):
             
     
 @app.route("/",  methods=["POST", "GET"] )
+@login_required
 def add_recipe():
     if request.method == "POST":
         values_dictionary = get_form_values()
