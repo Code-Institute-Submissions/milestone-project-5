@@ -5,6 +5,7 @@ from  flask import Flask, Response, render_template, request, redirect, url_for
 import datetime
 import ast #for converting string to list
 
+from random import choice #to avoid duplicates in file names
 # for managing logins
 
 from passlib.hash import sha256_crypt # https://pythonprogramming.net/password-hashing-flask-tutorial/
@@ -12,17 +13,22 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, cur
 
 
 #for uploading images 
-from werkzeug.utils import secure_filename 
+from werkzeug.utils import secure_filename #http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 
 
 
-app = Flask(__name__)
+app = Flask(__name__) 
 app.secret_key = 'some_secret'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login' #from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
 username = os.getenv("C9_USER")
 connection = pymysql.connect(host='localhost', user= username, password = "", db="milestoneProjectFour")
+
+#http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+UPLOAD_FOLDER = 'static/images'
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
 
 
 
@@ -231,13 +237,13 @@ def get_recipe_image():
     returns false if user didn't upload image
     """
     try:
-        recipe_image = request.files["recipe-img"]
+        image_name = add_recipe_image_and_return_filename()
         image_added = True
     except Exception as e:
         image_added = False
         
     if image_added:
-        return recipe_image 
+        return image_name
     else:
         return False
         
@@ -463,6 +469,8 @@ def get_average_review_score(list_of_scores):
     returns the average of all values in the argument
     """
     length_of_list = len(list_of_scores)
+    if length_of_list == 0:
+        return 0
     sum_count = 0
     for score in list_of_scores:
         sum_count += score
@@ -514,7 +522,7 @@ def create_recipe_values_with_image(values_dictionary):
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}", "{8}")'.format( 
     values_dictionary["Name"], 
     current_user.id, 
-    values_dictionary["Image"],
+    values_dictionary["ImageName"],
     values_dictionary["Difficulty"], 
     values_dictionary["Serves"], 
     values_dictionary["Blurb"], 
@@ -529,7 +537,26 @@ def create_recipe_values_with_image(values_dictionary):
 """ 
 OTHER FUNCTIONS
 """
-        
+
+
+def add_recipe_image_and_return_filename():
+    """
+    adds the image uploaded to the form to 
+    static/images folder. Returns the image
+    filename
+    """
+    
+    
+    file = request.files["recipe-img"]
+    
+    #three lines of code below are from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+    #added random int to file name to avoid duplicate filenames
+    filename = "{0}{1}".format(choice(range(1000)), secure_filename(file.filename))
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    print(filename)
+    return filename
+    
+    
         
 def get_form_values():
     """
@@ -539,7 +566,7 @@ def get_form_values():
 
     values_dictionary = {
         "Name" : request.form["recipe-name"],
-        "Image": get_recipe_image(),
+        "ImageName": get_recipe_image(),
         "Difficulty": request.form["difficulty-select"],
         "Serves" : request.form["serves"],
         "Blurb" : request.form["blurb"],
@@ -564,7 +591,7 @@ def get_recipe_values(recipe_id):
     values_dictionary = {
         "Name": get_value_from_recipes_table("Name", recipe_id),
         "Categories": get_recipe_categories(recipe_id),
-        "Image" : get_value_from_recipes_table("Image", recipe_id),
+        "ImageName" : get_value_from_recipes_table("ImageName", recipe_id),
         "Blurb" : get_value_from_recipes_table("Blurb", recipe_id),
         "Username": get_recipe_user(recipe_id),
         "Difficulty" :get_converted_difficulty(recipe_id),
@@ -700,8 +727,8 @@ def insert_dictionary_into_recipes_table(values_dictionary):
     form values into the MySQL database
     """
     
-    if values_dictionary["Image"]:
-        insert_into = "(Name, UserId, Image, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
+    if values_dictionary["ImageName"]:
+        insert_into = "(Name, UserId, ImageName, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
         values = create_recipe_values_with_image(values_dictionary)
     else:
         insert_into = "(Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
@@ -709,7 +736,6 @@ def insert_dictionary_into_recipes_table(values_dictionary):
 
     try:
         with connection.cursor() as cursor:
-            cursor.execute("SET FOREIGN_KEY_CHECKS=0")
             cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
             connection.commit()
     except Exception as e:
@@ -721,6 +747,7 @@ def insert_dictionary_into_recipes_table(values_dictionary):
 @login_required
 def add_recipe():
     if request.method == "POST":
+        
         values_dictionary = get_form_values()
         # print(values_dictionary)
         insert_dictionary_into_recipes_table(values_dictionary)
