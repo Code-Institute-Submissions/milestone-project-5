@@ -724,7 +724,9 @@ def add_recipe():
         return render_template("addrecipe.html")
     
   
-    return render_template("addrecipe.html")
+    return render_template("addrecipe.html", varone="Paddy")
+
+
     
 @app.route("/recipe/<recipe_id>")
 def show_recipe(recipe_id):

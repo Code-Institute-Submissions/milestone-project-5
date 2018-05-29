@@ -1,9 +1,9 @@
- {% extends 'base.html' %} {% block content %} 
-<h1>Add Recipe</h1>
+ {% extends 'base.html' %} {% block content %}
+<h1>Add Recip NOT TESTe</h1>
 <form method="POST" id="add-recipe" enctype="multipart/form-data">
     <div class="row">
         <label for="recipe-name">Recipe Name</label>
-        <input type="text" name="recipe-name"  value="Chicken Curry" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
+        <input type="text" name="recipe-name" value="Chicken Curry" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
     </div>
     <div class="row">
         <label for="recipe-img">Recipe Image</label>
@@ -25,29 +25,29 @@
 
     </div>
 
-<!--https://materializecss.com/autocomplete.html-->
-<div class="row">
-    <div class="col s12">
-      <div class="row">
-        <div class="input-field col s12">
-          <i class="material-icons prefix">textsms</i>
-          <input type="text" id="autocomplete-input" class="autocomplete">
-          <label for="autocomplete-input">Autocomplete</label>
+    <!--https://materializecss.com/autocomplete.html-->
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">textsms</i>
+                    <input type="text" id="autocomplete-input" class="autocomplete">
+                    <label for="autocomplete-input">Autocomplete</label>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
 
     <div class="row">
         <div class="input-field col s4">
             <label for="categories">Categories</label>
-            <input type="text" name="category-0" id="category-0"  placeholder="Mexican, Vegetarian" required>
+            <input type="text" name="category-0" id="category-0" placeholder="Mexican, Vegetarian" required>
         </div>
-         <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
-    <a class="btn-floating btn-large waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
     </div>
-  
+
 
 
     <div class="row">
@@ -62,7 +62,7 @@
     <div class="row">
         <div class="input-field col s6">
             <input id="prep-hours" name="prep-hours" class="col s4" type="number" value="02" placeholder="Hours" required>
-            <input id="prep-mins" name="prep-mins" type="number" value="20"  max="59" class="col s4 offset-s1" placeholder="Minutes " required>
+            <input id="prep-mins" name="prep-mins" type="number" value="20" max="59" class="col s4 offset-s1" placeholder="Minutes " required>
             <label>Preparation Time</label>
         </div>
         <div class="input-field col s6">
@@ -101,13 +101,25 @@
         <a class="btn-floating btn-large waves-effect waves-light red" id="remove-instruction"><i class="material-icons">remove</i></a>
     </ol>
 
-<input type="submit" value="Submit">
+    <input type="submit" value="Submit">
 
 
 </form>
 
 
+<script>
+// https://materializecss.com/autocomplete.html
+    $(document).ready(function() {
+        $('input.autocomplete').autocomplete({
+            data: {
+                "{{ varone }}": null,
+                "Microsoft": null,
+                "Google": 'https://placehold.it/250x250'
+            },
 
+        });
+    });
+</script>
 
 
 {% endblock %}

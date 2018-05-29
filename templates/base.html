@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" media="screen,projection" />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <title>Recipes</title>
 </head>
 
@@ -16,8 +18,8 @@
 
     {% block content %} {% endblock %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  
+
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -86,37 +88,7 @@
         });
 
         $(document).add()
-        
-        
-        // https://materializecss.com/autocomplete.html
-        $(document).ready(function(){
-    $('input.autocomplete').autocomplete({
-      data: {
-        "Apple": null,
-        "Microsoft": null,
-        "Google": 'https://placehold.it/250x250'
-      },
-    });
-  });
-        
-
-        // $(function() {
-
-
-        //     $('.chips-autocomplete').material_chip({
-        //         autocompleteOptions: {
-        //             data: {
-        //                 'Apple': null,
-        //                 'Microsoft': null,
-        //                 'Google': null
-        //             },
-        //             limit: Infinity,
-        //             minLength: 1
-        //         }
-        //     });
-
-
-        // });
+  
     </script>
 </body>
 
