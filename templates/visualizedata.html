@@ -34,7 +34,7 @@ console.log(data[1].Name);
 var ndx = crossfilter(data);
 
 function show_top_names(ndx){
-  var chart= dc.barChart("#chart")
+  var chart= dc.rowChart("#chart")
 let dim = ndx.dimension(dc.pluck("Name"));
 console.log(dim);
 let group = dim.group();
@@ -50,21 +50,31 @@ var topTenNames = (function (group) {return {
      });
   }
 };})(group);
+//https://github.com/dc-js/dc.js/blob/master/web/examples/row.html
+chart
+    .width(768)
+    .height(480)
+    .x(d3.scale.ordinal())
+    // .xUnits(dc.units.ordinal)
+    .elasticX(true)
+    .dimension(dim)
+    .group(topTenNames)
+    // .xAxisLabel("Count")
+    // .yAxisLabel("Recipe")
+    .render();
 
-
-
-chart //targets the gender-balance ID in the index.html page
-        .width(1000) //height of whole chart
-        .height(300)
-        .margins({ top: 10, right: 50, bottom: 30, left: 50 }) //spacing whole chart
-        .dimension(dim) //the dim and group we selected earlier
-        .group(topTenNames)
-        .transitionDuration(500)
-        .x(d3.scale.ordinal()) //Scales ordinaliy?
-        .xUnits(dc.units.ordinal) // Tell Dc.js that we're using an ordinal x axis
-        .xAxisLabel("Name")
-        .yAxisLabel("Count")
-        .yAxis().ticks(20); //the number of tickets
+// chart //targets the gender-balance ID in the index.html page
+//         .width(1000) //height of whole chart
+//         .height(300)
+//         .margins({ top: 10, right: 50, bottom: 30, left: 50 }) //spacing whole chart
+//         .dimension(dim) //the dim and group we selected earlier
+//         .group(topTenNames)
+//         .transitionDuration(500)
+//         .x(d3.scale.ordinal()) //Scales ordinaliy?
+//         .xUnits(dc.units.ordinal) // Tell Dc.js that we're using an ordinal x axis
+//         .xAxisLabel("Name")
+//         .yAxisLabel("Count")
+//         .yAxis().ticks(20); //the number of tickets
 
 chart.ordering(function(d) { return -d.value; });
 dc.renderAll(); 
