@@ -1,60 +1,39 @@
- <!--{% extends 'base.html' %} {% block content %}-->
+ {% extends 'base.html' %} {% block content %}
     
-    {{ data }}
-    
-    <!--<div id="chart"></div>-->
+
+    <div id="chart"></div>
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script type="text/javascript" src="static/js/graph.js"></script>
-    
-    <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+    <!--<script type="text/javascript" src="static/js/graph.js"></script>-->
 
-svg {
-  font: 10px sans-serif;
+    <script>
+
+
+let stringData = "{{ imported_data|safe }}";
+
+// below line of code from: https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote
+let stringDataWithDoubleQuotes = stringData.replace(/'/g, '"');
+
+
+console.log(stringDataWithDoubleQuotes)
+
+var data = JSON.parse(stringDataWithDoubleQuotes);
+
+console.log(data[0]);
+// console.log(data[0])
+
+$(function() {
+  console.log('jquery is working!');
+  createGraph();
+});
+
+function createGraph() {
+  // Code goes here
+  d3.select("#chart").text("test");
+  
 }
 
-.y.axis path {
-  display: none;
-}
-
-.y.axis line {
-  stroke: #fff;
-  stroke-opacity: .2;
-  shape-rendering: crispEdges;
-}
-
-.y.axis .zero line {
-  stroke: #000;
-  stroke-opacity: 1;
-}
-
-.title {
-  font: 300 78px Helvetica Neue;
-  fill: #666;
-}
-
-.birthyear,
-.age {
-  text-anchor: middle;
-}
-
-.birthyear {
-  fill: #fff;
-}
-
-rect {
-  fill-opacity: .6;
-  fill: #e377c2;
-}
-
-rect:first-child {
-  fill: #1f77b4;
-}
-
-</style>
-    
+    </script>
     
 
-<!--{% endblock %}-->
+{% endblock %}
