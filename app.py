@@ -673,10 +673,12 @@ def visualize_data():
     data = get_all_data_for_visualization()
     return render_template("visualizedata.html", imported_data=data)
     
-@app.route("/data")
-def return_data():
-    data = get_all_data_for_visualization()
-    return data
+
+    
+# @app.route("/data")
+# def return_data():
+#     data = get_all_data_for_visualization()
+#     return data
 
 
 

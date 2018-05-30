@@ -6,26 +6,26 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <!--<script type="text/javascript" src="static/js/graph.js"></script>-->
 
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/1.6.0/dc.css"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/3.0.4/dc.min.js"></script>
     <script>
 
 
 let stringData = "{{ imported_data|safe }}";
 
 // below line of code from: https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote
+// changes singe quotes to double quotes
+//required to parse data
 let stringDataWithDoubleQuotes = stringData.replace(/'/g, '"');
-
-
-console.log(stringDataWithDoubleQuotes)
 
 var data = JSON.parse(stringDataWithDoubleQuotes);
 
-console.log(data[0]);
+console.log(data[1].Name);
 // console.log(data[0])
 
-$(function() {
-  console.log('jquery is working!');
-  createGraph();
-});
+var ndx = crossfilter(data);
 
 function createGraph() {
   // Code goes here
