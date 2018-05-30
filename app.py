@@ -1,7 +1,7 @@
 import os
 import requests
 import pymysql
-from  flask import Flask, Response, render_template, request, redirect, url_for
+from  flask import Flask, Response, render_template, request, redirect, url_for, jsonify
 import datetime
 import ast #for converting string to list
 
@@ -608,8 +608,72 @@ def get_recipe_values(recipe_id):
 
 # print(get_recipe_values(105))
 
-    
+
 """
+VISUALIZING DATA
+"""
+
+def get_list_of_recipe_ids():
+    """
+    returns a list of all ids in the
+    Recipes table
+    """
+    
+    try:
+         with connection.cursor() as cursor:
+            cursor.execute('SELECT Id FROM Recipes;')
+            returned_tuples = cursor.fetchall()
+            list_of_ids = [int(individual_tuple[0]) for individual_tuple in returned_tuples]
+            return list_of_ids
+    
+    except Exception as e:
+        print("GLORID ERROR: {}".format(e))
+        
+        
+def get_recipe_values_for_data_visualization(recipe_id):
+    """
+    A shorted version of get_recipe_values() that excludes
+    the data not required for visualization
+    """
+    values_dictionary = {
+        "Name": get_value_from_recipes_table("Name", recipe_id),
+        "Categories": get_recipe_categories(recipe_id),
+        "Difficulty" :get_converted_difficulty(recipe_id),
+        "Serves" : get_value_from_recipes_table("Serves", recipe_id),
+        "Ingredients": get_recipe_ingredients(recipe_id),
+        "Reviews" : get_recipe_reviews(recipe_id)
+        
+        }
+    return values_dictionary
+    
+        
+        
+# print(get_list_of_recipe_ids())
+
+def get_all_data_for_visualization():
+    """
+    returns a list of dictionaries. Each dictionary 
+    represents a table and contains the information required 
+    to visualize data
+    """
+    data_dictionary_list = []
+    ids_list = get_list_of_recipe_ids()
+    
+    for recipe_id in ids_list:
+        recipe_dictionary = get_recipe_values_for_data_visualization(recipe_id)
+        data_dictionary_list.append(recipe_dictionary)
+        
+    return data_dictionary_list
+    
+    
+# print(get_all_data_for_visualization())
+        
+    
+
+
+
+"""
+
 INTERACTING WITH MYSQL
 """
 
@@ -743,13 +807,12 @@ def insert_dictionary_into_recipes_table(values_dictionary):
         # connection.close()
             
     
-@app.route("/",  methods=["POST", "GET"] )
+@app.route("/addrecipe",  methods=["POST", "GET"] )
 @login_required
 def add_recipe():
     if request.method == "POST":
         
         values_dictionary = get_form_values()
-        # print(values_dictionary)
         insert_dictionary_into_recipes_table(values_dictionary)
         recipe_id = get_last_recipe_id()
         add_to_categories_if_not_duplicate(values_dictionary["Categories"])
@@ -757,7 +820,7 @@ def add_recipe():
         add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
         add_to_recipe_categories(values_dictionary["Categories"],recipe_id )
         
-        return render_template("addrecipe.html")
+        return redirect("/recipe/{}".format(recipe_id))
     
     categories= get_all_categories_from_table()
     return render_template("addrecipe.html", categories=categories)
