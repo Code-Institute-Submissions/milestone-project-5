@@ -663,12 +663,22 @@ def get_all_data_for_visualization():
         recipe_dictionary = get_recipe_values_for_data_visualization(recipe_id)
         data_dictionary_list.append(recipe_dictionary)
         
-    return data_dictionary_list
+    return jsonify(data_dictionary_list)
     
     
 # print(get_all_data_for_visualization())
         
+@app.route("/visualizedata")
+def visualize_data():
+    data = get_all_data_for_visualization()
+    return render_template("visualizedata.html", data=data)
     
+@app.route("/data")
+def return_data():
+    data = get_all_data_for_visualization()
+    return data
+
+
 
 
 
