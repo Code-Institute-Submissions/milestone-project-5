@@ -3,13 +3,19 @@
 
     <div id="chart"></div>
 
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>-->
     <!--<script type="text/javascript" src="static/js/graph.js"></script>-->
 
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/1.6.0/dc.css"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>-->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/3.0.4/dc.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.2.0/dc.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.2.0/dc.min.js.map"></script>-->
+
+    <script type="text/javascript" src="static/js/d3.min.js"></script>
+    <script type="text/javascript" src="static/js/crossfilter.min.js"></script>
+    <script type="text/javascript" src="static/js/dc.min.js"></script>
+    <script type="text/javascript" src="static/js/queue.min.js"></script>
     <script>
 
 
@@ -20,12 +26,36 @@ let stringData = "{{ imported_data|safe }}";
 //required to parse data
 let stringDataWithDoubleQuotes = stringData.replace(/'/g, '"');
 
-var data = JSON.parse(stringDataWithDoubleQuotes);
-
+let data = JSON.parse(stringDataWithDoubleQuotes);
+// let data = [{"Name": "Test"}, {"Name": "Test"}]
+// console.log(data)
 console.log(data[1].Name);
 // console.log(data[0])
 
+var chart= dc.barChart("#chart")
 var ndx = crossfilter(data);
+var dim = ndx.dimension(function(d){
+    return d.Name;
+    
+});
+console.log(dim);
+var group = dim.group().reduceCount();
+// console.log(categoriesGroup.reduceSum())
+chart //targets the gender-balance ID in the index.html page
+        .width(400) //height of whole chart
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 }) //spacing whole chart
+        .dimension(dim) //the dim and group we selected earlier
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal()) //Scales ordinaliy?
+        .xUnits(dc.units.ordinal) // Tell Dc.js that we're using an ordinal x axis
+        .xAxisLabel("Gender")
+        .yAxis().ticks(20); //the number of tickets
+
+
+dc.renderAll();
+// console.log(categories);
 
 function createGraph() {
   // Code goes here
