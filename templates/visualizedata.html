@@ -1,7 +1,8 @@
  {% extends 'base.html' %} {% block content %}
     
 
-    <div id="chart"></div>
+    <div id="barChart"></div>
+    <div id="difficultyChart"></div>
 
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>-->
     <!--<script type="text/javascript" src="static/js/graph.js"></script>-->
@@ -19,28 +20,24 @@
     <script>
 
 
-let stringData = "{{ imported_data|safe }}";
-
+function getParsedData(){
+ let stringData = "{{ imported_data|safe }}";
 // below line of code from: https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote
 // changes singe quotes to double quotes
 //required to parse data
 let stringDataWithDoubleQuotes = stringData.replace(/'/g, '"');
-
 let data = JSON.parse(stringDataWithDoubleQuotes);
-// let data = [{"Name": "Test"}, {"Name": "Test"}]
-// console.log(data)
-console.log(data[1].Name);
-// console.log(data[0])
-var ndx = crossfilter(data);
+var ndx = crossfilter(data); 
+return ndx;
+}
 
-function show_top_names(ndx){
-  var chart= dc.rowChart("#chart")
+ndx = getParsedData()
+
+function showTopNames(ndx){
+var chart= dc.rowChart("#barChart")
 let dim = ndx.dimension(dc.pluck("Name"));
-console.log(dim);
-let group = dim.group();
 
-let topName = group.top(10);
-console.log(topName);
+let group = dim.group();
 
 //https://stackoverflow.com/questions/29916853/how-to-display-a-graph-of-top-n-items
 var topTenNames = (function (group) {return {
@@ -63,34 +60,36 @@ chart
     // .yAxisLabel("Recipe")
     .render();
 
-// chart //targets the gender-balance ID in the index.html page
-//         .width(1000) //height of whole chart
-//         .height(300)
-//         .margins({ top: 10, right: 50, bottom: 30, left: 50 }) //spacing whole chart
-//         .dimension(dim) //the dim and group we selected earlier
-//         .group(topTenNames)
-//         .transitionDuration(500)
-//         .x(d3.scale.ordinal()) //Scales ordinaliy?
-//         .xUnits(dc.units.ordinal) // Tell Dc.js that we're using an ordinal x axis
-//         .xAxisLabel("Name")
-//         .yAxisLabel("Count")
-//         .yAxis().ticks(20); //the number of tickets
-
 chart.ordering(function(d) { return -d.value; });
-dc.renderAll(); 
+
 }
 
-show_top_names(ndx)
+showTopNames(ndx)
+
+function showDifficultyChart(ndx){
+    
+    let chart = dc.pieChart("#difficultyChart")
+let dim = ndx.dimension(dc.pluck("Difficulty"));
+
+let group = dim.group();
+
+//https://github.com/dc-js/dc.js/blob/master/web/examples/pie.html
+ chart
+    .width(768)
+    .height(480)
+    .slicesCap(4)
+    .innerRadius(100)
+    .dimension(dim)
+    .group(group)
+    .legend(dc.legend())
+  chart.render();
+
+};
+
+showDifficultyChart(ndx)
 
 
 
-// console.log(categories);
-
-function createGraph() {
-  // Code goes here
-  d3.select("#chart").text("test");
-  
-}
 
     </script>
     
