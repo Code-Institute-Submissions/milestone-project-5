@@ -686,6 +686,58 @@ def visualize_data():
 
 
 
+"""
+SEARCHING RECIPES
+"""
+
+
+def get_excluded_categories_set(filter_categories_list):
+    
+    """
+    returns a set of category ids for all categories 
+    not included in the argument list
+    """
+    
+    string_of_placeholders = ",".join(['%s']*len(filter_categories_list))
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Id FROM Categories INNER JOIN RecipeCategories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Name not in ({}) ;'.format(string_of_placeholders), filter_categories_list)
+            returned_tuples = cursor.fetchall()
+            category_id_set = {individual_tuple[0] for individual_tuple in returned_tuples}
+            return category_id_set
+    except Exception as e:
+        print("GECL ERROR {}".format(e))
+        
+# print(get_excluded_categories_set(["Mexican", "Irish"]))
+
+def filter_by_categories(excluded_categories_id_set):
+    
+    """ 
+    returns a list of ids for all recipes that
+    don't contain any of the categories in the 
+    argument set
+    """
+    excluded_categories_id_list = [category_id for category_id in excluded_categories_id_set]
+    string_of_placeholders = ",".join(['%s']*len(excluded_categories_id_set))
+
+    try:
+        with connection.cursor() as cursor:
+            # execution_string = 'SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Id not in ({});'.format(string_of_placeholders), filter_categories_list)
+            # print(execution_string)
+            cursor.execute('SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Id not in ({});'.format(string_of_placeholders),excluded_categories_id_list)
+            returned_tuples = cursor.fetchall()
+            id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
+            return id_list
+    except Exception as e:
+        print("FBC ERROR {}".format(e))
+        
+# print(filter_by_categories({2, 4, 5, 6, 7, 9, 10, 47, 16, 48, 49, 19, 50, 21, 22}))
+
+
+@app.route("/", methods= ["POST", "GET"])
+def search_recipes():
+    return render_template("index.html")
 
 """
 
