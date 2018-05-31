@@ -3,6 +3,7 @@
 
     <div id="barChart"></div>
     <div id="difficultyChart"></div>
+    <div id="ratingsChart"></div>
 
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>-->
     <!--<script type="text/javascript" src="static/js/graph.js"></script>-->
@@ -33,29 +34,77 @@ return ndx;
 
 ndx = getParsedData()
 
-function showTopNames(ndx){
-var chart= dc.rowChart("#barChart")
-let dim = ndx.dimension(dc.pluck("Name"));
+function showCategoriesChart(ndx){
 
-let group = dim.group();
+let  chart= dc.rowChart("#barChart")
+let dim = ndx.dimension(dc.pluck("Categories"));
 
-//https://stackoverflow.com/questions/29916853/how-to-display-a-graph-of-top-n-items
-var topTenNames = (function (group) {return {
-  all:function () {
-    return group.top(10).filter(function(d) {
-      return d.key != "Not mentioned";
-     });
+// https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
+function reduceAdd(p, v) {
+  v.Categories.forEach (function(val, idx) {
+     p[val] = (p[val] || 0) + 1; //increment counts
+  });
+  return p;
+}
+
+function reduceRemove(p, v) {
+  v.Categories.forEach (function(val, idx) {
+     p[val] = (p[val] || 0) - 1; //decrement counts
+  });
+  return p;
+   
+}
+
+function reduceInitial() {
+  return {};  
+}
+
+
+
+let group = dim.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial).value();;
+
+// hack to make dc.js charts work
+group.all = function() {
+  var newObject = [];
+  for (var key in this) {
+    if (this.hasOwnProperty(key) && key != "all") {
+      newObject.push({
+        key: key,
+        value: this[key]
+      });
+    }
   }
-};})(group);
+  return newObject;
+};
+
+
+
+
+// //https://stackoverflow.com/questions/29916853/how-to-display-a-graph-of-top-n-items
+// let topTenCategories = (function (group) {return {
+//   all:function () {
+//     return group.top(10).filter(function(d) {
+//       return d.key != "Not mentioned";
+//      });
+//   }
+// };})(group);
+
+
+
 //https://github.com/dc-js/dc.js/blob/master/web/examples/row.html
 chart
     .width(768)
     .height(480)
+    .filter(function(d){
+        if(d != ""){
+            return d
+        }
+    })
     .x(d3.scale.ordinal())
     // .xUnits(dc.units.ordinal)
     .elasticX(true)
     .dimension(dim)
-    .group(topTenNames)
+    .group(group)
     // .xAxisLabel("Count")
     // .yAxisLabel("Recipe")
     .render();
@@ -64,7 +113,7 @@ chart.ordering(function(d) { return -d.value; });
 
 }
 
-showTopNames(ndx)
+showCategoriesChart(ndx)
 
 function showDifficultyChart(ndx){
     
@@ -89,9 +138,32 @@ let group = dim.group();
 showDifficultyChart(ndx)
 
 
+function showRatingsChart(ndx){
+    let chart= dc.barChart("#ratingsChart");
+let dim = ndx.dimension(dc.pluck("Rating"));
 
+let group = dim.group();
+//from D3 Daskboard Lesson
+chart
+        .width(400) //width of whole chart
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 }) //spacing whole chart
+        .dimension(dim) //the dim and group we selected earlier
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal()) //Scales ordinaliy?
+        .xUnits(dc.units.ordinal) // Tell Dc.js that we're using an ordinal x axis
+        .xAxisLabel("Average Rating")
+        .yAxis().ticks(20); //the number of ticks
+        
+    chart.render();
+}
+
+
+
+showRatingsChart(ndx);
 
     </script>
     
 
-{% endblock %}
+{% endblock %}Chart

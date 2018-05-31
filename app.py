@@ -475,7 +475,7 @@ def get_average_review_score(list_of_scores):
     for score in list_of_scores:
         sum_count += score
         
-    average_of_scores = int(sum_count/length_of_list)
+    average_of_scores = int((sum_count/length_of_list)+0.5)
     
     return average_of_scores
     
@@ -633,7 +633,7 @@ def get_list_of_recipe_ids():
 def get_recipe_values_for_data_visualization(recipe_id):
     """
     A shorted version of get_recipe_values() that excludes
-    the data not required for visualization
+    the data not required for visualization. Adds ratings
     """
     values_dictionary = {
         "Name": get_value_from_recipes_table("Name", recipe_id),
@@ -641,11 +641,12 @@ def get_recipe_values_for_data_visualization(recipe_id):
         "Difficulty" :get_converted_difficulty(recipe_id),
         "Serves" : get_value_from_recipes_table("Serves", recipe_id),
         "Ingredients": get_recipe_ingredients(recipe_id),
-        "Reviews" : get_recipe_reviews(recipe_id)
+        "Rating" :  get_average_review_score(get_recipe_reviews(recipe_id))
         
         }
     return values_dictionary
     
+# print(get_recipe_values_for_data_visualization(105))
         
         
 # print(get_list_of_recipe_ids())
@@ -671,6 +672,8 @@ def get_all_data_for_visualization():
 @app.route("/visualizedata")
 def visualize_data():
     data = get_all_data_for_visualization()
+    for entry in data:
+        print(entry["Rating"])
     return render_template("visualizedata.html", imported_data=data)
     
 
