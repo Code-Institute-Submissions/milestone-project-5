@@ -691,11 +691,15 @@ SEARCHING RECIPES
 """
 
 
+
+
+
 def get_excluded_categories_set(filter_categories_list):
     
     """
     returns a set of category ids for all categories 
-    not included in the argument list
+    not included in the argument list. List is list of 
+    category names
     """
     
     string_of_placeholders = ",".join(['%s']*len(filter_categories_list))
@@ -733,6 +737,55 @@ def filter_by_categories(excluded_categories_id_set):
         print("FBC ERROR {}".format(e))
         
 # print(filter_by_categories({2, 4, 5, 6, 7, 9, 10, 47, 16, 48, 49, 19, 50, 21, 22}))
+
+def get_excluded_ingredients_set(filter_ingredients_list):
+    
+    """
+    returns a set of ingredient ids for all ingredients 
+    not included in the argument list. List is list of 
+    ingredient names
+    """
+    
+    string_of_placeholders = ",".join(['%s']*len(filter_ingredients_list))
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Id FROM Ingredients INNER JOIN RecipeIngredients ON Ingredients.Id = RecipeIngredients.IngredientId  WHERE Ingredients.Name not in ({}) ;'.format(string_of_placeholders), filter_ingredients_list)
+            returned_tuples = cursor.fetchall()
+            ingredient_id_set = {individual_tuple[0] for individual_tuple in returned_tuples}
+            return ingredient_id_set
+    except Exception as e:
+        print("GEIS ERROR {}".format(e))
+        
+print(get_excluded_ingredients_set(["Milk", "Butter"]))
+
+
+
+
+def filter_by_ingredients(excluded_ingredients_id_set):
+    
+    """ 
+    returns a list of ids for all recipes that
+    don't contain any of the ingredients in the 
+    argument set
+    """
+    excluded_ingredients_id_list = [ingredient_id for ingredient_id in excluded_ingredients_id_set]
+    string_of_placeholders = ",".join(['%s']*len(excluded_ingredients_id_set))
+
+    try:
+        with connection.cursor() as cursor:
+            # execution_string = 'SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Id not in ({});'.format(string_of_placeholders), filter_categories_list)
+            # print(execution_string)
+            cursor.execute('SELECT RecipeId FROM RecipeIngredients INNER JOIN Ingredients ON Ingredients.Id = RecipeIngredients.IngredientId  WHERE Ingredients.Id not in ({});'.format(string_of_placeholders),excluded_ingredients_id_list)
+            returned_tuples = cursor.fetchall()
+            id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
+            return id_list
+    except Exception as e:
+        print("FBC ERROR {}".format(e))
+        
+        
+# print(filter_by_ingredients({3, 5, 9, 10, 11, 12, 13, 14}))
+        
 
 
 @app.route("/", methods= ["POST", "GET"])
