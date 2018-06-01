@@ -801,6 +801,40 @@ def filter_by_ingredients(excluded_ingredients_id_set):
         
         
 # print(filter_by_ingredients({3, 5, 9, 10, 11, 12, 13, 14}))
+
+
+def get_all_recipes_average_review_score():
+    """
+    returns a dictionary with the Id and average 
+    review score for all recipes
+    """
+    
+    average_review_list = []
+    ids_list = get_list_of_recipe_ids()
+    for recipe_id in ids_list:
+        average_review_list.append({
+            "Id" : recipe_id,
+            "Score" : get_average_review_score(get_recipe_reviews(recipe_id))
+        })
+        
+    return average_review_list
+    
+
+def filter_by_review_score(min_score, max_score):
+    """
+    returns a list of ids for all recipes with an average 
+    review score that is equal to or between the arguments
+    """
+    list_of_score_dictionaries =  get_all_recipes_average_review_score()
+    recipe_id_list = []
+    for dictionary in list_of_score_dictionaries:
+        if dictionary["Score"] >= min_score and dictionary["Score"] <= max_score:
+            recipe_id_list.append(dictionary["Id"])
+            
+    return recipe_id_list
+    
+
+    
         
 def combine_lists_and_remove_common_elements(list_of_lists):
     
@@ -829,7 +863,7 @@ def search_recipes():
         categories = get_categories_list()
         excluded_categories_set = get_excluded_categories_set(categories)
         recipe_id_list = filter_by_categories(excluded_categories_set)
-        print(recipe_id_list)
+        # print(recipe_id_list)
         
         
         
