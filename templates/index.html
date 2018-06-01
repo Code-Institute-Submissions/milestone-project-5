@@ -1,3 +1,36 @@
  {% extends 'base.html' %} {% block content %}
 <h1>Search</h1>
+
+
+
+<form method="POST" id="filter" enctype="multipart/form-data">
+<div class="row">
+
+        <div class="input-field col s4">
+            <label for="categories">Categories</label>
+            <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" >
+
+        </div>
+        <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
+    </div>
+        <input type="submit" value="Submit">
+
+    </form>
+<script>
+function autocompleteFunction(){
+            
+        $('input.categoriesAutocomplete').autocomplete({
+            data: {
+              {% for category in categories %}  "{{ category }}": null, {% endfor %}
+            },
+
+        });
+    }
+    
+        $(document).ready(function() {
+            autocompleteFunction()
+    });
+</script>
+
 {% endblock %}

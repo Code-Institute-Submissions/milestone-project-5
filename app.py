@@ -495,6 +495,22 @@ def get_all_categories_from_table():
     
     except Exception as e:
         print("GACFT ERROR: {}".format(e))
+        
+        
+def get_all_ingredients_from_table():
+    """
+    returns a list of all ingredient names
+    from the Ingredients table
+    """
+    try:
+         with connection.cursor() as cursor:
+            cursor.execute('SELECT Name FROM Ingredients;')
+            returned_tuples = cursor.fetchall()
+            ingredients_list = [individual_tuple[0] for individual_tuple in returned_tuples]
+            return ingredients_list
+    
+    except Exception as e:
+        print("GAIFT ERROR: {}".format(e))
     
         
 def create_recipe_values_without_image(values_dictionary):
@@ -757,7 +773,7 @@ def get_excluded_ingredients_set(filter_ingredients_list):
     except Exception as e:
         print("GEIS ERROR {}".format(e))
         
-print(get_excluded_ingredients_set(["Milk", "Butter"]))
+# print(get_excluded_ingredients_set(["Milk", "Butter"]))
 
 
 
@@ -790,7 +806,17 @@ def filter_by_ingredients(excluded_ingredients_id_set):
 
 @app.route("/", methods= ["POST", "GET"])
 def search_recipes():
-    return render_template("index.html")
+    categories= get_all_categories_from_table()
+    
+    if request.method == "POST":
+        categories = get_categories_list()
+        excluded_categories_set = get_excluded_categories_set(categories)
+        recipe_id_list = filter_by_categories(excluded_categories_set)
+        print(recipe_id_list)
+        
+        
+        
+    return render_template("index.html", categories=categories)
 
 """
 
@@ -943,7 +969,8 @@ def add_recipe():
         return redirect("/recipe/{}".format(recipe_id))
     
     categories= get_all_categories_from_table()
-    return render_template("addrecipe.html", categories=categories)
+    ingredients = get_all_ingredients_from_table()
+    return render_template("addrecipe.html", categories=categories, ingredients=ingredients)
 
 
     

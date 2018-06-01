@@ -32,7 +32,7 @@
             let categoryCount = 0;
             $("#add-category").click(function() {
                 $(`#category-${categoryCount}`).after(`
-                 <input type="text" name="category-${++categoryCount}" id="category-${categoryCount}" class="autocomplete">
+                 <input type="text" name="category-${++categoryCount}" id="category-${categoryCount}" class="autocomplete categoriesAutocomplete">
                 `)
                 autocompleteFunction();
             });
@@ -59,11 +59,12 @@
                     </div>
                     <div class="input-field col s4">
                         <label for="ingredient">Ingredient</label>
-                        <input type="text" name="ingredient-${ingredientCount}" id="ingredient-${ingredientCount}">
+                        <input type="text" name="ingredient-${ingredientCount}" id="ingredient-${ingredientCount}" class="autocomplete ingredientsAutocomplete">
                     </div>
                     
                   </div>
                 `)
+                autocompleteFunction();
             });
 
             $("#remove-ingredient").click(function() {

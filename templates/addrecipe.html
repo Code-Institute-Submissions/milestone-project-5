@@ -29,7 +29,7 @@
     <div class="row">
         <div class="input-field col s4">
             <label for="categories">Categories</label>
-            <input type="text" name="category-0" id="category-0" class="autocomplete" placeholder="Mexican, Vegetarian" required>
+            <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" required>
 
         </div>
         <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
@@ -69,7 +69,7 @@
         </div>
         <div class="input-field col s4">
             <label for="ingredient">Ingredient</label>
-            <input type="text" name="ingredient-0" id="ingredient-0" value="Suger" placeholder="Honey" required>
+            <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete" value="Suger" placeholder="Honey" required>
         </div>
     </div>
     <a class="btn-floating btn-large waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
@@ -100,9 +100,17 @@
 
     function autocompleteFunction(){
             
-        $('input.autocomplete').autocomplete({
+        $('input.categoriesAutocomplete').autocomplete({
             data: {
               {% for category in categories %}  "{{ category }}": null, {% endfor %}
+            },
+
+        });
+        
+        
+         $('input.ingredientsAutocomplete').autocomplete({
+            data: {
+              {% for ingredient in ingredients %}  "{{ ingredient }}": null, {% endfor %}
             },
 
         });
