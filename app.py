@@ -802,7 +802,24 @@ def filter_by_ingredients(excluded_ingredients_id_set):
         
 # print(filter_by_ingredients({3, 5, 9, 10, 11, 12, 13, 14}))
         
-
+def combine_lists_and_remove_common_elements(list_of_lists):
+    
+    """
+    returns a list with all unique values in the 
+    argument
+    """
+    
+    
+    element_set = set()
+    
+    for individual_list in list_of_lists:
+        for element in individual_list:
+            element_set.add(element)
+    
+    element_list = list(element_set)
+    
+    return element_list
+    
 
 @app.route("/", methods= ["POST", "GET"])
 def search_recipes():
