@@ -833,7 +833,38 @@ def filter_by_review_score(min_score, max_score):
             
     return recipe_id_list
     
-
+def get_all_recipes_total_time():
+    """
+    returns a list of dictionaries with the Id
+    and total (prep+cook)  time for all recipes
+    """
+    total_time_list = []
+    ids_list = get_list_of_recipe_ids()
+    for recipe_id in ids_list:
+        total_time_list.append({
+            "Id": recipe_id,
+            "Time": (get_value_from_recipes_table("PrepTime", recipe_id)+ get_value_from_recipes_table("CookTime", recipe_id))
+        })
+        
+        
+    return total_time_list
+    
+    
+def filter_by_total_time(min_time, max_time):
+    """
+    returns a list of recipes ids for all recipes 
+    whose total time is between or equal to the arguments
+    """
+    
+    total_time_dictionary_list = get_all_recipes_total_time()
+    recipe_id_list = []
+    for dictionary in total_time_dictionary_list:
+        if dictionary["Time"] >= min_time and dictionary["Time"] <= max_time:
+            recipe_id_list.append(dictionary["iD"])
+            
+    
+    return recipe_id_list
+    
     
         
 def combine_lists_and_remove_common_elements(list_of_lists):
