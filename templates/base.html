@@ -66,6 +66,19 @@
                 `)
                 autocompleteFunction();
             });
+            
+                  $("#add-filter-ingredient").click(function() {
+                $(this).before(`
+              
+                    <div class="input-field col s4">
+                        <label for="ingredient">Ingredient</label>
+                        <input type="text" name="ingredient-${ingredientCount}" id="ingredient-${ingredientCount}" class="autocomplete ingredientsAutocomplete">
+                    </div>
+                    
+                  </div>
+                `)
+                autocompleteFunction();
+            });
 
             $("#remove-ingredient").click(function() {
                 $(`.ingredient-row-${ingredientCount}`).remove();

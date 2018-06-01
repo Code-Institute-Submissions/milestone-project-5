@@ -865,8 +865,28 @@ def filter_by_total_time(min_time, max_time):
     
     return recipe_id_list
     
+def filter_by_difficulty(list_of_difficulties):
+    """
+    returns all recipes that have a difficulty score
+    contained in the argument list
+    """
     
-        
+    possible_difficulties = [0,1,2]
+    difficulties_to_exclude = list(set(possible_difficulties)-set(list_of_difficulties))
+    string_of_placeholders = ",".join(['%s']*len(difficulties_to_exclude))
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Id FROM Recipes WHERE Difficulty not in ({}) ;'.format(string_of_placeholders),difficulties_to_exclude)
+            returned_tuples = cursor.fetchall()
+            id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
+            return id_list
+            
+    except Exception as e:
+        print("FBD ERROR: {}".format(e))
+    
+    return difficulties_to_exclude
+    
+
 def combine_lists_and_remove_common_elements(list_of_lists):
     
     """
@@ -889,6 +909,7 @@ def combine_lists_and_remove_common_elements(list_of_lists):
 @app.route("/", methods= ["POST", "GET"])
 def search_recipes():
     categories= get_all_categories_from_table()
+    ingredients = get_all_ingredients_from_table()
     
     if request.method == "POST":
         categories = get_categories_list()
@@ -898,7 +919,7 @@ def search_recipes():
         
         
         
-    return render_template("index.html", categories=categories)
+    return render_template("index.html", categories=categories, ingredients= ingredients)
 
 """
 
