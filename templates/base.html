@@ -31,7 +31,7 @@
                 <li><a href="/addrecipe">Add Recipe</a></li>
                 <li><a href="/visualizedata">Visualize Data</a></li>
                 {% if current_user.is_authenticated %}
-                <li><a href="userpage/{{ current_user.id}}">{{ current_user.username }}</a></li>
+                <li><a href="userpage/{{ current_user.id}}">{{ current_user.username[0] }}</a></li>
                 <li><a href="/logout">Logout</a> </li>
                 {% else %}
                 <li><a href="/login">Login</a></li>

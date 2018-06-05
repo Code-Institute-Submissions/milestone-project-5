@@ -51,14 +51,13 @@ class User(UserMixin):
     def is_active(self):
       return self.is_enabled
       
-  
+ 
 #https://flask-login.readthedocs.io/en/latest/#how-it-works
 @login_manager.user_loader
 def load_user(current_user):
     username = get_username_for_id(current_user)
     # print("Username: {0}, id: {1}".format(username, current_user))
     return User(current_user, username)
-    
     
 def get_username_for_id(userId):
     """
@@ -1344,6 +1343,7 @@ def add_to_favourites(recipe_id):
     
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
+    print(current_user.username[0])   
     recipe_values = get_recipe_values(recipe_id)
     average_review_score = get_average_review_score(recipe_values["Reviews"])
     
