@@ -6766,3 +6766,70 @@ mysql> SELECT * FROM Reviews;
 +--------+----------+-------+
 1789 rows in set (0.00 sec)
 
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| Ingredients                    |
+| RecipeCategories               |
+| RecipeCreators                 |
+| RecipeIngredients              |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+9 rows in set (0.00 sec)
+
+mysql> describe UserFavourites;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| UserId   | int(11) | NO   | MUL | NULL    |       |
+| RecipeId | int(11) | NO   | MUL | NULL    |       |
++----------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Userfavourites;
+ERROR 1146 (42S02): Table 'milestoneProjectFour.Userfavourites' doesn't exist
+mysql> SELECT * FROM UserFavourites;
++--------+----------+
+| UserId | RecipeId |
++--------+----------+
+|     14 |      122 |
+|     14 |      122 |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM UserFavourites;
++--------+----------+
+| UserId | RecipeId |
++--------+----------+
+|     14 |      122 |
+|     14 |      122 |
+|     14 |      118 |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM UserFavourites;
++--------+----------+
+| UserId | RecipeId |
++--------+----------+
+|     14 |      122 |
+|     14 |      122 |
+|     14 |      118 |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM UserFavourites;
++--------+----------+
+| UserId | RecipeId |
++--------+----------+
+|     14 |      122 |
+|     14 |      122 |
+|     14 |      118 |
+|     14 |      119 |
++--------+----------+
+4 rows in set (0.00 sec)
+

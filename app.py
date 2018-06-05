@@ -1318,8 +1318,29 @@ def add_user_review(recipe_id):
 
     return score
     
+def add_to_user_favourites_table(recipe_id):
+    """
+    adds user_id and recipe_id to the UserFavourites. Deletes 
+    any previous row with these values
+    """
+    user_id = current_user.id
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('DELETE FROM UserFavourites WHERE UserId = "{0}" and RecipeId = "{1}";'.format(user_id, recipe_id))
+            cursor.execute('INSERT INTO UserFavourites(UserId, RecipeId) VALUES ("{0}", "{1}");'.format(user_id, recipe_id))
+            connection.commit()
+    except Exception as e:
+        print("ATUFT ERROR: {}".format(e))
 
-        
+
+@app.route("/addtofavourites/<recipe_id>")
+def add_to_favourites(recipe_id):
+    user_logged_in = check_user_is_logged_in()
+    if not user_logged_in:
+        return redirect(url_for("login"))
+    else:
+        add_to_user_favourites_table(recipe_id)
+    return redirect("/recipe/{0}".format(recipe_id))
     
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
@@ -1327,19 +1348,17 @@ def show_recipe(recipe_id):
     average_review_score = get_average_review_score(recipe_values["Reviews"])
     
     if request.method =="POST":
-        # print(current_user)
-        # print(current_user.is_authenticated)
-        # if current_user.is_authenticated():
-        #     print("This ran")
+
         user_logged_in = check_user_is_logged_in()
         if not user_logged_in:
             return redirect(url_for("login"))
         else:
-            score = add_user_review(recipe_id)
-        print(score)
+            add_user_review(recipe_id)
+        
+        
     
     
-    return render_template("recipe.html", recipe = recipe_values, review_score = average_review_score)
+    return render_template("recipe.html", recipe = recipe_values, review_score = average_review_score, recipe_id = recipe_id)
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
