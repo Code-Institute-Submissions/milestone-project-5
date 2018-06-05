@@ -1408,6 +1408,47 @@ def add_to_favourites(recipe_id):
         add_to_user_favourites_table(recipe_id)
     return redirect("/recipe/{0}".format(recipe_id))
     
+def get_values_for_edit_page(recipe_id):
+    """
+    NOT USED
+    returns a dictionary with all the values 
+    required to render the edit page
+    """
+    return True
+    
+def get_instructions_template_text(instructions_list):
+    """
+    NOT FINISHED DISCRIption
+    Requred for javascript add/remove functions
+    """
+    instructions_list_length = len(instructions_list)
+    range_list = range(0, instructions_list_length)
+    print(range_list)
+    
+    instructions_text_list = ['<div class="row instruction-row-' + str(i) +'">'
+                +'<li>'
+                + '<div class="instruction-input-field col s10">'
+                + '<textarea id="instruction-' + '{}"'.format(str(i)) 
+                + ' name="instruction-' + '{}'.format(str(i)) +'"'
+                + ' class="materialize-textarea">'
+                + '{{ recipe["Instructions"]['+ '{}'.format(str(i)) + ']'
+                + ' }}'
+                +'</textarea> </div>' 
+                +'</li> </div>'
+                 for i in range_list]
+    return instructions_text_list
+    
+@app.route("/edit/<recipe_id>")
+def edit_recipe(recipe_id):
+    categories= get_all_categories_from_table()
+    ingredients = get_all_ingredients_from_table()
+    recipe_dictionary  = get_recipe_values(recipe_id)
+    instructions_text_list = get_instructions_template_text(recipe_dictionary["Instructions"])
+    print(instructions_text_list)
+    print(recipe_dictionary["Difficulty"])
+    return render_template("edit.html", recipe= recipe_dictionary, instructions_text = instructions_text_list, categories= categories, ingredients=ingredients)
+    
+    
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
     recipe_values = get_recipe_values(recipe_id)
