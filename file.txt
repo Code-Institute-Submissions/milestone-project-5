@@ -2993,3 +2993,117 @@ mysql> SELECT * FROM Reviews;
 +--------+----------+-------+
 3 rows in set (0.00 sec)
 
+mysql> SELECT * FROM RecipeCategories;
++----------+------------+
+| RecipeId | CategoryId |
++----------+------------+
+|      101 |         24 |
+|      102 |         24 |
+|      102 |          7 |
+|      102 |         47 |
+|      103 |          9 |
+|      103 |         22 |
+|      104 |         16 |
+|      104 |         48 |
+|      104 |         19 |
+|      105 |          9 |
+|      105 |         22 |
+|      105 |         49 |
+|      106 |          2 |
+|      106 |          4 |
+|      106 |          5 |
+|      107 |          2 |
+|      108 |          2 |
+|      109 |          6 |
+|      110 |          2 |
+|      110 |         10 |
+|      111 |          2 |
+|      112 |          2 |
+|      113 |          2 |
+|      114 |         50 |
+|      115 |         24 |
+|      116 |         24 |
+|      117 |         24 |
+|      118 |         24 |
+|      119 |         24 |
+|      120 |         24 |
+|      121 |          2 |
+|      122 |          2 |
+|      122 |         21 |
+|      123 |          4 |
+|      123 |         10 |
++----------+------------+
+35 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Categories; 
++----+-----------------+
+| Id | Name            |
++----+-----------------+
+|  1 | Healthy         |
+|  2 | Family and Kids |
+|  3 | Cakes & Baking  |
+|  4 | Cuisines        |
+|  5 | Events          |
+|  6 | Everyday        |
+|  7 | Seasonal        |
+|  8 | Special Diets   |
+|  9 | Vegetarian      |
+| 10 | Breakfast       |
+| 11 | Starter         |
+| 12 | Main Course     |
+| 13 | Desert          |
+| 14 | Dinner          |
+| 15 | Soup            |
+| 16 | Indian          |
+| 17 | Chinese         |
+| 18 | Thai            |
+| 19 | Asian           |
+| 20 | Italian         |
+| 21 | French          |
+| 22 | Spanish         |
+| 23 | European        |
+| 24 | Mexican         |
+| 25 | Latin American  |
+| 26 | African         |
+| 27 | American        |
+| 28 | Australian      |
+| 29 | British         |
+| 30 | Irish           |
+| 32 | Jewish          |
+| 47 | Christmas       |
+| 48 | Spicy           |
+| 49 | Curry           |
+| 50 | Sweet           |
++----+-----------------+
+35 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Recipes;
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+| Id  | Name          | UserId | Difficulty | Serves | Blurb         | PrepTime | CookTime | Instructions                                                            | ImageName         |
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+| 101 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 102 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 103 | Chicken Curry |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction', 'Third Instruction ']       | NULL              |
+| 104 | Beef Curry    |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Another Instruction ', 'And a third']            | NULL              |
+| 105 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction ', 'And a third Instruction'] | NULL              |
+| 106 | Roast Pork    |      0 |          1 |      4 | A short Blurb | 01:20:00 | 01:20:00 | ['Test Instructions', 'Second instruction']                             | NULL              |
+| 107 | Chicken Curry |      0 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 108 | Chicken Curry |      0 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 109 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 110 | Chicken Sambo |     13 |          2 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 111 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 112 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 113 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 114 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 115 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 116 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 117 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 118 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 119 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | 788Visa_photo.jpg |
+| 120 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 121 | Pizza         |     14 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 122 | Salad         |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 123 | Beef Curry    |     12 |          0 |      4 | A short Blurb | 02:25:00 | 02:10:00 | ['Test Instructions']                                                   | NULL              |
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+23 rows in set (0.00 sec)
+

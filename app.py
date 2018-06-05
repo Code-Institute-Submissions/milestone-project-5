@@ -865,10 +865,12 @@ def filter_by_review_score(recipe_ids_list, min_score, max_score):
     returns a list of ids for all recipes with an average 
     review score that is equal to or between the arguments
     """
+
+    
     list_of_score_dictionaries =  get_recipes_average_review_score(recipe_ids_list)
     returned_id_list = []
     for dictionary in list_of_score_dictionaries:
-        if dictionary["Score"] >= min_score and dictionary["Score"] <= max_score:
+        if dictionary["Score"] >= int(min_score) and dictionary["Score"] <= int(max_score):
             returned_id_list.append(dictionary["Id"])
             
     return returned_id_list
@@ -919,8 +921,10 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
     contained in the argument list
     """
     
-    possible_difficulties = [0,1,2]
-    difficulties_to_exclude = list(set(possible_difficulties)-set(list_of_difficulties))
+    possible_difficulties = ["0","1","2"]
+    # difficulties_to_exclude = list(set(possible_difficulties)-set(list_of_difficulties))
+    difficulties_to_exclude = [difficulty for difficulty in possible_difficulties if difficulty not in list_of_difficulties]
+   
     string_of_placeholders = ",".join(['%s']*len(difficulties_to_exclude))
     try:
         with connection.cursor() as cursor:
@@ -978,7 +982,7 @@ def get_filter_ingredients():
     if at_least_one_ingredient:
         ingredients_dictionary_list = get_ingredients_dictionary_list()
         ingredients_name_list = [ingredient["Name"] for ingredient in ingredients_dictionary_list]
-        
+        # print (ingredients_name_list)
         return ingredients_name_list
     return False
     
@@ -1002,7 +1006,7 @@ def get_max_score_filter():
     """
     
     try:
-        max_score_entered = request.form["min-score"]
+        max_score_entered = request.form["max-score"]
         return max_score_entered
     except Exception as e:
         return 5
@@ -1061,7 +1065,8 @@ def get_difficulties_filter():
     selected 
     """
     try:
-        difficulties = request.form["difficulties-filter"]
+        difficulties = request.form.getlist("difficulties-filter")
+        # print(difficulties)
         return difficulties 
     except Exception as e:
         return False
@@ -1072,29 +1077,43 @@ def get_ids_that_match_all_filters():
     the user's filters
     """
     ids_list = get_list_of_recipe_ids()
+    print(ids_list)
     
     filter_categories = get_filter_categories()
     if filter_categories:
         ids_list = filter_by_categories(ids_list, filter_categories)
+        print("FC {}".format(ids_list))
         
     
     filter_ingredients = get_filter_ingredients()
     if filter_ingredients:
         ids_list = filter_by_ingredients(ids_list, filter_ingredients)
+        print("FI")
+        print(ids_list)
         
     min_score = get_min_score_filter()
     max_score = get_max_score_filter()
     
     if (min_score != 0) or (max_score != 5):
         ids_list = filter_by_review_score(ids_list, min_score, max_score)
+        print("score")
+        print(ids_list)
         
     min_time = get_min_time_filter()
     max_time = get_max_time_filter()
     
 
     ids_list = filter_by_total_time(ids_list, min_time, max_time)
+    print("time")
+    print(ids_list)
     
-    print(get_difficulties_filter)
+    difficulties_list = get_difficulties_filter()
+    
+    if (len(difficulties_list) > 0):
+        ids_list = filter_by_difficulty(ids_list, difficulties_list)
+        print("diff")
+        print(ids_list)
+        
     
     return ids_list
     
@@ -1109,6 +1128,7 @@ def search_recipes():
     if request.method == "POST":
         
         ids_list = get_ids_that_match_all_filters()
+        print("returned")
         print(ids_list)
         # categories = get_categories_list()
         # excluded_categories_set = get_excluded_categories_set(categories)
