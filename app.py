@@ -1330,6 +1330,73 @@ def add_to_user_favourites_table(recipe_id):
             connection.commit()
     except Exception as e:
         print("ATUFT ERROR: {}".format(e))
+        
+        
+def get_username(user_id):
+    """
+    returns the username that matches the 
+    argument user_id
+    """
+    try:
+         with connection.cursor() as cursor:
+            cursor.execute('SELECT Username FROM Users WHERE Id = "{}";'.format(user_id))
+            returned_tuple = cursor.fetchone()
+            username = returned_tuple[0]
+            return username
+    
+    except Exception as e:
+        print("GU ERROR: {}".format(e))
+        
+def get_user_favourites(user_id):
+    """
+    returns a list of recipe ids for
+    all of the argument user's favourite recipes
+    """
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes INNER JOIN UserFavourites ON UserFavourites.RecipeId = Recipes.Id WHERE UserFavourites.UserId = "{}";'.format(user_id))
+            returned_tuples = cursor.fetchall()
+            values_list = [{ "Id": individual_tuple[0], "Name": individual_tuple[1], "Blurb": individual_tuple[2], "ImageName": individual_tuple[3]} for individual_tuple in returned_tuples]
+            return values_list
+    except Exception as e:
+        print("GUF ERROR: {}".format(e))
+        
+def get_user_recipes(user_id):
+    """
+    returns a list of dictionaries for all of 
+    the argument user's submitted recipes. Each
+    dictionary contains Id, Name, Blurb, and ImageName
+    fields
+    """   
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes WHERE UserId = "{}";'.format(user_id))
+            returned_tuples = cursor.fetchall()
+            values_list = [{ "Id": individual_tuple[0], "Name": individual_tuple[1], "Blurb": individual_tuple[2], "ImageName": individual_tuple[3]} for individual_tuple in returned_tuples]
+            return values_list
+            
+    except Exception as e:
+        print("GUR ERROR: {}".format(e))
+    
+def get_userpage_values(user_id):
+    """
+    return a dictionary with all the values required to
+    render the userpage template
+    """
+    dictionary = {
+        "Username" : get_username(user_id),
+        "Favourites" : get_user_favourites(user_id),
+        "Recipes" : get_user_recipes(user_id)
+    }
+    return dictionary 
+    
+
+@app.route("/userpage/<user_id>")
+def userpage(user_id):
+    
+    userpage_values = get_userpage_values(user_id)
+    return render_template("userpage.html", user= userpage_values)
 
 
 @app.route("/addtofavourites/<recipe_id>")
@@ -1343,7 +1410,6 @@ def add_to_favourites(recipe_id):
     
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
-    print(current_user.username[0])   
     recipe_values = get_recipe_values(recipe_id)
     average_review_score = get_average_review_score(recipe_values["Reviews"])
     

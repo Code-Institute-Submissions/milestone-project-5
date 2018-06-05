@@ -6833,3 +6833,37 @@ mysql> SELECT * FROM UserFavourites;
 +--------+----------+
 4 rows in set (0.00 sec)
 
+mysql> SELECT * FROM Users;
++----+-------------------------------------------------------------------------------+-----------------+
+| Id | Password                                                                      | Username        |
++----+-------------------------------------------------------------------------------+-----------------+
+| 12 | $5$rounds=535000$x4Sx2EEpC.FdzyQl$Lc3JN8Nhge7L0iN1Sdu8ydp52z5JyFuxohUXv4RXe.C | Paddywc         |
+| 13 | $5$rounds=535000$if3SgeyN3T4BeeaK$UF0lq6NuRYTwlzUvtcaWyZZcvLLYH9CjtUpwQpo/rl6 | Cremen          |
+| 14 | $5$rounds=535000$pZbmynuFWWyMfG8t$oPbvG4ZaMaKuulxkjNnO6XbpMpaCnAy1.TAjJotAaxB | Patrick         |
+| 15 | $5$rounds=535000$2zu7YJqsHbdweh4o$lHMJxAdnE9GjTROUS3OkioOj5pe8haxpFF3VfoM9FJ0 | Unique Username |
++----+-------------------------------------------------------------------------------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM UserFavourites;
++--------+----------+
+| UserId | RecipeId |
++--------+----------+
+|     14 |      122 |
+|     14 |      122 |
+|     14 |      118 |
+|     14 |      119 |
++--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Recipes LIMIT 5;
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-----------+
+| Id  | Name          | UserId | Difficulty | Serves | Blurb         | PrepTime | CookTime | Instructions                                                            | ImageName |
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-----------+
+| 101 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL      |
+| 102 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL      |
+| 103 | Chicken Curry |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction', 'Third Instruction ']       | NULL      |
+| 104 | Beef Curry    |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Another Instruction ', 'And a third']            | NULL      |
+| 105 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction ', 'And a third Instruction'] | NULL      |
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-----------+
+5 rows in set (0.00 sec)
+
