@@ -1,0 +1,24 @@
+
+
+form  .row{
+    padding-left: 10px;
+}
+
+form h6{
+    padding-left:10px;
+}
+
+form .instruction-input-field{
+    margin-top: -1% !important;
+    position:  relative;
+}
+
+@media(min-width:750px) {
+   form  .row{
+    padding-left: 20px;
+}
+
+form h6{
+    padding-left:20px;
+} 
+}

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" />
+
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -89,7 +91,7 @@
 
             $("#add-instruction").click(function() {
                 $(this).before(`  <div class = "row instruction-row-${++instructionCount}"><li>
-                    <div class="input-field col s12">
+                    <div class="instruction-input-field col s12">
                         <textarea id="instruction-${instructionCount}" name= "instruction-${instructionCount}" class="materialize-textarea"></textarea>
                     </div>
 
