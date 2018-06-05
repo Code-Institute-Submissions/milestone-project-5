@@ -4,7 +4,10 @@
 
 <h4>
 {% for category in recipe["Categories"] %}
-{{ category }}, 
+{{ category }}
+{% if not loop.last %}
+,
+{% endif %}
 {% endfor %}
 </h4>
 
@@ -18,6 +21,20 @@
 
 <p>Reivew Score: {{ review_score }}</p>
 <p>Number of Reviews: {{ recipe["Reviews"]|length }}</p>
+<form method="POST">
+    <div class="input-field col s12">
+        <!--onchange code from: https://stackoverflow.com/questions/19086737/how-do-i-auto-submit-a-dropdown-when-a-value-is-selected-other-than-the-first-va-->
+        <select class="user-review" name="user-review" onchange='if(this.value != "") { this.form.submit(); }'>
+      <option value="" disabled selected>Choose your option</option>
+      <option value="1">Option 1</option>
+      <option value="2">Option 2</option>
+      <option value="3">Option 3</option>
+      <option value="4">Option 4</option>
+      <option value="5">Option 5</option>
+    </select>
+        <label>Materialize Select</label>
+    </div>
+</form>
 
 <p>Difficulty: {{ recipe["Difficulty"] }}</p>
 <p>{{ recipe["PrepTime"] }}

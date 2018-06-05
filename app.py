@@ -542,8 +542,7 @@ def get_all_ingredients_from_table():
         
 def create_recipe_values_without_image(values_dictionary):
     
-    dummy_userid = current_user.id
-    
+
     #must use double quotes inside values string 
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}")'.format( 
     values_dictionary["Name"], 
@@ -1294,11 +1293,52 @@ def add_recipe():
     return render_template("addrecipe.html", categories=categories, ingredients=ingredients)
 
 
+def check_user_is_logged_in():
+    """
+    return True if the user is logged in.
+    Returns False otherwsie
+    """
+    if current_user.is_authenticated:
+        return True
+    else:
+        return False
+def add_user_review(recipe_id):
+    """
+    gets the review posted by the user and adds
+    it to the Reviews table along with the UserId
+    """
+    score = request.form["user-review"]
+    user_id = current_user.id
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('INSERT INTO Reviews(UserId, RecipeId, Score) VALUES ("{0}", "{1}", "{2}");'.format(user_id, recipe_id, score))
+            connection.commit()
+    except Exception as e:
+        print("AUR ERROR: {}".format(e))
+
+    return score
     
-@app.route("/recipe/<recipe_id>")
+
+        
+    
+@app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
     recipe_values = get_recipe_values(recipe_id)
     average_review_score = get_average_review_score(recipe_values["Reviews"])
+    
+    if request.method =="POST":
+        # print(current_user)
+        # print(current_user.is_authenticated)
+        # if current_user.is_authenticated():
+        #     print("This ran")
+        user_logged_in = check_user_is_logged_in()
+        if not user_logged_in:
+            return redirect(url_for("login"))
+        else:
+            score = add_user_review(recipe_id)
+        print(score)
+    
+    
     return render_template("recipe.html", recipe = recipe_values, review_score = average_review_score)
 
 if __name__ == '__main__':
