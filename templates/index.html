@@ -3,7 +3,7 @@
 
 
 
-<form method="POST" id="filter" enctype="multipart/form-data">
+<form method="POST" id="filter" >
 
     <div class="row">
         <div class="input-field col s4">
@@ -50,19 +50,19 @@
 
     <div class="row">
         <div class="input-field col s6">
-            <input id="min-hours" name="min-hours" class="col s4" type="number" value="02" placeholder="Hours" required>
-            <input id="min-mins" name="min-mins" type="number" value="20" max="59" class="col s4 offset-s1" placeholder="Minutes " required>
+            <input id="min-hours" name="min-hours" class="col s4" type="number" value="02" placeholder="Hours">
+            <input id="min-mins" name="min-mins" type="number" value="20" max="59" class="col s4 offset-s1" placeholder="Minutes " >
             <label>Min Cooking Time</label>
         </div>
         <div class="input-field col s6">
-            <input id="max-hours" name="max-hours" class="col s4" value="3" type="number" placeholder="Hours" required>
-            <input id="max-mins" name="max-mins" class="col s4 offset-s1" value="15" type="number" max="59" placeholder="Minutes " required>
-            <label>Max Cooking Tinee</label>
+            <input id="max-hours" name="max-hours" class="col s4" value="3" type="number" placeholder="Hours" >
+            <input id="max-mins" name="max-mins" class="col s4 offset-s1" value="15" type="number" max="59" placeholder="Minutes " >
+            <label>Max Cooking Time</label>
         </div>
     </div>
     
     <div class="input-field col s12">
-    <select multiple>
+    <select multiple name="difficulties-filter">
       <option value="" disabled selected>Difficulty</option>
       <option value="0">Easy</option>
       <option value="1">Normal</option>

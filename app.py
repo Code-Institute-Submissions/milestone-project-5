@@ -56,7 +56,7 @@ class User(UserMixin):
 @login_manager.user_loader
 def load_user(current_user):
     username = get_username_for_id(current_user)
-    print("Username: {0}, id: {1}".format(username, current_user))
+    # print("Username: {0}, id: {1}".format(username, current_user))
     return User(current_user, username)
     
     
@@ -231,6 +231,32 @@ HELPER FUNCTIONS
 """
 
 
+def convert_list_to_string_for_sql_search(argument_list):
+    """
+    XXX
+    """
+    list_as_string = "{}".format(argument_list)
+    formatted_string = list_as_string.replace("[", "(").replace("]", ")").replace("{","(").replace("}", ")")
+    
+    return formatted_string
+
+
+def check_if_string_contains_letters(string):
+    """
+    returns True if the string contains a letter,
+    otherwise returns False
+    """
+    
+    lower_string = string.lower()
+    letters = ['a','b','c','d','e','f','g', 'h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+    for letter in lower_string:
+        if letter in letters:
+            return True
+    
+    return False
+    
+
+
 def get_recipe_image():
     """
     returns the image that the user uploads 
@@ -254,6 +280,7 @@ def get_prep_time():
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
     prep_hours = request.form["prep-hours"]
+    print(prep_hours)
     prep_mins = request.form["prep-mins"]
     prep_time =   datetime.datetime.strptime('{0}:{1}'.format(prep_hours, prep_mins), '%H:%M').time()
     
@@ -710,12 +737,11 @@ SEARCHING RECIPES
 
 
 
-def get_excluded_categories_set(filter_categories_list):
-    
+def get_excluded_categories_list(filter_categories_list):
     """
-    returns a set of category ids for all categories 
-    not included in the argument list. List is list of 
-    category names
+    returns a list of category ids for all categories 
+    not included in the argument list. Argument list is 
+    list of category names
     """
     
     string_of_placeholders = ",".join(['%s']*len(filter_categories_list))
@@ -725,41 +751,50 @@ def get_excluded_categories_set(filter_categories_list):
             cursor.execute('SELECT Id FROM Categories INNER JOIN RecipeCategories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Name not in ({}) ;'.format(string_of_placeholders), filter_categories_list)
             returned_tuples = cursor.fetchall()
             category_id_set = {individual_tuple[0] for individual_tuple in returned_tuples}
+            categories_id_list = [category_id for category_id in category_id_set]
+
             return category_id_set
     except Exception as e:
         print("GECL ERROR {}".format(e))
         
 # print(get_excluded_categories_set(["Mexican", "Irish"]))
 
-def filter_by_categories(excluded_categories_id_set):
+def filter_by_categories(recipe_ids_list, filter_categories_list):
+    
     
     """ 
-    returns a list of ids for all recipes that
-    don't contain any of the categories in the 
-    argument set
+    removes ids from the argument list that are
+    not matched with any of the filter categories in
+    the RecipeCategories table
     """
-    excluded_categories_id_list = [category_id for category_id in excluded_categories_id_set]
-    string_of_placeholders = ",".join(['%s']*len(excluded_categories_id_set))
+   
+    recipe_ids_string = convert_list_to_string_for_sql_search(recipe_ids_list)
+    excluded_categories_id_list = get_excluded_categories_list(filter_categories_list)
+    
+    excluded_categories_string = convert_list_to_string_for_sql_search(excluded_categories_id_list)
+    
 
     try:
         with connection.cursor() as cursor:
-            # execution_string = 'SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Id not in ({});'.format(string_of_placeholders), filter_categories_list)
-            # print(execution_string)
-            cursor.execute('SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Id not in ({});'.format(string_of_placeholders),excluded_categories_id_list)
+            
+            cursor.execute('SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ' +
+            'ON Categories.Id = RecipeCategories.CategoryId '+
+            'WHERE Categories.Id not in '+ excluded_categories_string +
+            ' and RecipeId in ' + recipe_ids_string)
+            
             returned_tuples = cursor.fetchall()
             id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
             return id_list
     except Exception as e:
         print("FBC ERROR {}".format(e))
         
-# print(filter_by_categories({2, 4, 5, 6, 7, 9, 10, 47, 16, 48, 49, 19, 50, 21, 22}))
 
-def get_excluded_ingredients_set(filter_ingredients_list):
+def get_excluded_ingredients_list(filter_ingredients_list):
     
     """
-    returns a set of ingredient ids for all ingredients 
-    not included in the argument list. List is list of 
-    ingredient names
+    returns a list of ingredient ids for all ingredients 
+    not included in the argument list. Argument list
+    is list of ingredient names
     """
     
     string_of_placeholders = ",".join(['%s']*len(filter_ingredients_list))
@@ -769,7 +804,8 @@ def get_excluded_ingredients_set(filter_ingredients_list):
             cursor.execute('SELECT Id FROM Ingredients INNER JOIN RecipeIngredients ON Ingredients.Id = RecipeIngredients.IngredientId  WHERE Ingredients.Name not in ({}) ;'.format(string_of_placeholders), filter_ingredients_list)
             returned_tuples = cursor.fetchall()
             ingredient_id_set = {individual_tuple[0] for individual_tuple in returned_tuples}
-            return ingredient_id_set
+            ingredient_id_list = [ingredient_id for ingredient_id in ingredient_id_set]
+            return ingredient_id_list
     except Exception as e:
         print("GEIS ERROR {}".format(e))
         
@@ -778,21 +814,25 @@ def get_excluded_ingredients_set(filter_ingredients_list):
 
 
 
-def filter_by_ingredients(excluded_ingredients_id_set):
+def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
     
     """ 
     returns a list of ids for all recipes that
     don't contain any of the ingredients in the 
     argument set
     """
-    excluded_ingredients_id_list = [ingredient_id for ingredient_id in excluded_ingredients_id_set]
-    string_of_placeholders = ",".join(['%s']*len(excluded_ingredients_id_set))
-
+    recipe_ids_string = convert_list_to_string_for_sql_search(recipe_ids_list)
+    
+    excluded_ingredients_list = get_excluded_ingredients_list(filter_ingredients_list)
+    excluded_ingredients_string =  convert_list_to_string_for_sql_search(excluded_ingredients_list)
+    
     try:
         with connection.cursor() as cursor:
-            # execution_string = 'SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Id not in ({});'.format(string_of_placeholders), filter_categories_list)
-            # print(execution_string)
-            cursor.execute('SELECT RecipeId FROM RecipeIngredients INNER JOIN Ingredients ON Ingredients.Id = RecipeIngredients.IngredientId  WHERE Ingredients.Id not in ({});'.format(string_of_placeholders),excluded_ingredients_id_list)
+           
+            cursor.execute('SELECT RecipeId FROM RecipeIngredients ' +
+            'INNER JOIN Ingredients ON Ingredients.Id = RecipeIngredients.IngredientId '+
+            'WHERE Ingredients.Id not in ' + excluded_ingredients_string +
+            ' and RecipeId in ' + recipe_ids_string)
             returned_tuples = cursor.fetchall()
             id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
             return id_list
@@ -800,46 +840,45 @@ def filter_by_ingredients(excluded_ingredients_id_set):
         print("FBC ERROR {}".format(e))
         
         
-# print(filter_by_ingredients({3, 5, 9, 10, 11, 12, 13, 14}))
 
 
-def get_all_recipes_average_review_score():
+def get_recipes_average_review_score(recipe_ids_list):
     """
     returns a dictionary with the Id and average 
-    review score for all recipes
+    review score for all recipes included in the
+    argument  list
     """
     
     average_review_list = []
-    ids_list = get_list_of_recipe_ids()
-    for recipe_id in ids_list:
+    
+    for recipe_id in recipe_ids_list:
         average_review_list.append({
             "Id" : recipe_id,
-            "Score" : get_average_review_score(get_recipe_reviews(recipe_id))
+            "Score" : int(get_average_review_score(get_recipe_reviews(recipe_id)))
         })
         
     return average_review_list
     
 
-def filter_by_review_score(min_score, max_score):
+def filter_by_review_score(recipe_ids_list, min_score, max_score):
     """
     returns a list of ids for all recipes with an average 
     review score that is equal to or between the arguments
     """
-    list_of_score_dictionaries =  get_all_recipes_average_review_score()
-    recipe_id_list = []
+    list_of_score_dictionaries =  get_recipes_average_review_score(recipe_ids_list)
+    returned_id_list = []
     for dictionary in list_of_score_dictionaries:
         if dictionary["Score"] >= min_score and dictionary["Score"] <= max_score:
-            recipe_id_list.append(dictionary["Id"])
+            returned_id_list.append(dictionary["Id"])
             
-    return recipe_id_list
+    return returned_id_list
     
-def get_all_recipes_total_time():
+def get_recipes_total_time(ids_list):
     """
     returns a list of dictionaries with the Id
     and total (prep+cook)  time for all recipes
     """
     total_time_list = []
-    ids_list = get_list_of_recipe_ids()
     for recipe_id in ids_list:
         total_time_list.append({
             "Id": recipe_id,
@@ -850,22 +889,31 @@ def get_all_recipes_total_time():
     return total_time_list
     
     
-def filter_by_total_time(min_time, max_time):
+def filter_by_total_time(ids_list, min_time, max_time):
     """
     returns a list of recipes ids for all recipes 
     whose total time is between or equal to the arguments
     """
     
-    total_time_dictionary_list = get_all_recipes_total_time()
-    recipe_id_list = []
+    #convert max and min times to timedelta
+    # code from https://stackoverflow.com/questions/35241643/convert-datetime-time-into-datetime-timedelta-in-python-3-4?noredirect=1&lq=1
+    timedelta_min_time = datetime.datetime.combine(datetime.date.min, min_time) - datetime.datetime.min
+    timedelta_max_time = datetime.datetime.combine(datetime.date.min, max_time) - datetime.datetime.min
+    
+    
+    total_time_dictionary_list = get_recipes_total_time(ids_list)
+    returned_ids_list = []
     for dictionary in total_time_dictionary_list:
-        if dictionary["Time"] >= min_time and dictionary["Time"] <= max_time:
-            recipe_id_list.append(dictionary["iD"])
+        if dictionary["Time"] >= timedelta_min_time and dictionary["Time"] <= timedelta_max_time:
+            returned_ids_list.append(dictionary["Id"])
             
     
-    return recipe_id_list
+    return returned_ids_list
     
-def filter_by_difficulty(list_of_difficulties):
+
+    
+
+def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
     """
     returns all recipes that have a difficulty score
     contained in the argument list
@@ -904,6 +952,153 @@ def combine_lists_and_remove_common_elements(list_of_lists):
     element_list = list(element_set)
     
     return element_list
+
+    
+def get_filter_categories():
+    """
+    returns false if user has not entered any
+    categories to filter by. Otherwise returns list 
+    of category names
+    """
+    
+    at_least_one_category = check_if_string_contains_letters(request.form["category-0"])
+    if at_least_one_category:
+        categories_list = get_categories_list()
+        return categories_list
+    return False
+    
+def get_filter_ingredients():
+    """
+    returns false if user has not entered any
+    ingredients to filter by. Otherwise returns list 
+    of ingredient names
+    """
+    
+    at_least_one_ingredient = check_if_string_contains_letters(request.form["ingredient-0"])
+    if at_least_one_ingredient:
+        ingredients_dictionary_list = get_ingredients_dictionary_list()
+        ingredients_name_list = [ingredient["Name"] for ingredient in ingredients_dictionary_list]
+        
+        return ingredients_name_list
+    return False
+    
+    
+def get_min_score_filter():
+    """
+    returns the min score selected by the user.
+    Returns 0 if user did not select a min score
+    """
+    
+    try:
+        min_score_entered = request.form["min-score"]
+        return min_score_entered 
+    except Exception as e:
+        return 0
+        
+def get_max_score_filter():
+    """
+    returns the max score selected by the user.
+    Returns 5 if user did not select a max score
+    """
+    
+    try:
+        max_score_entered = request.form["min-score"]
+        return max_score_entered
+    except Exception as e:
+        return 5
+        
+
+        
+def get_min_time_filter():
+    """
+    returns the min time selected by the user.
+    Returns 0:00 if no min time selected
+    """
+    try:
+        min_hours = request.form["min-hours"]
+    except Exception as e:
+        pass
+    try:
+        min_mins = request.form["min-mins"]
+    except Exception as e:
+        pass
+    
+    if min_hours == "":
+        min_hours = 00
+    if min_mins == "":
+        min_mins= 00
+    
+    min_time =  datetime.datetime.strptime('{0}:{1}'.format(min_hours, min_mins), '%H:%M').time()
+    return  min_time
+    
+def get_max_time_filter():
+    """
+    returns the max time selected by the user.
+    Returns 20:00 if no max time selected
+    """
+    
+    try:
+        max_hours = request.form["max-hours"]
+    except Exception as e:
+        pass
+    try:
+        max_mins = request.form["max-mins"]
+    except Exception as e:
+        pass
+    
+    if max_hours == "":
+        max_hours = 20
+    if max_mins == "":
+        max_mins= 00
+    
+    max_time =  datetime.datetime.strptime('{0}:{1}'.format(max_hours, max_mins), '%H:%M').time()
+    return  max_time
+    
+def get_difficulties_filter():
+    """
+    returns a lsit of all difficulties selected 
+    by the user. Returns false if no difficulties 
+    selected 
+    """
+    try:
+        difficulties = request.form["difficulties-filter"]
+        return difficulties 
+    except Exception as e:
+        return False
+    
+def get_ids_that_match_all_filters():
+    """
+    returns a lsit of recipe ids that match all
+    the user's filters
+    """
+    ids_list = get_list_of_recipe_ids()
+    
+    filter_categories = get_filter_categories()
+    if filter_categories:
+        ids_list = filter_by_categories(ids_list, filter_categories)
+        
+    
+    filter_ingredients = get_filter_ingredients()
+    if filter_ingredients:
+        ids_list = filter_by_ingredients(ids_list, filter_ingredients)
+        
+    min_score = get_min_score_filter()
+    max_score = get_max_score_filter()
+    
+    if (min_score != 0) or (max_score != 5):
+        ids_list = filter_by_review_score(ids_list, min_score, max_score)
+        
+    min_time = get_min_time_filter()
+    max_time = get_max_time_filter()
+    
+
+    ids_list = filter_by_total_time(ids_list, min_time, max_time)
+    
+    print(get_difficulties_filter)
+    
+    return ids_list
+    
+    
     
 
 @app.route("/", methods= ["POST", "GET"])
@@ -912,9 +1107,12 @@ def search_recipes():
     ingredients = get_all_ingredients_from_table()
     
     if request.method == "POST":
-        categories = get_categories_list()
-        excluded_categories_set = get_excluded_categories_set(categories)
-        recipe_id_list = filter_by_categories(excluded_categories_set)
+        
+        ids_list = get_ids_that_match_all_filters()
+        print(ids_list)
+        # categories = get_categories_list()
+        # excluded_categories_set = get_excluded_categories_set(categories)
+        # recipe_id_list = filter_by_categories(excluded_categories_set)
         # print(recipe_id_list)
         
         
