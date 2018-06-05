@@ -8,9 +8,23 @@ form h6{
     padding-left:10px;
 }
 
+form .btn-row{
+    padding-left: 5%;
+    margin-top: -2.5%;
+}
+
 form .instruction-input-field{
     margin-top: -1% !important;
     position:  relative;
+}
+
+form .required-explanation{
+    margin-left: 4%;
+    color: #9e9e9e;
+}
+form .submit-btn{
+    margin-left: 3%;
+    margin-bottom:2%;
 }
 
 @media(min-width:750px) {
@@ -21,4 +35,11 @@ form .instruction-input-field{
 form h6{
     padding-left:20px;
 } 
+
+form .btn-row{
+    padding-left: 3%;
+}
+
+
+
 }

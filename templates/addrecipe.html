@@ -29,21 +29,21 @@
 
 
     <div class="row">
-        <div class="input-field col s4 m8">
+        <div class="input-field col s8 m4">
             <label for="categories">Categories*</label>
             <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" required>
 
         </div>
-        <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
-        <a class="btn-floating btn-large waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
     </div>
-
-
+    <div class="row categories-btn-row btn-row">
+        <a class="btn-floating btn-small waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-small waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
+    </div>
 
     <div class="row">
         <div class="input-field col s12">
             <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)"></textarea>
-            <label for="textarea1"></label>
+            <label for="blurb">Blurb</label>
         </div>
     </div>
 
@@ -72,31 +72,33 @@
             <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete" placeholder="Honey" required>
         </div>
     </div>
-    <a class="btn-floating btn-large waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
-    <a class="btn-floating btn-large waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
-
+    <div class="row ingredient-btn-row btn-row">
+        <a class="btn-floating btn-small waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-small waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
+    </div>
 
     <h6>Instructions:*</h6>
     <ol>
         <div class="row instruction-row-1">
             <li>
-                <div class="instruction-input-field col s12">
+                <div class="instruction-input-field col s10">
                     <textarea id="instruction-1" name="instruction-1" class="materialize-textarea" required> </textarea>
                 </div>
             </li>
         </div>
-        <a class="btn-floating btn-large waves-effect waves-light red" id="add-instruction"><i class="material-icons">add</i></a>
-        <a class="btn-floating btn-large waves-effect waves-light red" id="remove-instruction"><i class="material-icons">remove</i></a>
+        <div class="row instruction-btn-row btn-row">
+            <a class="btn-floating btn-small waves-effect waves-light red" id="add-instruction"><i class="material-icons">add</i></a>
+            <a class="btn-floating btn-small waves-effect waves-light red" id="remove-instruction"><i class="material-icons">remove</i></a>
+        </div>
     </ol>
 
     <p class="required-explanation">*Required field</p>
 
-    <button class="btn waves-effect waves-light" type="submit">Submit <i class="material-icons right">send</i></button>
+    <button class="btn waves-effect waves-light submit-btn" type="submit">Submit <i class="material-icons right">send</i></button>
 
 
 </form>
-
-
+ 
 <script>
 
     function autocompleteFunction(){

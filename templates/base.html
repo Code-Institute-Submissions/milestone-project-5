@@ -42,7 +42,7 @@
                  if (categoryCount > 0){
                 $(`#category-${categoryCount}`).remove();
                 categoryCount--;
-                 };
+                 }
             });
                 
                 
@@ -53,7 +53,7 @@
 
 
             $("#add-ingredient").click(function() {
-                $(this).before(`
+                $(".ingredient-btn-row").before(`
                     <div class="row ingredient-row-${++ingredientCount}">
                          <div class="input-field col s4">
                             <label for="quantity">Quantity</label>
@@ -83,15 +83,17 @@
             });
 
             $("#remove-ingredient").click(function() {
+                if (ingredientCount > 0){
                 $(`.ingredient-row-${ingredientCount}`).remove();
                 ingredientCount--;
+                }
             });
 
             let instructionCount = 1;
 
             $("#add-instruction").click(function() {
-                $(this).before(`  <div class = "row instruction-row-${++instructionCount}"><li>
-                    <div class="instruction-input-field col s12">
+                $(".instruction-btn-row").before(`  <div class = "row instruction-row-${++instructionCount}"><li>
+                    <div class="instruction-input-field col s10">
                         <textarea id="instruction-${instructionCount}" name= "instruction-${instructionCount}" class="materialize-textarea"></textarea>
                     </div>
 
@@ -99,7 +101,9 @@
             });
 
             $("#remove-instruction").click(function() {
+                if (instructionCount > 1){
                 $(`.instruction-row-${instructionCount--}`).remove();
+                }
             });
 
 
