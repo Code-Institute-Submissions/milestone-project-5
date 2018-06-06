@@ -55,6 +55,16 @@
 
             
             let categoryCount = 0;
+            
+            // for edit page
+            // adjusts count reflect existing forms
+            for (let i= 1; i < 15; i++){
+                if ($(`#category-${i}`).length > 0){
+                    categoryCount = i;
+                }
+            }
+            
+            
             $("#add-category").click(function() {
                 $(`#category-${categoryCount}`).after(`
                  <input type="text" name="category-${++categoryCount}" id="category-${categoryCount}" class="autocomplete categoriesAutocomplete">
@@ -70,10 +80,14 @@
                 
                 
                 
-            console.log($('#category-0').length)
+            
             
             let ingredientCount = 0;
-
+           for (let i= 0; i < 15; i++){
+                if ($(`#ingredient-${i}`).length > 0){
+                    ingredientCount = i;
+                }
+            }
 
             $("#add-ingredient").click(function() {
                 $(".ingredient-btn-row").before(`
@@ -113,6 +127,12 @@
             });
 
             let instructionCount = 1;
+            
+             for (let i= 1; i < 15; i++){
+                if ($(`#instruction-${i}`).length > 0){
+                    instructionCount = i;
+                }
+            }
 
             $("#add-instruction").click(function() {
                 $(".instruction-btn-row").before(`  <div class = "row instruction-row-${++instructionCount}"><li>

@@ -1417,37 +1417,13 @@ def get_values_for_edit_page(recipe_id):
     return True
     
 
-
-def create_instructions_template_text(instructions_list):
-    """
-    creates instructions template to insert into edit.html.
-    Required for JavaScript functions to work
-    """
-    instructions_list_length = len(instructions_list)
-    range_list = range(1, instructions_list_length+1)
-    print(range_list)
-    
-    instructions_text_list = ['<div class="row instruction-row-' + str(i) +'">'
-                +'<li>'
-                + '<div class="instruction-input-field col s10">'
-                + '<textarea id="instruction-' + '{}"'.format(str(i)) 
-                + ' name="instruction-' + '{}'.format(str(i)) +'"'
-                + ' class="materialize-textarea">'
-                + '{}'.format(instructions_list[i-1])
-                +'</textarea> </div>' 
-                +'</li> </div>'
-                 for i in range_list]
-    return instructions_text_list
     
 @app.route("/edit/<recipe_id>")
 def edit_recipe(recipe_id):
     categories= get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
     recipe_dictionary  = get_recipe_values(recipe_id)
-    instructions_text_list = create_instructions_template_text(recipe_dictionary["Instructions"])
-    print(instructions_text_list)
-    print(recipe_dictionary["Difficulty"])
-    return render_template("edit.html", recipe= recipe_dictionary, instructions_text = instructions_text_list, categories= categories, ingredients=ingredients)
+    return render_template("edit.html", recipe= recipe_dictionary,  categories= categories, ingredients=ingredients)
     
     
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
