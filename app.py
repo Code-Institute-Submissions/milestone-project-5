@@ -1422,7 +1422,7 @@ def get_instructions_template_text(instructions_list):
     Requred for javascript add/remove functions
     """
     instructions_list_length = len(instructions_list)
-    range_list = range(0, instructions_list_length)
+    range_list = range(1, instructions_list_length+1)
     print(range_list)
     
     instructions_text_list = ['<div class="row instruction-row-' + str(i) +'">'
