@@ -73,6 +73,46 @@
     <input type="submit" value="Submit">
 
 </form>
+
+{% if recipes_list %}
+
+{% if recipes_list == 'no_results' %}
+<h2>No Search Results Found</h2>
+{% else %}
+<h2>Search Results:</h2>
+{% for recipe in recipes_list %}
+
+  <div class="row">
+    <div class="col s12 m7">
+      <div class="card">
+        <div class="card-image">
+            {% if recipe["ImageName"] %}
+            <img src="/static/images/{{ recipe['ImageName'] }}" alt="Recipe Image">
+            {% else %}
+            <img src="https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_960_720.png" alt="No Image">
+            {% endif %}
+            
+          <img src="images/sample-1.jpg">
+          <span class="card-title">{{ recipe["Name"] }}</span>
+        </div>
+        <div class="card-content">
+            {% if recipe["Blurb"] %}
+          <p>{{ recipe["Blurb"] }}</p>
+          {% else %}
+          <p>No blurb Submitted</p>
+          {% endif %}
+        </div>
+        <div class="card-action">
+          <a href="/recipe/{{ recipe['Id'] }}">View Recipe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% endif %}
+
+
+{% endif %}
 <script>
 function autocompleteFunction(){
             

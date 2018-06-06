@@ -865,6 +865,26 @@ def get_recipes_average_review_score(recipe_ids_list):
         
     return average_review_list
     
+def add_average_review_score_to_dictionary_list(recipe_dictionary_list):
+    """
+    adds a 'Score' key/value pair to each dictionarinary in the 
+    argument list. This represents the average review score
+    """
+    
+    for recipe in recipe_dictionary_list:
+        recipe["Score"] = int(get_average_review_score(get_recipe_reviews(recipe["Id"])))
+        
+    return recipe_dictionary_list
+    
+def sort_recipe_dictionaries_by_score(recipes_dictionary_list):
+    """
+    sorts the argument list of directions in descending order
+    of their 'Score' value
+    """
+    #from:https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python
+    sorted_list = sorted(recipes_dictionary_list, key=lambda k: k['Score'] ,reverse=True ) 
+    
+    return sorted_list
 
 def filter_by_review_score(recipe_ids_list, min_score, max_score):
     """
@@ -1124,7 +1144,35 @@ def get_ids_that_match_all_filters():
     return ids_list
     
     
+def get_search_results(recipe_ids_list):
+    """
+    returns all data required to render a user's
+    search results (except score) after filters have been applied
+    """
+    ids_list_string = convert_list_to_string_for_sql_search(recipe_ids_list)
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes WHERE Id in  {};'.format(ids_list_string))
+            returned_tuples = cursor.fetchall()
+            values_list = [{ "Id": individual_tuple[0], "Name": individual_tuple[1], "Blurb": individual_tuple[2], "ImageName": individual_tuple[3]} for individual_tuple in returned_tuples]
+            return values_list
+    except Exception as e:
+        print("GSR ERROR: {}".format(e))
     
+    return True
+    
+def get_sorted_recipes_list(ids_list):
+    """
+    returns all the data required to render
+    the user's search results, sorted in descending
+    order by score. Returns "no_results" if ids_list is empty
+    """
+    if len(ids_list) == 0:
+        return "no_results"
+    recipes_list = get_search_results(ids_list)
+    recipes_list = add_average_review_score_to_dictionary_list(recipes_list)
+    recipes_list = sort_recipe_dictionaries_by_score(recipes_list)
+    return recipes_list
 
 @app.route("/", methods= ["POST", "GET"])
 def search_recipes():
@@ -1132,18 +1180,14 @@ def search_recipes():
     ingredients = get_all_ingredients_from_table()
     
     if request.method == "POST":
-        
         ids_list = get_ids_that_match_all_filters()
-        print("returned")
-        print(ids_list)
-        # categories = get_categories_list()
-        # excluded_categories_set = get_excluded_categories_set(categories)
-        # recipe_id_list = filter_by_categories(excluded_categories_set)
-        # print(recipe_id_list)
+        recipes_list = get_sorted_recipes_list(ids_list)
+        return render_template("index.html", categories=categories, ingredients= ingredients, recipes_list = recipes_list)
+       
         
         
         
-    return render_template("index.html", categories=categories, ingredients= ingredients)
+    return render_template("index.html", categories=categories, ingredients= ingredients )
 
 """
 
