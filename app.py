@@ -136,11 +136,10 @@ def register_user():
         
         if not already_exists:
             add_form_values_to_users()
-            return render_template("addrecipe.html")
+            return redirect(redirect_url())
             
         
         else: 
-            print("This is running")
             error_message = "ERROR: Username already exists. Please try a different username"
             return render_template("register.html", error=error_message)
            
@@ -211,7 +210,7 @@ def login():
         user = User(user_id, username)
         login_user(user)
         
-        return redirect(url_for("add_recipe"))
+        return redirect(redirect_url())
         
     else:
         return render_template("login.html")
@@ -222,12 +221,22 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return "You are now logged out"
+    return redirect("/")
 
   
 """
 HELPER FUNCTIONS
 """
+
+
+def redirect_url(default='/'):
+    """
+    to enable request.referrer
+    from: http://flask.pocoo.org/docs/1.0/reqcontext/
+    """
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for(default)
 
 
 def convert_list_to_string_for_sql_search(argument_list):
@@ -1405,7 +1414,7 @@ def add_to_favourites(recipe_id):
         return redirect(url_for("login"))
     else:
         add_to_user_favourites_table(recipe_id)
-    return redirect("/recipe/{0}".format(recipe_id))
+    return redirect(redirect_url())
     
 
 def return_timedelta_full_hours(timedelta_time):
@@ -1464,7 +1473,7 @@ def delete_recipe(recipe_id):
     except Exception as e:
         print("GU ERROR: {}".format(e))
     
-    return "Recipe Deleted"
+    return redirect(redirect_url())
     
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
