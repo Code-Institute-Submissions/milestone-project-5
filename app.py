@@ -647,7 +647,6 @@ def get_recipe_values(recipe_id):
     return values_dictionary
     
 
-# print(get_recipe_values(105))
 
 
 """
@@ -1408,22 +1407,46 @@ def add_to_favourites(recipe_id):
         add_to_user_favourites_table(recipe_id)
     return redirect("/recipe/{0}".format(recipe_id))
     
-def get_values_for_edit_page(recipe_id):
+
+def return_timedelta_full_hours(timedelta_time):
     """
-    NOT USED
-    returns a dictionary with all the values 
-    required to render the edit page
+    returns the number of full hours in 
+    the timedelta argument 
     """
-    return True
+    
+    return (timedelta_time.seconds // 3600)
+    
+def return_timedelta_remaining_minutes(timedelta_time):
+    """
+    returns the the remaining minutes from the 
+    timedelta argument after subtracting the full hours
+    """
+    return ((timedelta_time.seconds % 3600)// 60)
+    
+def create_time_dictionary(recipe_dictionary):
+    """
+    returns a dictionaries with the hours and minutes
+    for both prep and cook time
+    """
+    time_dictionary = {
+        "PrepHours" : return_timedelta_full_hours(recipe_dictionary["PrepTime"]),
+        "PrepMins" : return_timedelta_remaining_minutes(recipe_dictionary["PrepTime"]),
+        "CookHours": return_timedelta_full_hours(recipe_dictionary["CookTime"]),
+        "CookMins": return_timedelta_remaining_minutes(recipe_dictionary["CookTime"])
+    }
+    
+    return time_dictionary
     
 
-    
+
 @app.route("/edit/<recipe_id>")
 def edit_recipe(recipe_id):
     categories= get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
     recipe_dictionary  = get_recipe_values(recipe_id)
-    return render_template("edit.html", recipe= recipe_dictionary,  categories= categories, ingredients=ingredients)
+    time_dictionary = create_time_dictionary(recipe_dictionary)
+    
+    return render_template("edit.html", recipe= recipe_dictionary, time_dictionary = time_dictionary,  categories= categories, ingredients=ingredients)
     
     
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
