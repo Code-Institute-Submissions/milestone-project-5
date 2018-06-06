@@ -1448,6 +1448,23 @@ def edit_recipe(recipe_id):
     
     return render_template("edit.html", recipe= recipe_dictionary, time_dictionary = time_dictionary,  categories= categories, ingredients=ingredients)
     
+@app.route("/delete/<recipe_id>")
+def delete_recipe(recipe_id):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SET FOREIGN_KEY_CHECKS=0")
+            cursor.execute('DELETE FROM Recipes WHERE Id = "{}";'.format(recipe_id))
+            cursor.execute('DELETE FROM RecipeCategories WHERE RecipeId = "{}";'.format(recipe_id))
+            cursor.execute('DELETE FROM RecipeCategories WHERE RecipeId = "{}";'.format(recipe_id))
+            cursor.execute('DELETE FROM RecipeIngredients WHERE RecipeId = "{}";'.format(recipe_id))
+            cursor.execute('DELETE FROM Reviews WHERE RecipeId = "{}";'.format(recipe_id))
+            cursor.execute('DELETE FROM UserFavourites WHERE RecipeId = "{}";'.format(recipe_id))
+            connection.commit()
+    
+    except Exception as e:
+        print("GU ERROR: {}".format(e))
+    
+    return "Recipe Deleted"
     
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):

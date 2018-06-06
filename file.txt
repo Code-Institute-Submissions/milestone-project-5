@@ -6867,3 +6867,136 @@ mysql> SELECT * FROM Recipes LIMIT 5;
 +-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-----------+
 5 rows in set (0.00 sec)
 
+mysql> show tables;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    258
+Current database: milestoneProjectFour
+
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| Ingredients                    |
+| RecipeCategories               |
+| RecipeCreators                 |
+| RecipeIngredients              |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM RecipeCategories Limit 5;
++----------+------------+
+| RecipeId | CategoryId |
++----------+------------+
+|      101 |         24 |
+|      102 |         24 |
+|      102 |          7 |
+|      102 |         47 |
+|      103 |          9 |
++----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM RecipeCreators LIMIT 4;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM RecipeCreators;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM Users LIMIT 4;
++----+-------------------------------------------------------------------------------+-----------------+
+| Id | Password                                                                      | Username        |
++----+-------------------------------------------------------------------------------+-----------------+
+| 12 | $5$rounds=535000$x4Sx2EEpC.FdzyQl$Lc3JN8Nhge7L0iN1Sdu8ydp52z5JyFuxohUXv4RXe.C | Paddywc         |
+| 13 | $5$rounds=535000$if3SgeyN3T4BeeaK$UF0lq6NuRYTwlzUvtcaWyZZcvLLYH9CjtUpwQpo/rl6 | Cremen          |
+| 14 | $5$rounds=535000$pZbmynuFWWyMfG8t$oPbvG4ZaMaKuulxkjNnO6XbpMpaCnAy1.TAjJotAaxB | Patrick         |
+| 15 | $5$rounds=535000$2zu7YJqsHbdweh4o$lHMJxAdnE9GjTROUS3OkioOj5pe8haxpFF3VfoM9FJ0 | Unique Username |
++----+-------------------------------------------------------------------------------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> DROP TABLE RecipeCreators;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show tables;
++--------------------------------+
+| Tables_in_milestoneProjectFour |
++--------------------------------+
+| Categories                     |
+| Ingredients                    |
+| RecipeCategories               |
+| RecipeIngredients              |
+| Recipes                        |
+| Reviews                        |
+| UserFavourites                 |
+| Users                          |
++--------------------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM RecipeIngredients LIMIT 4;
++----------+--------------+----------+
+| RecipeId | IngredientId | Quantity |
++----------+--------------+----------+
+|      101 |            3 | 1/2 cup  |
+|      102 |            3 | 1/2 cup  |
+|      103 |            3 | 1/2 cup  |
+|      103 |            6 | 1 Pound  |
++----------+--------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Reviews limit 5;
++--------+----------+-------+
+| UserId | RecipeId | Score |
++--------+----------+-------+
+|     12 |      111 |     2 |
+|     12 |      103 |     2 |
+|     12 |      103 |     5 |
+|     12 |      105 |     4 |
+|     12 |      107 |     5 |
++--------+----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * UserFavourites;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'UserFavourites' at line 1
+mysql> SELECT * FROM UserFavourites LIMIT 5;
++--------+----------+
+| UserId | RecipeId |
++--------+----------+
+|     14 |      122 |
+|     14 |      122 |
+|     14 |      118 |
+|     14 |      119 |
++--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Recipes;
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+| Id  | Name          | UserId | Difficulty | Serves | Blurb         | PrepTime | CookTime | Instructions                                                            | ImageName         |
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+| 101 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 102 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 103 | Chicken Curry |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction', 'Third Instruction ']       | NULL              |
+| 104 | Beef Curry    |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Another Instruction ', 'And a third']            | NULL              |
+| 105 | Chicken Curry |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction ', 'And a third Instruction'] | NULL              |
+| 106 | Roast Pork    |      0 |          1 |      4 | A short Blurb | 01:20:00 | 01:20:00 | ['Test Instructions', 'Second instruction']                             | NULL              |
+| 107 | Chicken Curry |      0 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 108 | Chicken Curry |      0 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 109 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 111 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 112 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 113 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 114 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 115 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 116 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 117 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 118 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 119 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | 788Visa_photo.jpg |
+| 120 | Chicken Curry |     13 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 121 | Pizza         |     14 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 122 | Salad         |     12 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 123 | Beef Curry    |     12 |          0 |      4 | A short Blurb | 02:25:00 | 02:10:00 | ['Test Instructions']                                                   | NULL              |
++-----+---------------+--------+------------+--------+---------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+22 rows in set (0.00 sec)
+
