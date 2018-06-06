@@ -1410,6 +1410,7 @@ def get_user_favourites(user_id):
             cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes INNER JOIN UserFavourites ON UserFavourites.RecipeId = Recipes.Id WHERE UserFavourites.UserId = "{}";'.format(user_id))
             returned_tuples = cursor.fetchall()
             values_list = [{ "Id": individual_tuple[0], "Name": individual_tuple[1], "Blurb": individual_tuple[2], "ImageName": individual_tuple[3]} for individual_tuple in returned_tuples]
+            values_list = add_average_review_score_to_dictionary_list(values_list)
             return values_list
     except Exception as e:
         print("GUF ERROR: {}".format(e))
@@ -1426,6 +1427,7 @@ def get_user_recipes(user_id):
             cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes WHERE UserId = "{}";'.format(user_id))
             returned_tuples = cursor.fetchall()
             values_list = [{ "Id": individual_tuple[0], "Name": individual_tuple[1], "Blurb": individual_tuple[2], "ImageName": individual_tuple[3]} for individual_tuple in returned_tuples]
+            values_list =  add_average_review_score_to_dictionary_list(values_list)
             return values_list
             
     except Exception as e:
