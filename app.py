@@ -1,7 +1,7 @@
 import os
 import requests
 import pymysql
-from  flask import Flask, Response, render_template, request, redirect, url_for, jsonify
+from  flask import Flask, Response, render_template, request, redirect, flash, url_for, jsonify
 import datetime
 import ast #for converting string to list
 
@@ -136,7 +136,9 @@ def register_user():
         
         if not already_exists:
             add_form_values_to_users()
-            return redirect(redirect_url())
+            flash("You have successfully registered your account")
+            flash("Please login now")
+            return redirect(url_for("login"))
             
         
         else: 
@@ -210,7 +212,11 @@ def login():
         user = User(user_id, username)
         login_user(user)
         
-        return redirect(redirect_url())
+        # checks if /login is in the redirect_url()
+        if request.path not in redirect_url():
+            return redirect(redirect_url())
+        else:
+            return redirect(url_for("search_recipes"))
         
     else:
         return render_template("login.html")
