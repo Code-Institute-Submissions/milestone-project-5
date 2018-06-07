@@ -148,8 +148,8 @@ function addOrRemoveIngredient(){
             
                   $("#add-filter-ingredient").click(function() {
                 $(this).before(`
-              
-                    <div class="input-field col s4">
+              <div class="row ingredient-row-${++ingredientCount}">
+                    <div class="input-field col s12">
                         <label for="ingredient">Ingredient</label>
                         <input type="text" name="ingredient-${ingredientCount}" id="ingredient-${ingredientCount}" class="autocomplete ingredientsAutocomplete">
                     </div>

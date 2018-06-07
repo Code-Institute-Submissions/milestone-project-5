@@ -15,7 +15,21 @@
 <h1>Search</h1>
 
 
+
+
+
+
+
+
+
+  <ul id="slide-out" class="sidenav">
+  <li class="filters-title">Filters:</li>
+    <div class="row">
+  <div class="col s12">
 <form method="POST" id="filter">
+
+
+
 
 
   <ul class="collapsible">
@@ -24,7 +38,7 @@
       <div class="collapsible-body">
 
         <div class="row">
-          <div class="input-field col s4">
+          <div class="input-field col s12">
             <label for="categories">Categories</label>
             <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian">
           </div>
@@ -40,7 +54,7 @@
       <div class="collapsible-body">
 
         <div class="row ingredient-row-0">
-          <div class="input-field col s4">
+          <div class="input-field col s12">
             <label for="ingredient">Ingredient</label>
             <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete" value="Suger" placeholder="Honey" required>
           </div>
@@ -56,7 +70,7 @@
       <div class="collapsible-body">
 
         <div class="row">
-          <div class="input-field col s3">
+          <div class="input-field col s12">
             <select name="min-score">
       <option value="" disabled selected>Min Review Score</option>
       <option value="1">1</option>
@@ -66,7 +80,7 @@
       <option value="5">5</option>
     </select>
           </div>
-          <div class="input-field col s3">
+          <div class="input-field col s12">
             <select name="max-score">
       <option value="" disabled selected>Max Review Score</option>
       <option value="1">1</option>
@@ -84,12 +98,12 @@
       <div class="collapsible-header">Cooking Time</div>
       <div class="collapsible-body">
         <div class="row">
-          <div class="input-field col s6">
+          <div class="input-field col s12">
             <input id="min-hours" name="min-hours" class="col s4" type="number" placeholder="Hours">
             <input id="min-mins" name="min-mins" type="number" max="59" class="col s4 offset-s1" placeholder="Minutes ">
             <label>Min Cooking Time</label>
           </div>
-          <div class="input-field col s6">
+          <div class="input-field col s12">
             <input id="max-hours" name="max-hours" class="col s4" type="number" placeholder="Hours">
             <input id="max-mins" name="max-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Minutes ">
             <label>Max Cooking Time</label>
@@ -100,9 +114,9 @@
     </li>
 
     <li>
-      <div class="collapsible-header">Ingredients</div>
+      <div class="collapsible-header">Difficulty</div>
       <div class="collapsible-body">
-
+<div class="row">
         <div class="input-field col s12">
           <select multiple name="difficulties-filter">
       <option value="" disabled selected>Difficulty</option>
@@ -111,27 +125,26 @@
       <option value="2">Challenging</option>
     </select>
         </div>
-
+</div>
       </div>
     </li>
 
 
-
-
-
-
   </ul>
 
-  <input type="submit" value="Submit">
-
-
-
-
+    <button class="btn waves-effect waves-light search-btn" type="submit">Search <i class="material-icons left">search</i></button>
 
 
 
 
 </form>
+
+</div>
+</div>
+
+  </ul>
+  <a href="#" data-target="slide-out" class="sidenav-trigger waves-effect waves-light btn">Search Recipes</a>
+
 
 {% if recipes_list %}
 
