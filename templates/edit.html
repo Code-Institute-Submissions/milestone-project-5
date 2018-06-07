@@ -110,7 +110,7 @@
     <div class="row instruction-row-{{ loop.index }}">
         <li>
             <div class="instruction-input-field col s10">
-                <textarea id="instruction-{{ loop.index }}" name="instruction-{{ loop.index }}" class="materialize-textarea">{{ instruction }}
+                <textarea id="instruction-{{ loop.index }}" name="instruction-{{ loop.index }}" class="materialize-textarea">{{ instruction|safe }}
                 </textarea>
             </div>
         </li>

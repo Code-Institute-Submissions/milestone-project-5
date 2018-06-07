@@ -134,6 +134,10 @@ def register_user():
         username = request.form["username"]
         already_exists = check_if_username_exists(username)
         
+        if len(username) > 15:
+            error_message = "ERROR. Username can't be more than 15 characters"
+            return render_template("register.html", error=error_message)
+        
         if not already_exists:
             add_form_values_to_users()
             flash("You have successfully registered your account")
@@ -211,7 +215,7 @@ def login():
         user_id = get_id_for_username(username)
         user = User(user_id, username)
         login_user(user)
-        
+        flash("Successfully logged in")
         # checks if /login is in the redirect_url()
         if request.path not in redirect_url():
             return redirect(redirect_url())
@@ -227,6 +231,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash("Successfully logged out")
     return redirect("/")
 
   
@@ -295,7 +300,14 @@ def get_prep_time():
     """
     prep_hours = request.form["prep-hours"]
     print(prep_hours)
-    prep_mins = request.form["prep-mins"]
+    try:
+        prep_mins = request.form["prep-mins"]
+    except Exception as e:
+        pass
+    
+    if prep_mins == "":
+        prep_mins = 00
+    
     prep_time =   datetime.datetime.strptime('{0}:{1}'.format(prep_hours, prep_mins), '%H:%M').time()
     
     return prep_time
@@ -306,7 +318,14 @@ def get_cook_time():
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
     cook_hours = request.form["cook-hours"]
-    cook_mins = request.form["cook-mins"]
+    try:
+        cook_mins = request.form["cook-mins"]
+    except Exception as e:
+        pass
+    
+    if cook_mins == "":
+        cook_mins = 00
+        
     cook_time =   datetime.datetime.strptime('{0}:{1}'.format(cook_hours, cook_mins), '%H:%M').time()
     
     return cook_time
@@ -324,7 +343,11 @@ def get_categories_list():
     
     while not end_of_categories:
         try:
-            categories_list.append(request.form["category-{}".format(counter)])
+            category = request.form["category-{}".format(counter)]
+            if check_if_string_contains_letters(category):
+                categories_list.append(category)
+            else:
+                end_of_categories = True
         except Exception as e:
             end_of_categories = True
             
@@ -343,7 +366,11 @@ def get_instructions_list():
     
     while not end_of_instructions:
         try:
-            instructions_list.append(request.form["instruction-{}".format(counter)])
+            instruction = request.form["instruction-{}".format(counter)]
+            if check_if_string_contains_letters(instruction):
+                instructions_list.append(instruction)
+            else:
+                end_of_instructions = True
         except Exception as e:
             end_of_instructions = True
             
@@ -364,11 +391,18 @@ def get_ingredients_dictionary_list():
     
     while not end_of_ingredients:
         try:
-            ingredient_dictionary = {
-                "Quantity" : request.form["quantity-{}".format(counter)],
+            ingredient_name = request.form["quantity-{}".format(counter)]
+            if check_if_string_contains_letters(ingredient_name):
+                lowercase_ingredient_name = ingredient_name.lower()
+                capitalized_ingredient_name = lowercase_ingredient_name.capitalize()
+                ingredient_dictionary = {
+                "Quantity" : request.form[capitalized_ingredient_name],
                 "Name": request.form["ingredient-{}".format(counter)]
             }
-            ingredients_dictionary_list.append(ingredient_dictionary)
+                ingredients_dictionary_list.append(ingredient_dictionary)
+            else:
+                end_of_ingredients = True
+            
         except Exception as e:
             end_of_ingredients = True
             
@@ -481,8 +515,16 @@ def get_recipe_instructions(recipe_id):
             cursor.execute('SELECT Instructions FROM Recipes WHERE Id ="{}";'.format(recipe_id))
             returned_tuple = cursor.fetchone()
             list_as_string = returned_tuple[0]
-            # below line from https://www.tutorialspoint.com/How-to-convert-string-representation-of-list-to-list-in-Python
-            list_as_list = ast.literal_eval(list_as_string)
+          
+            list_as_list = list_as_string.split(",")
+            
+            # remove unwanted characters 
+            list_as_list = [x.replace("[","") for x in list_as_list]
+            list_as_list = [x.replace("]","") for x in list_as_list]
+            list_as_list = [x.replace("'","") for x in list_as_list]
+
+
+            print(list_as_list)
             return list_as_list
    
     except Exception as e:
@@ -1342,6 +1384,7 @@ def add_recipe():
         add_to_ingredients_if_not_duplicate(values_dictionary["Ingredients"])
         add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
         add_to_recipe_categories(values_dictionary["Categories"],recipe_id )
+        print(values_dictionary["Instructions"])
         
         return redirect("/recipe/{}".format(recipe_id))
     
@@ -1362,12 +1405,14 @@ def check_user_is_logged_in():
 def add_user_review(recipe_id):
     """
     gets the review posted by the user and adds
-    it to the Reviews table along with the UserId
+    it to the Reviews table along with the UserId.
+    Deletes any previous user review of that recipe
     """
     score = request.form["user-review"]
     user_id = current_user.id
     try:
         with connection.cursor() as cursor:
+            cursor.execute('DELETE FROM Reviews WHERE UserId = "{0}" and RecipeId = "{1}";'.format(user_id, recipe_id))
             cursor.execute('INSERT INTO Reviews(UserId, RecipeId, Score) VALUES ("{0}", "{1}", "{2}");'.format(user_id, recipe_id, score))
             connection.commit()
     except Exception as e:
@@ -1502,10 +1547,13 @@ def create_time_dictionary(recipe_dictionary):
 
 @app.route("/edit/<recipe_id>")
 def edit_recipe(recipe_id):
+    
     categories= get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
     recipe_dictionary  = get_recipe_values(recipe_id)
     time_dictionary = create_time_dictionary(recipe_dictionary)
+    if recipe_dictionary["ImageName"]:
+        flash("Please reupload recipe image")
     
     return render_template("edit.html", recipe= recipe_dictionary, time_dictionary = time_dictionary,  categories= categories, ingredients=ingredients)
     

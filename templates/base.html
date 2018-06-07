@@ -71,22 +71,24 @@
 
 
     <script type="text/javascript">
+    
+    //loads materializecss functionality 
         $(document).ready(function() {
             //requred for select form
-            // $('select').material_select();
                 $('select').formSelect().isMultiple;
+            //required for sidenav
                     $('.sidenav').sidenav();
+                    
+                    //required for character limit
+                        $('input#input_text, textarea#blurb').characterCounter();
 
-
-             $('.dropdown-trigger').dropdown();
-
-     
-  
+                    $('#username').characterCounter()
+                    
   });
   
    
 
-
+ function addOrRemoveCategory(){
 
             let categoryCount = 0;
             
@@ -113,9 +115,10 @@
             });
                 
                 
-                
+ }
+ 
             
-            
+function addOrRemoveIngredient(){
             let ingredientCount = 0;
            for (let i= 0; i < 15; i++){
                 if ($(`#ingredient-${i}`).length > 0){
@@ -159,6 +162,10 @@
                 ingredientCount--;
                 }
             });
+            
+}
+
+function addOrRemoveInstruction(){
 
             let instructionCount = 1;
             
@@ -184,7 +191,11 @@
             });
 
 
+}
 
+addOrRemoveCategory();
+addOrRemoveIngredient();
+addOrRemoveInstruction();
        
 
         // $(document).add()
