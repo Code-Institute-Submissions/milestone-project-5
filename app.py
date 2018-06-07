@@ -198,7 +198,7 @@ def check_password_correct(username, password):
 def login():
     
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["login-username"]
         password = request.form["password"]
         
         
@@ -1226,16 +1226,20 @@ def get_sorted_recipes_list(ids_list):
 def search_recipes():
     categories= get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
+    filtered_search = False
+        
     
     if request.method == "POST":
         ids_list = get_ids_that_match_all_filters()
+        filtered_search = True
         
     else:
         ids_list = get_list_of_recipe_ids()
         
         
     recipes_list = get_sorted_recipes_list(ids_list)
-    return render_template("index.html", categories=categories, ingredients= ingredients, recipes_list = recipes_list)
+    return render_template("index.html", filtered_search= filtered_search,
+    categories=categories, ingredients= ingredients, recipes_list = recipes_list)
        
         
         
