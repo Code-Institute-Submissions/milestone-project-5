@@ -15,32 +15,49 @@
 <h1>Search</h1>
 
 
+<form method="POST" id="filter">
 
-<form method="POST" id="filter" >
 
-    <div class="row">
-        <div class="input-field col s4">
+  <ul class="collapsible">
+    <li>
+      <div class="collapsible-header">Categories</div>
+      <div class="collapsible-body">
+
+        <div class="row">
+          <div class="input-field col s4">
             <label for="categories">Categories</label>
             <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian">
+          </div>
+          <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
+          <a class="btn-floating btn-large waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
         </div>
-        <a class="btn-floating btn-large waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
-        <a class="btn-floating btn-large waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
-    </div>
-    
-    
-<h6>Ingredients:</h6>
-    <div class="row ingredient-row-0">
-        <div class="input-field col s4">
+
+      </div>
+    </li>
+
+    <li>
+      <div class="collapsible-header">Ingredients</div>
+      <div class="collapsible-body">
+
+        <div class="row ingredient-row-0">
+          <div class="input-field col s4">
             <label for="ingredient">Ingredient</label>
             <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete" value="Suger" placeholder="Honey" required>
+          </div>
         </div>
-    </div>
-    <a class="btn-floating btn-large waves-effect waves-light red" id="add-filter-ingredient"><i class="material-icons">add</i></a>
-    <a class="btn-floating btn-large waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red" id="add-filter-ingredient"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
 
-<div class="row">
-<div class="input-field col s3">
-    <select name="min-score">
+      </div>
+    </li>
+
+    <li>
+      <div class="collapsible-header">Average Review Score</div>
+      <div class="collapsible-body">
+
+        <div class="row">
+          <div class="input-field col s3">
+            <select name="min-score">
       <option value="" disabled selected>Min Review Score</option>
       <option value="1">1</option>
       <option value="2">2</option>
@@ -48,9 +65,9 @@
       <option value="4">4</option>
       <option value="5">5</option>
     </select>
-</div>
-<div class="input-field col s3">
-    <select name="max-score">
+          </div>
+          <div class="input-field col s3">
+            <select name="max-score">
       <option value="" disabled selected>Max Review Score</option>
       <option value="1">1</option>
       <option value="2">2</option>
@@ -58,32 +75,61 @@
       <option value="4">4</option>
       <option value="5">5</option>
     </select>
-</div>
-</div>
+          </div>
+        </div>
+      </div>
+    </li>
 
-    <div class="row">
-        <div class="input-field col s6">
-            <input id="min-hours" name="min-hours" class="col s4" type="number" value="02" placeholder="Hours">
-            <input id="min-mins" name="min-mins" type="number" value="20" max="59" class="col s4 offset-s1" placeholder="Minutes " >
+    <li>
+      <div class="collapsible-header">Cooking Time</div>
+      <div class="collapsible-body">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="min-hours" name="min-hours" class="col s4" type="number" placeholder="Hours">
+            <input id="min-mins" name="min-mins" type="number" max="59" class="col s4 offset-s1" placeholder="Minutes ">
             <label>Min Cooking Time</label>
-        </div>
-        <div class="input-field col s6">
-            <input id="max-hours" name="max-hours" class="col s4" value="9" type="number" placeholder="Hours" >
-            <input id="max-mins" name="max-mins" class="col s4 offset-s1" value="15" type="number" max="59" placeholder="Minutes " >
+          </div>
+          <div class="input-field col s6">
+            <input id="max-hours" name="max-hours" class="col s4" type="number" placeholder="Hours">
+            <input id="max-mins" name="max-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Minutes ">
             <label>Max Cooking Time</label>
+          </div>
         </div>
-    </div>
-    
-    <div class="input-field col s12">
-    <select multiple name="difficulties-filter">
+
+      </div>
+    </li>
+
+    <li>
+      <div class="collapsible-header">Ingredients</div>
+      <div class="collapsible-body">
+
+        <div class="input-field col s12">
+          <select multiple name="difficulties-filter">
       <option value="" disabled selected>Difficulty</option>
       <option value="0">Easy</option>
       <option value="1">Normal</option>
       <option value="2">Challenging</option>
     </select>
-  </div>
+        </div>
 
-    <input type="submit" value="Submit">
+      </div>
+    </li>
+
+
+
+
+
+
+  </ul>
+
+  <input type="submit" value="Submit">
+
+
+
+
+
+
+
 
 </form>
 
