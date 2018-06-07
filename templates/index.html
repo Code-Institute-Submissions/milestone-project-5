@@ -15,22 +15,11 @@
 <h1>Search</h1>
 
 
-
-
-
-
-
-
-
   <ul id="slide-out" class="sidenav">
   <li class="filters-title">Filters:</li>
     <div class="row">
   <div class="col s12">
 <form method="POST" id="filter">
-
-
-
-
 
   <ul class="collapsible">
     <li>
@@ -134,9 +123,6 @@
 
     <button class="btn waves-effect waves-light search-btn" type="submit">Search <i class="material-icons left">search</i></button>
 
-
-
-
 </form>
 
 </div>
@@ -147,12 +133,40 @@
 
 
 {% if recipes_list %}
+  <div class="row">
+  <div class="col s12">
+      <ul class="tabs">
+                        <li class="tab col s3"><a href="#search1">1</a></li>
+
+{% for recipe in recipes_list %}
+
+{% if loop.index % 10 == 0 %}
+                <li class="tab col s3"><a href="#search{{ (loop.index // 10) + 1 }}">{{ (loop.index// 10) + 1 }}</a></li>
+{% endif %}
+
+{% endfor %}
+        </div>
+        </ul>
+  </div>
+
+
+
+{% endif %}
+
+
+{% if recipes_list %}
 
 {% if recipes_list == 'no_results' %}
 <h2>No Search Results Found</h2>
 {% else %}
 <h2>Search Results:</h2>
+
+<div id="search1" class="col s12">
 {% for recipe in recipes_list %}
+
+{% if loop.index % 10 == 0 %}
+                <div id="search{{ (loop.index // 10) + 1}}" class="col s12">
+{% endif %}
 
   <div class="row">
     <div class="col s12 m7">
@@ -180,6 +194,14 @@
       </div>
     </div>
   </div>
+  
+  
+  {% if (loop.index + 1) % 10 == 0 %}
+          </div>
+{% endif %}
+
+
+
 {% endfor %}
 {% endif %}
 
