@@ -1229,13 +1229,17 @@ def search_recipes():
     
     if request.method == "POST":
         ids_list = get_ids_that_match_all_filters()
-        recipes_list = get_sorted_recipes_list(ids_list)
-        return render_template("index.html", categories=categories, ingredients= ingredients, recipes_list = recipes_list)
+        
+    else:
+        ids_list = get_list_of_recipe_ids()
+        
+        
+    recipes_list = get_sorted_recipes_list(ids_list)
+    return render_template("index.html", categories=categories, ingredients= ingredients, recipes_list = recipes_list)
        
         
         
         
-    return render_template("index.html", categories=categories, ingredients= ingredients )
 
 """
 
