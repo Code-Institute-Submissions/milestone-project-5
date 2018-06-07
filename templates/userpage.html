@@ -1,4 +1,18 @@
  {% extends 'base.html' %} {% block content %}
+ 
+ <!--from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+ 
+ 
 <h2>{{ user["Username"] }}</h2>
 <h3>Submitted Recipes: </h3>
 {% for recipe in user["Recipes"] %}
