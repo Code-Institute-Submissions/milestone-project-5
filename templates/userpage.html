@@ -30,6 +30,9 @@
   </div>
 </div>
 {% endfor %}
+{% if not user["Recipes"] %}
+<p class="no-recipe-text">You have not submit any recipes<br><a class="waves-effect waves-light btn" href="/addrecipe">Add a Recipe</a> </p>
+{% endif %}
 <h3>Favourite Recipes: </h3>
 {% for recipe in user["Favourites"] %}
 <!--https://materializecss.com/cards.html-->
@@ -55,4 +58,10 @@
     </div>
   </div>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %}
+{% if not user["Favourites"] %}
+<p class="no-recipe-text">You have not added any recipes to your favourites<br><a class="waves-effect waves-light btn" href="/">Search Recipes</a> </p>
+{% endif %}
+<h3>Favourite Recipes: </h3>
+
+{% endblock %}
