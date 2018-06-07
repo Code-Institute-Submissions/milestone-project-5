@@ -1,5 +1,59 @@
 
+h2 {
+    color: #EE6E74;
+    text-align: center;
+}
 
+.recipe-page-header{
+    color: #EE6E74;
+    text-align: center;
+}
+
+.recipe-categories {
+    text-align: center;
+    color: #BF5896;
+}
+
+.recipe-img-row {
+    text-align: center;
+}
+.recipe-img-row  img {
+    width: 40vw;
+    height: 40vw;
+}
+
+.add-recipe-header {
+    color:#EE6E74 ;
+    margin-left: 2%;
+}
+
+.userpage-recipes-header {
+    padding-left: 2%;
+    font-size: 2em;
+    color: #CC444B;
+}
+
+.card-content {
+    color: #AA242B;
+}
+.card .card-title{
+    width: 100%;
+    text-align: center;
+    color: #CC444B !important;
+}
+
+.card .card-content {
+    text-align: center;
+}
+
+
+.card .card-action {
+    text-align: center;
+}
+
+.card .card-action a {
+    margin-right: 0 !important;
+}
 form  .row{
     padding-left: 10px;
 }
@@ -9,9 +63,16 @@ form h6{
 }
 
 form .btn-row{
-    padding-left: 5%;
-    margin-top: -2.5%;
+    padding: 0;
+    margin-top: -5%!important;
 }
+
+
+
+form .btn-row .col{
+    padding: 0 !important;
+}
+
 
 form .instruction-input-field{
     margin-top: -1% !important;
@@ -27,6 +88,12 @@ form .submit-btn{
     margin-bottom:2%;
 }
 
+.no-recipes-text {
+    text-align: center;
+    font-size: 1.5em;
+    color: #EE6E74 ;
+}
+
 @media(min-width:750px) {
    form  .row{
     padding-left: 20px;
@@ -36,10 +103,15 @@ form h6{
     padding-left:20px;
 } 
 
-form .btn-row{
-    padding-left: 3%;
+.recipe-img-row  img {
+    width: 30vw;
+    height: 30vw;
 }
 
 
+.userpage-recipes-header {
+    margin-left: 0.5%;
+    font-size: 3em;
+}
 
 }

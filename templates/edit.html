@@ -11,7 +11,7 @@
 {% endwith %}
 
  
-<h1 class="center-align">Edit Recipe</h1>
+<h1 class="add-recipe-header">Edit Recipe</h1>
 <form method="POST" id="add-recipe" enctype="multipart/form-data">
     <div class="row">
         <label for="recipe-name">Recipe Name*</label>
@@ -53,15 +53,17 @@
             
             
             <div class="row">
-                <div class="input-field col s8 m4">
+                <div class="input-field col s9 m4">
                     <label for="categories">Categories*</label> {% for category in recipe["Categories"] %}
                     <input type="text" name="category-{{ loop.index-1 }}" id="category-{{ loop.index-1 }}" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" value="{{ category }}" required> 
                     {% endfor %}
                 </div>
             </div>
             <div class="row categories-btn-row btn-row">
+                        <div class="col s3 m3 offset-s9 offset-m0">
                 <a class="btn-floating btn-small waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
                 <a class="btn-floating btn-small waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
+            </div>
             </div>
             
             <div class="row">
@@ -99,8 +101,10 @@
             </div>
             {% endfor %}
             <div class="row ingredient-btn-row btn-row">
+                        <div class="col s3 m3 offset-s9 offset-m0">
                 <a class="btn-floating btn-small waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
                 <a class="btn-floating btn-small waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
+            </div>
             </div>
             
 <h6>Instructions:*</h6>
@@ -118,8 +122,10 @@
 
     {% endfor %}
     <div class="row instruction-btn-row btn-row">
+                <div class="col s3 m3 offset-s9 offset-m0">
         <a class="btn-floating btn-small waves-effect waves-light red" id="add-instruction"><i class="material-icons">add</i></a>
         <a class="btn-floating btn-small waves-effect waves-light red" id="remove-instruction"><i class="material-icons">remove</i></a>
+   </div>
     </div>
 </ol>
             

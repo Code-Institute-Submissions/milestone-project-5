@@ -12,10 +12,10 @@
 {% endwith %}
 
  
-<h1 class="center-align">Add Recipe</h1>
+<h1 class="add-recipe-header">Add Recipe</h1>
 <form method="POST" id="add-recipe" enctype="multipart/form-data">
     <div class="row">
-        <label for="recipe-name">Recipe Name*</label>
+        <label for="recipe-name">*Recipe Name</label>
         <input type="text" name="recipe-name" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
     </div>
     <div class="row">
@@ -35,22 +35,24 @@
 
         <div class="input-field col s6">
             <input id="serves" name="serves" type="number" required>
-            <label>Serves*</label>
+            <label>*Serves</label>
         </div>
 
     </div>
 
 
     <div class="row">
-        <div class="input-field col s8 m4">
-            <label for="categories">Categories*</label>
+        <div class="input-field col s9 m4">
+            <label for="categories">*Categories</label>
             <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" required>
 
         </div>
     </div>
     <div class="row categories-btn-row btn-row">
+        <div class="col s3 m3 offset-s9 offset-m0">
         <a class="btn-floating btn-small waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
         <a class="btn-floating btn-small waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
+    </div>
     </div>
 
     <div class="row">
@@ -62,19 +64,19 @@
 
     <div class="row">
         <div class="input-field col s6">
-            <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="Hours*" required>
+            <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="*Hours" required>
             <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1" placeholder="Minutes">
             <label>Preparation Time</label>
         </div>
         <div class="input-field col s6">
-            <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="Hours*" required>
+            <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="*Hours" required>
             <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Minutes" >
             <label>Cooking Time</label>
         </div>
     </div>
 
 
-    <h6>Ingredients:*</h6>
+    <h6>*Ingredients:</h6>
     <div class="row ingredient-row-0">
         <div class="input-field col s4">
             <label for="quantity">Quantity</label>
@@ -86,11 +88,13 @@
         </div>
     </div>
     <div class="row ingredient-btn-row btn-row">
+                <div class="col s3 m3 offset-s9 offset-m0">
         <a class="btn-floating btn-small waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
         <a class="btn-floating btn-small waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
     </div>
+    </div>
 
-    <h6>Instructions:*</h6>
+    <h6>*Instructions:</h6>
     <ol>
         <div class="row instruction-row-1">
             <li>
@@ -100,8 +104,10 @@
             </li>
         </div>
         <div class="row instruction-btn-row btn-row">
+                    <div class="col s3 m3 offset-s9 offset-m0">
             <a class="btn-floating btn-small waves-effect waves-light red" id="add-instruction"><i class="material-icons">add</i></a>
             <a class="btn-floating btn-small waves-effect waves-light red" id="remove-instruction"><i class="material-icons">remove</i></a>
+        </div>
         </div>
     </ol>
 
