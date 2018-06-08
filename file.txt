@@ -7386,3 +7386,90 @@ mysql> DESCRIBE Users;
 +----------+-------------+------+-----+---------+----------------+
 3 rows in set (0.00 sec)
 
+mysql> SELECT * FROM Recipes WHERE Id = 112;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    371
+Current database: milestoneProjectFour
+
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM Recipes WHERE Id = 112;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM Recipes;
++-----+----------------+--------+------------+--------+---------------------------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+| Id  | Name           | UserId | Difficulty | Serves | Blurb                           | PrepTime | CookTime | Instructions                                                            | ImageName         |
++-----+----------------+--------+------------+--------+---------------------------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+| 101 | Chicken Curry  |     12 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 103 | Chicken Curry  |    123 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction', 'Third Instruction ']       | NULL              |
+| 104 | Beef Curry     |    123 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions', 'Another Instruction ', 'And a third']            | NULL              |
+| 105 | Chicken Curry  |     12 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions', 'Second Instruction ', 'And a third Instruction'] | NULL              |
+| 106 | Roast Pork     |      0 |          1 |      4 | A short Blurb                   | 01:20:00 | 01:20:00 | ['Test Instructions', 'Second instruction']                             | NULL              |
+| 107 | Chicken Curry  |      0 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 108 | Chicken Curry  |      0 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 109 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 111 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 113 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 114 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 115 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 116 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 117 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 118 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 119 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | 788Visa_photo.jpg |
+| 120 | Chicken Curry  |     13 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 121 | Pizza          |     14 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 122 | Salad          |     12 |          1 |      4 | A short Blurb                   | 02:20:00 | 03:15:00 | ['Test Instructions']                                                   | NULL              |
+| 123 | Beef Curry     |     12 |          0 |      4 | A short Blurb                   | 02:25:00 | 02:10:00 | ['Test Instructions']                                                   | NULL              |
+| 124 | Chicken Salad  |     13 |          0 |      2 | Chicken with leaves on the side | 01:00:00 | 02:00:00 | [' Cut the chicken
+', 'Cook the chicken ']                             | NULL              |
++-----+----------------+--------+------------+--------+---------------------------------+----------+----------+-------------------------------------------------------------------------+-------------------+
+21 rows in set (0.00 sec)
+
+mysql> SELECT * FROM RecipeIngredients;
++----------+--------------+----------+
+| RecipeId | IngredientId | Quantity |
++----------+--------------+----------+
+|      101 |            3 | 1/2 cup  |
+|      103 |            3 | 1/2 cup  |
+|      103 |            6 | 1 Pound  |
+|      103 |            9 | 1/2 Tin  |
+|      104 |            3 | 1/2 cup  |
+|      104 |           10 | 2 Cubes  |
+|      104 |           11 | 1 Pound  |
+|      105 |            3 | 1/2 cup  |
+|      105 |            6 | 1 Pound  |
+|      105 |           12 | 1/4 Cup  |
+|      105 |            5 | 1 Cup    |
+|      106 |            3 | 1/2 cup  |
+|      106 |           13 | 2        |
+|      107 |            3 | 1/2 cup  |
+|      108 |            3 | 1/2 cup  |
+|      109 |            3 | 1/2 cup  |
+|      111 |            3 | 1/2 cup  |
+|      113 |            3 | 1/2 cup  |
+|      114 |            3 | 1/2 cup  |
+|      115 |            3 | 1/2 cup  |
+|      116 |            3 | 1/2 cup  |
+|      117 |            3 | 1/2 cup  |
+|      118 |            3 | 1/2 cup  |
+|      119 |            3 | 1/2 cup  |
+|      120 |            3 | 1/2 cup  |
+|      121 |            3 | 1/2 cup  |
+|      122 |            3 | 1/2 cup  |
+|      123 |            3 | 1/2 cup  |
+|      123 |            4 | 1 Spoon  |
+|      124 |           15 | 3        |
++----------+--------------+----------+
+30 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Recipes WHERE Id == 104;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '== 104' at line 1
+mysql> SELECT * FROM Recipes WHERE Id = 104;
++-----+-------------+--------+------------+--------+---------------+----------+----------+--------------------------------------------------------------+-----------+
+| Id  | Name        | UserId | Difficulty | Serves | Blurb         | PrepTime | CookTime | Instructions                                                 | ImageName |
++-----+-------------+--------+------------+--------+---------------+----------+----------+--------------------------------------------------------------+-----------+
+| 104 | Beef Curry  |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Another Instruction ', 'And a third'] | NULL      |
++-----+-------------+--------+------------+--------+---------------+----------+----------+--------------------------------------------------------------+-----------+
+1 row in set (0.00 sec)
+

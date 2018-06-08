@@ -1,5 +1,10 @@
  {% extends 'base.html' %} {% block content %} 
  
+ 
+ 
+       <!--<button onclick="location.href='/addtofavourites/{{ recipe_id }}'" class="btn waves-effect waves-light submit-btn"  type="submit">Submit <i class="material-icons right">send</i></button>-->
+ 
+ 
 <!--from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -11,9 +16,9 @@
   {% endif %}
 {% endwith %}
 
-<h1 class="recipe-page-header">{{ recipe["Name"] }}</h1>
+<h1 id="recipe-page-header">{{ recipe["Name"] }}</h1>
 
-<h4 class="recipe-categories">
+<h4 id="recipe-categories">
 {% for category in recipe["Categories"] %}
 {{ category }}
 {% if not loop.last %}
@@ -21,7 +26,7 @@
 {% endif %}
 {% endfor %}
 </h4>
-<div class="row recipe-img-row">
+<div class="row " id="recipe-img-row">
 {% if recipe["ImageName"] %}
 <img src="/static/images/{{ recipe['ImageName'] }}" alt="Recipe Image">
 {% else %}
@@ -29,12 +34,47 @@
 {% endif %}
 </div>
 
-<div class="row from-user-row">
-    <p>From user {{ recipe["Username"] }}</p>
+<div class="row" id="from-user-row">
+    <p>From {{ recipe["Username"] }}</p>
 </div>
-<p>{{ recipe["Blurb"] }}</p>
 
-<p>Reivew Score:       {% if review_score == 1 %}
+{% if recipe["Blurb"] %}
+<div class="row" id="recipe-page-blurb-row">
+    <div class="col s6 offset-s3">
+    <blockquote>
+{{ recipe["Blurb"] }}    
+</blockquote>
+</div>
+</div>
+{% endif %}
+
+<div class="row" id="info-row">
+    <p>
+        <div class="col s3 " id="recipe-page-difficulty-col">
+<span class="info-row-title">Difficulty:</span> {{ recipe["Difficulty"] }}
+</div>
+        <div class="col s6" id="recipe-page-time-col">
+<div class="col s12">
+    <span class="info-row-title">Preparation Time:</span>
+{{ times["PrepHours"] }} hours {{ times["PrepMins"] }} mins
+</div>
+<div class="col s12">
+<span class="info-row-title">Cooking Time:</span>
+{{ times["CookHours"] }} hours {{ times["CookMins"] }} mins
+
+</div>
+</div>
+
+        <div class="col s3 " id="recipe-serves-difficulty-col">
+<span class="info-row-title">Serves:</span> {{ recipe["Serves"] }}
+</div>
+</p>
+</div>
+
+
+
+<div class="row" id="review-score-row">
+    {% if review_score == 1 %}
           <img class="star-rating" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATlSURBVGhD3VpbbxNHFJ6QIEGIIBQaJW2BVqRcHlohSi9qK/UipdByCfQiIXpVyxtV31r1zRWZtVMXO9nZtROT4IQ0F+IQCAmXRDz1gQd6fe3PCG1p+9TTObOzaNc+xoljbzZ80qfd7Plm5pzZM+PZmbCqgSdbWNTawWLmM4p4j89CjVh6I+PWO4wLW15/lvyDGRYU4R1miJ/k1ZLXt1lnZoOuZZkAUCMd3i8dysnrvx5HF0enbI5FzTdUnYECe9IQvxU4tVRy61fG7XbdShWBeW5YNwscqDS5NcdOdz+pW60wuPmpfAt3yYarQtkWF5/o1iuASKROVnyusKGgKDIsl6vV3pSJRGKt7JUrdAMBEn2IDKzRXi0S2AthCMIl+lLWm1nWdCpCLtLauwXCEJ+RFYWBXHykvSwBNcUGOTstktz6i0XtVu3tfRDE78RSycUN7W0RcOsYWTCMjFpHtNd5wHVONZYd1SIuTklE7QNkgTATF5oFwBUoJQ43L2jvNSJdjfJVlb8UXy5y628WMdfrKCQM811SuBLoW/bjlx0lWgnkQugoJJxPT1oYft7WUUgQ39gPxePQlv7C9yyf9fEe2NTVT9pc1sd7S2qaurOwujNF2lw+Yg3AqqhN2e44QcTtZsIIHaOH4feb22RhUWBzuSebg1dGp0ibS6UZu0LakDWSbbkZ2N03StqRtTEb3rp4HZ5ID5F2Fkk3MXa6a6f7oC5qQmvyGzjYewrmf9gEcGsdREbaYa/4Gho6E0qDvdJwJqN6qP3yLBybmoPtvcOwIZFRDRbTtOZp6mIpaEyehV0yALQfmrwOzSIL677rhRrd86s707Ax2QdPZ8eV5sDENWgyz0E9aqQdNYq4PlR7TvrByeyH8N+tBhVAPueu7lGaHZkRVSnFfYMTpTXnLyrNyyOXSTtya+o8rDJseG1smrQflWwWA04QSIzBGwjy1OCJgmBuzOyFtbHkPc2us4WOooPeXqI0z6JG9za+mReHL/ns6ODjnvTBcfNqXjDtU7PwqHzTrkZRBeJJLZduWrl8s+dzn702mlKNehtoTPSV1GCaeDWYSl77QZleXjtymwzMq2kbnynQOKmVN9i3nOlQzuNAn5nep97Ol0Pv+Qqi01jp6+PT8NKwkyJb7cHSmpR/sLop+ML3k8pBvF/zbY9P81T/BdUhzw9Nwv6Jq+oeO8mrcQY7Qm1jOg93dkXUWMGBj38/Z30Fx/tO+gpizz4mHXdT6WE5AFu8OUtoNnf3Q4uV9Wm2yLHgviVMOUwrnCS8Gny2Xk4SeI+TCE4svmC5mHeCQDw4P4greIliWKaOQkLt5ZKi8NP3pYjLeEP8QwpDTXHXv4xHcDFOi0NMLsa09x44Zx10gfCyTXvvgbP58AshDinlTFsUK2s76JD2ugjwkIUqGCZycU17ex/gdmSYt0wN8SfrMLdrb0sgan1MVxIGig+0lwsEbuGTFS0jcQWyaDwwBz0IPO4yxBRZcaAUl8o/enOBvYAHkmQDARDTqew3QQGPivGQhWqsKlSz0/u69QoDpz1DzNINV5D4O7HgKXYpwKUznk9QTiyF6h9yzMO6lQCB5xO4tY+74pRjC6FTdlSSWAAGDfwmMMRR6Ywp0+JHyXnlJEXHdlvSVG+24HsibMCdDfzHGNxzQuL9vd2OSoOx/wFFbsbgNfL6sgAAAABJRU5ErkJggg==">
            {% endif %}
            
@@ -53,43 +93,55 @@
             {% if review_score == 5 %}
           <img class="star-rating" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAT4SURBVGhD3VpbbBRVGD4KXtBaQY1KjDTGAl4SL4CaiA9GU8RoW7UqxAqUS6OIUYm3xhgX25kpFLfbObMsLVBuUsDVIFC0xRIvkZqAoj6qb/rmg7GoeIt6PN+ZM5uZ7r/ddru7nfIlX2Yy/3fO/5/rnsuygsFoncosZwZrtmcr4h3fQo3mxBRmODXM4HH5/ELyF2Y6IgNPMpN/Lp+OfD7E1nZcqHMZIwhxhgz4HhlQUj7/9AU6Mrppk8yy56k8iwrUpMm/SgtqtDScL5kRr9ZeCgj0c9PpSwsg3zScw6yxbbr2mmcY9jLZCqdIxwWh9GXwOu09D4hEJsqMO9MdFYu8gyWTE3Q0OSIanSRr5QDtoIhEDJFt5+qoRgjUQhgK4RGx5NQyY9qdMtDgCR3dMGHy5WRGYaDBF+sos0BNscWcnUZIw/mNWfFyHe0QKMbvxGhp8B4dbQYYzoNkwjDScqp01IOAdU4hlh2FIhanJKz4fDJBmImFZhqwAqXE4eZeHb1GJDZZNlXuS/GxouH8ziJ2qS6FhGk/TArHAwPLfuzsKNF4oMG5LoWEu/WkheHnMV0KCWKPfVFLi6hIPBP4Nphl0UYxN/4CafM47Y0mcUf8edLmcZ70M2VdC2nzWLPpCXGOFaNsJ91CtMQvJ4yiaXel+KavTJxp8TSbx41v3y3637+WtHmE5rOe60gbOMG0xbdHykRjVxVpB89bGxU/fnSZWLmtlrSzSOJSxhpjM70PEy1blLeuEfe1rxIDn1wsRP/5ItJVLWbxBlEiM4Pm7OY2MTMWUTX016elSvPsjoXiBvsV5TCTZvWOBQEN8kO+yB/2n6U/+IV/xAHN5HXrxRz+suDJCqX54cMrVC+5Kvq6qgBoFLE+VGdO+sOKrYvEf/0lKtFgHj50k9I0vFlD2sFd++Zm1XRpzZFDN5J2+F/cuVScZbWJE70zSM0//ReIyvan3EKAKIO/IOCq7Y+lFaane5aY1Nya0ry2y61FPxGgv5YozZ53b0/VNlqmt/vmgP3foyWiXlamlwfGzfHeawKav4+Wikc31ac0iqogvq7l0etWHu/d+HTAjkKhVvya2XZDVs2tzksBDbqS3/7Tx5cE7OCyrUsCmu/6pqVp3K41aLBfKWcZJMBA7z44R7XOizsfCSRE0NB8/UG56Ot2u8iiLUuzauo66wIadEHkf+DgLSpAaKautwKa6N75qqXe2X+b+F6OEVSOv3coqsEOqGNM9yMGKcaK1wVQiws3rwgkxLcFm+tTM9pdiedEVfvKITV3blgtqjueDGhqtyxXgxnv8IduNT22JqBBLNe3vareMf1iYgkU1uADbiGA0+cHcRwvUUzH1qWQUGe5pCj8DOwUsYw3+R+kMNTkp4LLeMDgb9HiENPge3T0Prh3HXSC8LJCR++De/hwghCHlHKmzYjxdRx0v446A3DJQiUMEw3+no52COA4MsxHpib/lTXZV+tos8ByltCZhIH8cR3lMIEjfDKjMSRWICPGaXPRA+C6y+T7yYyLSr4v96s3D6gFXEiSDopAdKecW4ICropxyUI5KwjV7FSrvecZmPZM3ks7ziPxOzHsKXY0wNIZ9xNUEKOh+kOOXam9FBG4n8DRPk7FqcCGQzftbkliAVhsYE9g8gdkMLbsFsclB1SQFF3bMUlbtWzafiJswMkG/hiDMycQ76nTjnyDsf8B3ODPmABtd9wAAAAASUVORK5CYII=">
            {% endif %}
-           
-           </p>
-<p>Number of Reviews: {{ recipe["Reviews"]|length }}</p>
+      
+     <div id="number-of-reviews"> {{ recipe["Reviews"]|length }} Ratings </div>
+     
+</div>
+
+<div class="row" id="leave-review-row">
 <form method="POST">
-    <div class="input-field col s12">
+    <div class="input-field col s4 offset-s4">
         <!--onchange code from: https://stackoverflow.com/questions/19086737/how-do-i-auto-submit-a-dropdown-when-a-value-is-selected-other-than-the-first-va-->
         <select class="user-review" name="user-review" onchange='if(this.value != "") { this.form.submit(); }'>
-      <option value="" disabled selected>Choose your option</option>
-      <option value="1">Option 1</option>
-      <option value="2">Option 2</option>
-      <option value="3">Option 3</option>
-      <option value="4">Option 4</option>
-      <option value="5">Option 5</option>
+      <option value="" disabled selected>Rate Recipe</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
     </select>
-        <label>Materialize Select</label>
     </div>
 </form>
+</div>
 
-      <button onclick="location.href='/addtofavourites/{{ recipe_id }}'" class="btn waves-effect waves-light submit-btn"  type="submit">Submit <i class="material-icons right">send</i></button>
 
 
-<p>Difficulty: {{ recipe["Difficulty"] }}</p>
-<p>{{ recipe["PrepTime"] }}
-{{ recipe["CookTime"] }}</p>
-</p>
-<p>Serves {{ recipe["Serves"] }}</p>
 
+
+
+<div class="row" id="ingredients-row">
+    <div class="col s4 offset-s1 recipe-page-section-header">Ingredients:</div>
+
+<div id="recipe-page-ingredients" class="col s5 offset-s1">
 <ul>
     {% for ingredient in recipe["Ingredients"] %}
     <li>{{ ingredient["Quantity"] }} {{ ingredient["Ingredient"] }}</li>
     {% endfor %}
 </ul>
+</div>
+</div>
+
+<div class="row" id="instructions-row">
+    <div class="col s4 offset-s1 recipe-page-section-header">Instructions:</div>
+<div id="recipe-page-instructions" class="col s5 offset-s1">
 
 <ol>
     {% for instruction in recipe["Instructions"] %}
     <li>{{ instruction }}</li>
     {% endfor %}
 </ol>
+</div>
+</div>
+
 
 {% endblock %}

@@ -171,8 +171,10 @@
                 <div id="search{{ (loop.index // 10) + 1}}" class="col s12">
 {% endif %}
 
+{% if loop.index % 2 != 0 %}
   <div class="row">
-    <div class="col s12 m6 offset-m3 ">
+    {% endif %}
+    <div class="col s12 m4 offset-m1 ">
       <div class="card ">
         <div class="card-image">
             {% if recipe["ImageName"] %}
@@ -219,7 +221,9 @@
         </div>
       </div>
     </div>
-  </div>
+    {% if loop.index % 2 == 0 %}
+  </div> <!--closes row-->
+  {% endif %}
   
   
   {% if (loop.index + 1) % 10 == 0 %}

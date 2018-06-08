@@ -4,23 +4,113 @@ h2 {
     text-align: center;
 }
 
-.recipe-page-header{
+/***************Recipe Page */
+#recipe-page-header{
     color: #EE6E74;
     text-align: center;
 }
 
-.recipe-categories {
+#recipe-categories {
     text-align: center;
     color: #BF5896;
 }
 
-.recipe-img-row {
+#recipe-img-row {
     text-align: center;
 }
-.recipe-img-row  img {
-    width: 40vw;
-    height: 40vw;
+#recipe-img-row  img {
+    width: 60vw;
+    height: 60vw;
 }
+
+#from-user-row{
+    text-align: center;
+    color: #881D5E;
+    font-size: 1.2em;
+    margin: 5px auto;
+}
+
+#review-score-row {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#leave-review-row {
+    margin-top: -1em;
+}
+#leave-review-row select{
+    text-align: center;
+    
+}
+
+#leave-review-row  li {
+    text-align: center ;
+    
+}
+
+#leave-review-row .select-dropdown {
+    text-align: center!important;
+}
+
+.recipe-page-section-header{
+    text-transform: uppercase;
+    font-size: 2em;
+    font-weight: 700;
+    color: #EE6E74;
+    /*padding-left: 10%;*/
+}
+
+#info-row {
+    text-align: center;
+}
+
+#info-row .info-row-title{
+    color: #BF5896;
+    font-size:  1.1em;
+    font-weight: 500;
+    
+}
+
+#info-row #recipe-page-time-col {
+    margin-top: -1%;
+}
+
+#blurb-row {
+    line-height: 200%;
+    vertical-align: middle;
+}
+
+#recipe-page-blurb-row blockquote {
+    font-size: 1.1em;
+    color: #D783B6;
+    font-weight: 600;
+    font-style: italic;
+    
+}
+#recipe-page-blurb{
+    /*text-align: left;*/
+    font-size: 1.3em;
+}
+
+#recipe-page-ingredients{
+    
+font-weight: 500;
+    
+}
+
+#recipe-page-ingredients ul, #recipe-page-ingredients li {
+     list-style-type: disc !important ;
+}
+
+#recipe-page-instructions{
+    font-weight: 500;
+    padding-left: 0;
+}
+#recipe-page-instructions ol{
+    padding-left:  1%;
+}
+
+/*END */
 
 .add-recipe-header {
     color:#EE6E74 ;
@@ -103,7 +193,7 @@ form h6{
     padding-left:20px;
 } 
 
-.recipe-img-row  img {
+#recipe-img-row  img {
     width: 30vw;
     height: 30vw;
 }

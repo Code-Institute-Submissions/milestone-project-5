@@ -1586,7 +1586,7 @@ def delete_recipe(recipe_id):
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
     recipe_values = get_recipe_values(recipe_id)
-    time_values = create_time_dictionary(recipe_values)
+    time_values = 
     average_review_score = get_average_review_score(recipe_values["Reviews"])
     
     if request.method =="POST":
@@ -1600,7 +1600,7 @@ def show_recipe(recipe_id):
         
     
     
-    return render_template("recipe.html", recipe = recipe_values, times= time_values,  review_score = average_review_score, recipe_id = recipe_id)
+    return render_template("recipe.html", recipe = recipe_values, review_score = average_review_score, recipe_id = recipe_id)
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
