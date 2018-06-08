@@ -2,7 +2,6 @@
  
  
  
-       <!--<button onclick="location.href='/addtofavourites/{{ recipe_id }}'" class="btn waves-effect waves-light submit-btn"  type="submit">Submit <i class="material-icons right">send</i></button>-->
  
  
 <!--from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
@@ -15,6 +14,7 @@
     </ul>
   {% endif %}
 {% endwith %}
+
 
 <h1 id="recipe-page-header">{{ recipe["Name"] }}</h1>
 
@@ -34,9 +34,14 @@
 {% endif %}
 </div>
 
-<div class="row" id="from-user-row">
-    <p>From {{ recipe["Username"] }}</p>
+<div class="row" id="add-to-favourites-row">
+ <button onclick="location.href='/addtofavourites/{{ recipe_id }}'" id="add-to-favourites-button" class="btn waves-effect waves-light submit-btn"  type="submit">Add to Favourites <i class="material-icons left">favorite_border</i></button>
 </div>
+
+<div class="row" id="from-user-row">
+    <p>From user: {{ recipe["Username"] }}</p>
+</div>
+
 
 {% if recipe["Blurb"] %}
 <div class="row" id="recipe-page-blurb-row">
@@ -50,24 +55,37 @@
 
 <div class="row" id="info-row">
     <p>
-        <div class="col s3 " id="recipe-page-difficulty-col">
+        <div class="col s12 m3 " id="recipe-page-difficulty-col">
 <span class="info-row-title">Difficulty:</span> {{ recipe["Difficulty"] }}
 </div>
-        <div class="col s6" id="recipe-page-time-col">
+
+        <div class="col m6 non-mobile" id="recipe-page-time-col">
 <div class="col s12">
     <span class="info-row-title">Preparation Time:</span>
-{{ times["PrepHours"] }} hours {{ times["PrepMins"] }} mins
+{{ times["PrepHours"] }} hours {{ times["PrepMins"] }} min
 </div>
 <div class="col s12">
 <span class="info-row-title">Cooking Time:</span>
-{{ times["CookHours"] }} hours {{ times["CookMins"] }} mins
+{{ times["CookHours"] }} hours {{ times["CookMins"] }} min
 
 </div>
 </div>
-
-        <div class="col s3 " id="recipe-serves-difficulty-col">
+        <div class="col s12 m3 " id="recipe-serves-difficulty-col">
 <span class="info-row-title">Serves:</span> {{ recipe["Serves"] }}
 </div>
+
+      <div class="col s12 mobile" id="recipe-page-time-col">
+<div class="col s12">
+    <span class="info-row-title">Prep Time:</span>
+{{ times["PrepHours"] }} hrs {{ times["PrepMins"] }} min
+</div>
+<div class="col s12">
+<span class="info-row-title">Cooking Time:</span>
+{{ times["CookHours"] }} hrs {{ times["CookMins"] }} min
+
+</div>
+</div>
+
 </p>
 </div>
 
@@ -100,7 +118,7 @@
 
 <div class="row" id="leave-review-row">
 <form method="POST">
-    <div class="input-field col s4 offset-s4">
+    <div class="input-field col s6 m4 offset-m4 offset-s3">
         <!--onchange code from: https://stackoverflow.com/questions/19086737/how-do-i-auto-submit-a-dropdown-when-a-value-is-selected-other-than-the-first-va-->
         <select class="user-review" name="user-review" onchange='if(this.value != "") { this.form.submit(); }'>
       <option value="" disabled selected>Rate Recipe</option>
@@ -120,9 +138,9 @@
 
 
 <div class="row" id="ingredients-row">
-    <div class="col s4 offset-s1 recipe-page-section-header">Ingredients:</div>
+    <div class="col s12 m4 offset-m1 recipe-page-section-header">Ingredients:</div>
 
-<div id="recipe-page-ingredients" class="col s5 offset-s1">
+<div id="recipe-page-ingredients" class="col s10 m5 offset-m2 offset-s1">
 <ul>
     {% for ingredient in recipe["Ingredients"] %}
     <li>{{ ingredient["Quantity"] }} {{ ingredient["Ingredient"] }}</li>
@@ -132,8 +150,8 @@
 </div>
 
 <div class="row" id="instructions-row">
-    <div class="col s4 offset-s1 recipe-page-section-header">Instructions:</div>
-<div id="recipe-page-instructions" class="col s5 offset-s1">
+    <div class="col s12 m4 offset-m1 recipe-page-section-header">Instructions:</div>
+<div id="recipe-page-instructions" class="col s10 m5 offset-m2 offset-s1">
 
 <ol>
     {% for instruction in recipe["Instructions"] %}
