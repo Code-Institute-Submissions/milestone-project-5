@@ -26,16 +26,16 @@ test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
 
 
-# test_connection = pymysql.connect(host='localhost', user= test_username, password = "", db="milestoneProjectFour")
-connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
+test_connection = pymysql.connect(host='localhost', user= test_username, password = "", db="milestoneProjectFour")
+# connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
 
 def open_connection():
     """
     helper function that opens the connection
     change to connection or test_connection values as needed 
     """
-    return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763");
-    # return pymysql.connect(host='localhost', user= test_username, password = "", db="milestoneProjectFour")
+    # return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763");
+    return pymysql.connect(host='localhost', user= test_username, password = "", db="milestoneProjectFour")
 
 
 #http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
