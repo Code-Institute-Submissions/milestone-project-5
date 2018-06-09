@@ -11,7 +11,7 @@
   {% endif %}
 {% endwith %}
 
-    <div id="barChart"></div>
+    <div id="categoriesChart"></div>
     <div id="difficultyChart"></div>
     <div id="ratingsChart"></div>
 
@@ -44,9 +44,35 @@ return ndx;
 
 ndx = getParsedData()
 
+//from : https://stackoverflow.com/questions/21114336/how-to-add-axis-labels-for-row-chart-using-dc-js-or-d3-js
+function AddXAxis(chartToUpdate, displayText)
+{
+    chartToUpdate.svg()
+                .append("text")
+                .attr("class", "x-axis-label")
+                .attr("text-anchor", "middle")
+                .attr("x", chartToUpdate.width()/2)
+                .attr("y", chartToUpdate.height()-3.5)
+                .text(displayText);
+}
+
+
+//variations from the AddXAxis function are my own code
+function AddYAxis(chartToUpdate, displayText)
+{
+    chartToUpdate.svg()
+                .append("text")
+                .attr("class", "y-axis-label")
+                .attr("text-anchor", "start")
+                .attr("x", chartToUpdate.height()/1.5)
+                .attr("y", (0- (chartToUpdate.width()/6)))
+                .text(displayText);
+}
+
+
 function showCategoriesChart(ndx){
 
-let  chart= dc.rowChart("#barChart")
+let  chart= dc.rowChart("#categoriesChart")
 let dim = ndx.dimension(dc.pluck("Categories"));
 
 // https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
@@ -118,12 +144,17 @@ chart
     // .xAxisLabel("Count")
     // .yAxisLabel("Recipe")
     .render();
+    
+AddXAxis(chart, "Count");
+AddYAxis(chart, "Category")
 
 chart.ordering(function(d) { return -d.value; });
+
 
 }
 
 showCategoriesChart(ndx)
+
 
 function showDifficultyChart(ndx){
     
@@ -164,10 +195,17 @@ chart
         .x(d3.scale.ordinal()) //Scales ordinaliy?
         .xUnits(dc.units.ordinal) // Tell Dc.js that we're using an ordinal x axis
         .xAxisLabel("Average Rating")
-        .yAxisLabel("test")
-        .yAxis().ticks(20); //the number of ticks
+        .yAxisLabel("Count")
+        .yAxis().ticks(group.max)
+        
+        // two lines below from: https://stackoverflow.com/questions/13576906/d3-tick-marks-on-integers-only
+        //makes ticks ints not floats
+        .tickFormat(d3.format("d"))
+          .tickSubdivide(0); 
         
     chart.render();
+    
+
 }
 
 

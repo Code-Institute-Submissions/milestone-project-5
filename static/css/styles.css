@@ -131,7 +131,10 @@ font-weight: 500;
 
 /**************************************visualize data*/
 
-
+#categoriesChart .y-axis-label{
+   transform: rotate(-90deg);
+   transform-origin: center;
+}
 
 
 /*END */
