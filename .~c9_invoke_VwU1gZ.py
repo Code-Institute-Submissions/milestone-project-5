@@ -168,7 +168,7 @@ def check_if_username_exists(username):
         with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users WHERE Username="{}";'.format(username))
             username_tuple = cursor.fetchone()
-            if username_tuple == None:
+            if username_tuple is None:
                 return False
             return True
     except Exception as e:
@@ -944,7 +944,7 @@ def filter_by_review_score(recipe_ids_list, min_score, max_score):
     list_of_score_dictionaries =  get_recipes_average_review_score(recipe_ids_list)
     returned_id_list = []
     for dictionary in list_of_score_dictionaries:
-        if dictionary["Score"] >= int(min_score) and dictionary["Score"] <= int(max_score):
+        if int(min_score) <= dictionary["Score"] <= int(max_score):
             returned_id_list.append(dictionary["Id"])
             
     return returned_id_list
@@ -980,7 +980,7 @@ def filter_by_total_time(ids_list, min_time, max_time):
     total_time_dictionary_list = get_recipes_total_time(ids_list)
     returned_ids_list = []
     for dictionary in total_time_dictionary_list:
-        if dictionary["Time"] >= timedelta_min_time and dictionary["Time"] <= timedelta_max_time:
+        if timedelta_min_time <= dictionary["Time"] <= timedelta_max_time:
             returned_ids_list.append(dictionary["Id"])
             
     
