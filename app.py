@@ -24,14 +24,20 @@ login_manager.init_app(app)
 login_manager.login_view = 'login' #from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
 # username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
+
 # connection = pymysql.connect(host='localhost', user= username, password = "", db="milestoneProjectFour")
+
+
 connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
+
+def open_connection():
+    return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763");
+
 
 
 #http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 UPLOAD_FOLDER = 'static/images'
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
 
 
 
@@ -69,6 +75,7 @@ def get_username_for_id(userId):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users WHERE Id ="{}";'.format(userId))
             table_username_tuple = cursor.fetchone()
@@ -77,6 +84,14 @@ def get_username_for_id(userId):
    
     except Exception as e:
         print("ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
+          
+          
+# print(get_username_for_id(12))
+
         
     
         
@@ -88,6 +103,7 @@ def get_id_for_username(username):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Users WHERE Username ="{}";'.format(username))
             table_id_tuple = cursor.fetchone()
@@ -96,6 +112,10 @@ def get_id_for_username(username):
    
     except Exception as e:
         print("GIFU ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 
@@ -123,11 +143,16 @@ def add_form_values_to_users():
     password = get_encrypted_password()
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('INSERT INTO Users(Username, Password) VALUES ("{0}", "{1}");'.format(name, password))
             connection.commit()
     except Exception as e:
         print("Error: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
     
 
 @app.route("/register",  methods=["POST", "GET"] )
@@ -168,6 +193,7 @@ def check_if_username_exists(username):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users WHERE Username="{}";'.format(username))
             username_tuple = cursor.fetchone()
@@ -177,6 +203,10 @@ def check_if_username_exists(username):
     except Exception as e:
         print("ERROR check_if_username_exists: {}".format(e))
         
+    finally:
+        if connection.open:
+          connection.close()
+        
         
 def check_password_correct(username, password):
     """
@@ -185,6 +215,7 @@ def check_password_correct(username, password):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
           cursor.execute('SELECT Password FROM Users WHERE Username="{}";'.format(username))
           table_password_tuple = cursor.fetchone()
@@ -195,6 +226,10 @@ def check_password_correct(username, password):
           
     except Exception as e:
       print("ERROR check_password_correct: {}".format(e))
+      
+    finally:
+        if connection.open:
+          connection.close()
             
 
 @app.route("/login", methods=["GET", "POST"])
@@ -422,6 +457,7 @@ def get_value_from_recipes_table(column, recipe_id):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT {0} FROM Recipes WHERE Id ="{1}";'.format(column, recipe_id))
             returned_tuple = cursor.fetchone()
@@ -431,6 +467,10 @@ def get_value_from_recipes_table(column, recipe_id):
     except Exception as e:
         print("ERROR GVFRT: {}".format(e))
         
+    finally:
+        if connection.open:
+          connection.close()
+        
         
 def get_recipe_categories(recipe_id):
     """
@@ -438,6 +478,7 @@ def get_recipe_categories(recipe_id):
     that match the recipe_id. String names taken from Categories table
     """
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute(' SELECT Name FROM Categories INNER JOIN RecipeCategories on RecipeCategories.CategoryId = Categories.Id WHERE RecipeCategories.RecipeId = "{}";'.format(recipe_id))
             returned_tuples = cursor.fetchall()
@@ -446,6 +487,10 @@ def get_recipe_categories(recipe_id):
             
     except Exception as e:
         print("GRC ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 # print(get_recipe_categories(102))
@@ -457,6 +502,7 @@ def get_recipe_user(recipe_id):
     recipe identified in the argument
     """
     try:
+         connection = open_connection()
          with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users INNER JOIN Recipes on Users.Id = Recipes.UserId WHERE Recipes.Id = "{}";'.format(recipe_id))
             returned_tuple = cursor.fetchone()
@@ -465,6 +511,10 @@ def get_recipe_user(recipe_id):
     
     except Exception as e:
         print("GRU ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 # print(get_recipe_user(102))
@@ -493,6 +543,7 @@ def get_recipe_ingredients(recipe_id):
     
    
     try:
+         connection = open_connection()
          with connection.cursor() as cursor:
             cursor.execute('SELECT Ingredients.Name, Quantity FROM RecipeIngredients INNER JOIN Ingredients on Ingredients.Id = RecipeIngredients.IngredientId INNER JOIN Recipes on RecipeIngredients.RecipeId = Recipes.Id WHERE Recipes.Id = "{}";'.format(recipe_id))
             returned_tuples = cursor.fetchall()
@@ -501,6 +552,10 @@ def get_recipe_ingredients(recipe_id):
     
     except Exception as e:
         print("GRI ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 # print(get_recipe_ingredients(103))
@@ -514,6 +569,7 @@ def get_recipe_instructions(recipe_id):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Instructions FROM Recipes WHERE Id ="{}";'.format(recipe_id))
             returned_tuple = cursor.fetchone()
@@ -533,6 +589,10 @@ def get_recipe_instructions(recipe_id):
     except Exception as e:
         print("ERROR GRI: {}".format(e))
         
+    finally:
+        if connection.open:
+          connection.close()
+        
         
 def get_recipe_reviews(recipe_id):
     """
@@ -540,6 +600,7 @@ def get_recipe_reviews(recipe_id):
     Reviews table for the argument RecipeId
     """
     try:
+         connection = open_connection()
          with connection.cursor() as cursor:
             cursor.execute('SELECT Score FROM Reviews INNER JOIN Recipes on Recipes.Id = Reviews.RecipeId  WHERE Recipes.Id = "{}";'.format(recipe_id))
             returned_tuples = cursor.fetchall()
@@ -548,6 +609,10 @@ def get_recipe_reviews(recipe_id):
     
     except Exception as e:
         print("GRR ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 def get_average_review_score(list_of_scores):
@@ -573,6 +638,7 @@ def get_all_categories_from_table():
     from the Categories table
     """
     try:
+         connection = open_connection()
          with connection.cursor() as cursor:
             cursor.execute('SELECT Name FROM Categories;')
             returned_tuples = cursor.fetchall()
@@ -581,6 +647,10 @@ def get_all_categories_from_table():
     
     except Exception as e:
         print("GACFT ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
 # print(get_all_categories_from_table())
         
@@ -591,7 +661,8 @@ def get_all_ingredients_from_table():
     from the Ingredients table
     """
     try:
-         with connection.cursor() as cursor:
+        connection=open_connection()
+        with connection.cursor() as cursor:
             cursor.execute('SELECT Name FROM Ingredients;')
             returned_tuples = cursor.fetchall()
             ingredients_list = [individual_tuple[0] for individual_tuple in returned_tuples]
@@ -599,6 +670,10 @@ def get_all_ingredients_from_table():
     
     except Exception as e:
         print("GAIFT ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
     
         
 def create_recipe_values_without_image(values_dictionary):
@@ -722,6 +797,7 @@ def get_list_of_recipe_ids():
     """
     
     try:
+         connection = open_connection()
          with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Recipes;')
             returned_tuples = cursor.fetchall()
@@ -730,6 +806,10 @@ def get_list_of_recipe_ids():
     
     except Exception as e:
         print("GLORID ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 def get_recipe_values_for_data_visualization(recipe_id):
@@ -806,6 +886,7 @@ def get_excluded_categories_list(filter_categories_list):
     string_of_placeholders = ",".join(['%s']*len(filter_categories_list))
 
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Categories INNER JOIN RecipeCategories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Name not in ({}) ;'.format(string_of_placeholders), filter_categories_list)
             returned_tuples = cursor.fetchall()
@@ -815,6 +896,10 @@ def get_excluded_categories_list(filter_categories_list):
             return category_id_set
     except Exception as e:
         print("GECL ERROR {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
 # print(get_excluded_categories_set(["Mexican", "Irish"]))
 
@@ -834,6 +919,7 @@ def filter_by_categories(recipe_ids_list, filter_categories_list):
     
 
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             
             cursor.execute('SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ' +
@@ -847,6 +933,10 @@ def filter_by_categories(recipe_ids_list, filter_categories_list):
     except Exception as e:
         print("FBC ERROR {}".format(e))
         
+    finally:
+        if connection.open:
+          connection.close()
+        
 
 def get_excluded_ingredients_list(filter_ingredients_list):
     
@@ -859,6 +949,7 @@ def get_excluded_ingredients_list(filter_ingredients_list):
     string_of_placeholders = ",".join(['%s']*len(filter_ingredients_list))
 
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Ingredients INNER JOIN RecipeIngredients ON Ingredients.Id = RecipeIngredients.IngredientId  WHERE Ingredients.Name not in ({}) ;'.format(string_of_placeholders), filter_ingredients_list)
             returned_tuples = cursor.fetchall()
@@ -867,6 +958,10 @@ def get_excluded_ingredients_list(filter_ingredients_list):
             return ingredient_id_list
     except Exception as e:
         print("GEIS ERROR {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
 # print(get_excluded_ingredients_set(["Milk", "Butter"]))
 
@@ -886,6 +981,7 @@ def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
     excluded_ingredients_string =  convert_list_to_string_for_sql_search(excluded_ingredients_list)
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
            
             cursor.execute('SELECT RecipeId FROM RecipeIngredients ' +
@@ -897,6 +993,10 @@ def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
             return id_list
     except Exception as e:
         print("FBC ERROR {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 
@@ -1006,6 +1106,7 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
    
     string_of_placeholders = ",".join(['%s']*len(difficulties_to_exclude))
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Recipes WHERE Difficulty not in ({}) ;'.format(string_of_placeholders),difficulties_to_exclude)
             returned_tuples = cursor.fetchall()
@@ -1014,6 +1115,10 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
             
     except Exception as e:
         print("FBD ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
     
     return difficulties_to_exclude
     
@@ -1204,6 +1309,7 @@ def get_search_results(recipe_ids_list):
     """
     ids_list_string = convert_list_to_string_for_sql_search(recipe_ids_list)
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes WHERE Id in  {};'.format(ids_list_string))
             returned_tuples = cursor.fetchall()
@@ -1212,6 +1318,9 @@ def get_search_results(recipe_ids_list):
     except Exception as e:
         print("GSR ERROR: {}".format(e))
     
+    finally:
+        if connection.open:
+          connection.close()
     return True
     
 def get_sorted_recipes_list(ids_list):
@@ -1263,6 +1372,7 @@ def get_last_recipe_id():
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute("SELECT LAST_INSERT_ID()")
             last_id_tuple = cursor.fetchone()
@@ -1270,6 +1380,10 @@ def get_last_recipe_id():
             return last_id
     except Exception as e:
        print("ERROR GET LAST ID: {}".format(e))
+       
+    finally:
+        if connection.open:
+          connection.close()
        
    
     
@@ -1281,6 +1395,7 @@ def add_to_categories_if_not_duplicate(category_list):
     """
     # print(category_list)
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             for category in category_list:
                 lower_case = category.lower()
@@ -1291,6 +1406,9 @@ def add_to_categories_if_not_duplicate(category_list):
     except Exception as e:
         print("ERROR ADD TO CATAGORIES: {}".format(e))
         # connection.close()    
+    finally:
+        if connection.open:
+          connection.close()
         
 def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
     """
@@ -1301,6 +1419,7 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
     
     ingredients_name_list = [ingredient_dictionary["Name"] for ingredient_dictionary in ingredients_dictionary_list ]
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             for ingredient_name in ingredients_name_list:
                 cursor.execute('INSERT INTO Ingredients(Name) SELECT * FROM (SELECT "{0}" ) AS tmp WHERE NOT EXISTS (SELECT Name FROM Ingredients WHERE Name = "{0}");'.format(ingredient_name))
@@ -1308,6 +1427,9 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
     except Exception as e:
         print("ERROR ADD TO INGREDIENTS: {}".format(e))
         # connection.close()
+    finally:
+        if connection.open:
+          connection.close()
             
 def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     
@@ -1318,6 +1440,7 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     """
 
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             for ingredient_dictionary in ingredients_dictionary_list:
                 cursor.execute('INSERT INTO RecipeIngredients(RecipeId, IngredientId, Quantity) VALUES ("{0}", (SELECT Id FROM Ingredients WHERE Name="{1}"), "{2}")'.format(
@@ -1330,6 +1453,9 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     except Exception as e:
         print("RECIPEINGRedients ERROR: {}".format(e))
         # connection.close()
+    finally:
+        if connection.open:
+          connection.close()
     
     
 def add_to_recipe_categories(categories_list, recipe_id):
@@ -1340,6 +1466,7 @@ def add_to_recipe_categories(categories_list, recipe_id):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             for category in categories_list:
                 cursor.execute('INSERT INTO RecipeCategories(RecipeId, CategoryId) VALUES ("{0}",  (SELECT Id FROM Categories WHERE Name="{1}"))'.format(recipe_id, category))
@@ -1347,6 +1474,10 @@ def add_to_recipe_categories(categories_list, recipe_id):
             connection.commit()
     except Exception as e:
         print("add to recipe categories error: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
 
     
 
@@ -1377,12 +1508,16 @@ def insert_dictionary_into_recipes_table(values_dictionary):
         values = create_recipe_values_without_image(values_dictionary)
 
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
             connection.commit()
     except Exception as e:
         print("ERROR  INSERT into recipes: {0}".format(e))
         # connection.close()
+    finally:
+        if connection.open:
+          connection.close()
             
     
 @app.route("/addrecipe",  methods=["POST", "GET"] )
@@ -1402,6 +1537,7 @@ def add_recipe():
         return redirect("/recipe/{}".format(recipe_id))
     
     categories= get_all_categories_from_table()
+    print(categories)
     ingredients = get_all_ingredients_from_table()
     return render_template("addrecipe.html", categories=categories, ingredients=ingredients)
 
@@ -1424,12 +1560,17 @@ def add_user_review(recipe_id):
     score = request.form["user-review"]
     user_id = current_user.id
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('DELETE FROM Reviews WHERE UserId = "{0}" and RecipeId = "{1}";'.format(user_id, recipe_id))
             cursor.execute('INSERT INTO Reviews(UserId, RecipeId, Score) VALUES ("{0}", "{1}", "{2}");'.format(user_id, recipe_id, score))
             connection.commit()
     except Exception as e:
         print("AUR ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
 
     return score
     
@@ -1440,12 +1581,17 @@ def add_to_user_favourites_table(recipe_id):
     """
     user_id = current_user.id
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('DELETE FROM UserFavourites WHERE UserId = "{0}" and RecipeId = "{1}";'.format(user_id, recipe_id))
             cursor.execute('INSERT INTO UserFavourites(UserId, RecipeId) VALUES ("{0}", "{1}");'.format(user_id, recipe_id))
             connection.commit()
     except Exception as e:
         print("ATUFT ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
         
         
 def get_username(user_id):
@@ -1454,6 +1600,7 @@ def get_username(user_id):
     argument user_id
     """
     try:
+         connection = open_connection()
          with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users WHERE Id = "{}";'.format(user_id))
             returned_tuple = cursor.fetchone()
@@ -1463,6 +1610,10 @@ def get_username(user_id):
     except Exception as e:
         print("GU ERROR: {}".format(e))
         
+    finally:
+        if connection.open:
+          connection.close()
+        
 def get_user_favourites(user_id):
     """
     returns a list of recipe ids for
@@ -1470,6 +1621,7 @@ def get_user_favourites(user_id):
     """
     
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes INNER JOIN UserFavourites ON UserFavourites.RecipeId = Recipes.Id WHERE UserFavourites.UserId = "{}";'.format(user_id))
             returned_tuples = cursor.fetchall()
@@ -1479,6 +1631,10 @@ def get_user_favourites(user_id):
     except Exception as e:
         print("GUF ERROR: {}".format(e))
         
+    finally:
+        if connection.open:
+          connection.close()
+        
 def get_user_recipes(user_id):
     """
     returns a list of dictionaries for all of 
@@ -1487,6 +1643,7 @@ def get_user_recipes(user_id):
     fields
     """   
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes WHERE UserId = "{}";'.format(user_id))
             returned_tuples = cursor.fetchall()
@@ -1496,6 +1653,10 @@ def get_user_recipes(user_id):
             
     except Exception as e:
         print("GUR ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
     
 def get_userpage_values(user_id):
     """
@@ -1573,6 +1734,7 @@ def edit_recipe(recipe_id):
 @app.route("/delete/<recipe_id>")
 def delete_recipe(recipe_id):
     try:
+        connection = open_connection()
         with connection.cursor() as cursor:
             cursor.execute("SET FOREIGN_KEY_CHECKS=0")
             cursor.execute('DELETE FROM Recipes WHERE Id = "{}";'.format(recipe_id))
@@ -1585,6 +1747,10 @@ def delete_recipe(recipe_id):
     
     except Exception as e:
         print("GU ERROR: {}".format(e))
+        
+    finally:
+        if connection.open:
+          connection.close()
     
     return redirect(redirect_url())
     

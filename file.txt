@@ -7486,3 +7486,33 @@ mysql> heroku addons:create cleardb:ignite
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'heroku addons:create cleardb:ignite' at line 1
 mysql> Ctrl-C -- exit!
 Aborted
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> show databases
+    -> ;
++------------------------+
+| Database               |
++------------------------+
+| information_schema     |
+| heroku_12eaf3a664b1763 |
++------------------------+
+2 rows in set (0.05 sec)
+
+mysql> use information_schema;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> set max_allowed_packet=67108864;
+ERROR 1621 (HY000): SESSION variable 'max_allowed_packet' is read-only. Use SET GLOBAL to assign the value
+mysql> SET GLOBAL  max_allowed_packet=67108864;
+ERROR 1227 (42000): Access denied; you need (at least one of) the SUPER privilege(s) for this operation
+mysql>  GRANT SUPER ON *.* TO user@'localhost' IDENTIFIED BY 'password';
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    398805845
+Current database: information_schema
+
+ERROR 1045 (28000): Access denied for user 'b3fca7f37ee0f5'@'%' (using password: YES)
+mysql> Ctrl-C -- exit!
+Aborted
