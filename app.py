@@ -582,6 +582,8 @@ def get_all_categories_from_table():
     except Exception as e:
         print("GACFT ERROR: {}".format(e))
         
+# print(get_all_categories_from_table())
+        
         
 def get_all_ingredients_from_table():
     """
