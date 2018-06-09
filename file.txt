@@ -7473,3 +7473,16 @@ mysql> SELECT * FROM Recipes WHERE Id = 104;
 +-----+-------------+--------+------------+--------+---------------+----------+----------+--------------------------------------------------------------+-----------+
 1 row in set (0.00 sec)
 
+mysql> SELECT * FROM Recipes WHERE Id = 104;
++-----+-------------+--------+------------+--------+---------------+----------+----------+--------------------------------------------------------------+-----------+
+| Id  | Name        | UserId | Difficulty | Serves | Blurb         | PrepTime | CookTime | Instructions                                                 | ImageName |
++-----+-------------+--------+------------+--------+---------------+----------+----------+--------------------------------------------------------------+-----------+
+| 104 | Beef Curry  |    123 |          1 |      4 | A short Blurb | 02:20:00 | 03:15:00 | ['Test Instructions', 'Another Instruction ', 'And a third'] | NULL      |
++-----+-------------+--------+------------+--------+---------------+----------+----------+--------------------------------------------------------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> heroku addons:create cleardb:ignite
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'heroku addons:create cleardb:ignite' at line 1
+mysql> Ctrl-C -- exit!
+Aborted

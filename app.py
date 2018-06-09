@@ -22,8 +22,11 @@ app.secret_key = 'some_secret'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login' #from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
-username = os.getenv("C9_USER")
-connection = pymysql.connect(host='localhost', user= username, password = "", db="milestoneProjectFour")
+# username = os.getenv("C9_USER")
+username = "b3fca7f37ee0f5"
+# connection = pymysql.connect(host='localhost', user= username, password = "", db="milestoneProjectFour")
+connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
+
 
 #http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 UPLOAD_FOLDER = 'static/images'
