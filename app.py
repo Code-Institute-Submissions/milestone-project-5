@@ -340,7 +340,7 @@ def get_prep_time():
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
     prep_hours = request.form["prep-hours"]
-    print(prep_hours)
+    # print(prep_hours)
     try:
         prep_mins = request.form["prep-mins"]
     except Exception as e:
@@ -586,7 +586,7 @@ def get_recipe_instructions(recipe_id):
             list_as_list = [x.replace("'","") for x in list_as_list]
 
 
-            print(list_as_list)
+            # print(list_as_list)
             return list_as_list
    
     except Exception as e:
@@ -734,7 +734,7 @@ def add_recipe_image_and_return_filename():
     #added random int to file name to avoid duplicate filenames
     filename = "{0}{1}".format(choice(range(1000)), secure_filename(file.filename))
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    print(filename)
+    # print(filename)
     return filename
     
     
@@ -1264,7 +1264,7 @@ def get_ids_that_match_all_filters():
     the user's filters
     """
     ids_list = get_list_of_recipe_ids()
-    print(ids_list)
+    # print(ids_list)
     
     filter_categories = get_filter_categories()
     if filter_categories:
@@ -1275,31 +1275,31 @@ def get_ids_that_match_all_filters():
     filter_ingredients = get_filter_ingredients()
     if filter_ingredients:
         ids_list = filter_by_ingredients(ids_list, filter_ingredients)
-        print("FI")
-        print(ids_list)
+        # print("FI")
+        # print(ids_list)
         
     min_score = get_min_score_filter()
     max_score = get_max_score_filter()
     
     if (min_score != 0) or (max_score != 5):
         ids_list = filter_by_review_score(ids_list, min_score, max_score)
-        print("score")
-        print(ids_list)
+        # print("score")
+        # print(ids_list)
         
     min_time = get_min_time_filter()
     max_time = get_max_time_filter()
     
 
     ids_list = filter_by_total_time(ids_list, min_time, max_time)
-    print("time")
-    print(ids_list)
+    # print("time")
+    # print(ids_list)
     
     difficulties_list = get_difficulties_filter()
     
     if (len(difficulties_list) > 0):
         ids_list = filter_by_difficulty(ids_list, difficulties_list)
-        print("diff")
-        print(ids_list)
+        # print("diff")
+        # print(ids_list)
         
     
     return ids_list
@@ -1377,9 +1377,11 @@ def get_last_recipe_id():
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
-            cursor.execute("SELECT LAST_INSERT_ID()")
+            cursor.execute("SELECT Id FROM Recipes ORDER BY Id DESC LIMIT 1")
             last_id_tuple = cursor.fetchone()
             last_id = last_id_tuple[0]
+            print("last_id")
+            print(last_id)
             return last_id
     except Exception as e:
        print("ERROR GET LAST ID: {}".format(e))
@@ -1527,7 +1529,7 @@ def insert_dictionary_into_recipes_table(values_dictionary):
 @login_required
 def add_recipe():
     if request.method == "POST":
-        
+        print("is this working?")
         values_dictionary = get_form_values()
         insert_dictionary_into_recipes_table(values_dictionary)
         recipe_id = get_last_recipe_id()
@@ -1535,12 +1537,12 @@ def add_recipe():
         add_to_ingredients_if_not_duplicate(values_dictionary["Ingredients"])
         add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
         add_to_recipe_categories(values_dictionary["Categories"],recipe_id )
-        print(values_dictionary["Instructions"])
+        # print(values_dictionary["Instructions"])
         
         return redirect("/recipe/{}".format(recipe_id))
     
     categories= get_all_categories_from_table()
-    print(categories)
+    # print(categories)
     ingredients = get_all_ingredients_from_table()
     return render_template("addrecipe.html", categories=categories, ingredients=ingredients)
 
