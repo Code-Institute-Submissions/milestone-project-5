@@ -56,9 +56,11 @@
         {% endif %}
       </div>
       <div class="card-action">
+       {% if own_page %}
        <div class="row">
         <a href="/edit/{{ recipe['Id'] }}">Edit Recipe</a>
         </div>
+        {% endif %}
         <div class="row">
         <a href="/delete/{{ recipe['Id'] }}">Delete Recipe</a>
         </div>

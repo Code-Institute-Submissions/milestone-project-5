@@ -1661,12 +1661,30 @@ def get_userpage_values(user_id):
         "Recipes": get_user_recipes(user_id)
     }
     return dictionary
+    
+def check_is_current_users_userpage(userpage_user_id):
+    """
+    returns True if the user is on their own 
+    userpage. Otherwise returns False
+    """
+    if not check_user_is_logged_in():
+        return False
+        
+    if userpage_user_id == current_user.id:
+        return True
+        
+    else:
+        return False
+        
+    
+        
 
 
 @app.route("/userpage/<user_id>")
 def userpage(user_id):
     userpage_values = get_userpage_values(user_id)
-    return render_template("userpage.html", user=userpage_values)
+    own_page = check_is_current_users_userpage(user_id)
+    return render_template("userpage.html", user=userpage_values, own_page = own_page)
 
 
 @app.route("/addtofavourites/<recipe_id>")
@@ -1751,6 +1769,7 @@ def delete_recipe(recipe_id):
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
     recipe_values = get_recipe_values(recipe_id)
+    recipe_user_id = get_id_for_username(recipe_values["Username"])
     time_values = create_time_dictionary(recipe_values)
     average_review_score = get_average_review_score(recipe_values["Reviews"])
 
@@ -1763,7 +1782,7 @@ def show_recipe(recipe_id):
             add_user_review(recipe_id)
 
     return render_template("recipe.html", recipe=recipe_values, times=time_values, review_score=average_review_score,
-                           recipe_id=recipe_id)
+                           recipe_id=recipe_id, user_id = recipe_user_id)
 
 
 if __name__ == '__main__':
