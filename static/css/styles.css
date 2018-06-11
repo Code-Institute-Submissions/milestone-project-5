@@ -191,18 +191,28 @@ font-weight: 500;
 }
 
 
-/*********End*/
 
 
-.add-recipe-header {
-    color:#EE6E74 ;
-    margin-left: 2%;
+/****************Userpage*/
+
+#userpage-header{
+     color: #EE6E74;
+    text-align: center;
 }
 
 .userpage-recipes-header {
     padding-left: 2%;
     font-size: 2em;
     color: #CC444B;
+}
+
+
+/*********End*/
+
+
+.add-recipe-header {
+    color:#EE6E74 ;
+    margin-left: 2%;
 }
 
 .card-content {

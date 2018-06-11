@@ -20,18 +20,18 @@ login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/3
 test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
 
-test_connection = pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+# test_connection = pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
 
-# connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
+connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
 
 def open_connection():
     """
     helper function that opens the connection
     change to connection or test_connection values as needed 
     """
-    # return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763");
-    return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+    return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763");
+    # return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
 
 # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
@@ -252,7 +252,7 @@ def login():
 def logout():
     logout_user()
     flash("Successfully logged out")
-    return redirect("/")
+    return redirect(url_for("search_recipes"))
 
 
 """
@@ -1668,6 +1668,7 @@ def check_is_current_users_userpage(userpage_user_id):
     returns True if the user is on their own 
     userpage. Otherwise returns False
     """
+    
     if not check_user_is_logged_in():
         return False
         
