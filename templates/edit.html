@@ -88,7 +88,7 @@
 
     <h6>Ingredients:*</h6>
     {% for ingredient in recipe["Ingredients"] %}
-    <div class="row ingredient-row-0">
+    <div class="row ingredient-row ingredient-row-0">
         <div class="input-field col s4">
             <label for="quantity">Quantity</label>
             <input type="text" name="quantity-{{ loop.index -1 }}" id="quantity-{{ loop.index -1 }}" value="{{ ingredient['Quantity'] }}" placeholder="1/2 Teaspoon" required>

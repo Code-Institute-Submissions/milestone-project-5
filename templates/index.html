@@ -206,36 +206,25 @@
   {% endif %} 
   {% endfor %} {% endif %} {% endif %}
   <script>
-
- //autocomplete functionality for filter ingredients and categories 
-    function autocompleteFunction() {
-      $('input.categoriesAutocomplete').autocomplete({
-        data: {
-          { %
-            for category in categories %
-          }
-          "{{ category }}": null,
-          { % endfor %
-          }
-        },
-      });
-
-      $('input.ingredientsAutocomplete').autocomplete({
-        data: {
-          { %
-            for ingredient in ingredients %
-          }
-          "{{ ingredient }}": null,
-          { % endfor %
-          }
-        },
-      });
+function autocompleteFunction(){
+            
+        $('input.categoriesAutocomplete').autocomplete({
+            data: {
+              {% for category in categories %}  "{{ category }}": null, {% endfor %}
+            },
+        });
+        
+          $('input.ingredientsAutocomplete').autocomplete({
+            data: {
+              {% for ingredient in ingredients %}  "{{ ingredient }}": null, {% endfor %}
+            },
+        });
     }
-
-    $(document).ready(function () {
-      autocompleteFunction()
+    
+    
+        $(document).ready(function() {
+            autocompleteFunction()
     });
-
-  </script>
+</script>
 
   {% endblock %}
