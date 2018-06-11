@@ -1,19 +1,17 @@
- <!-- displays error message if applicable  -->
- {% extends 'base.html' %} {% block content %}
+<!-- displays error message if applicable  -->
+{% extends 'base.html' %} {% block content %}
 <p class="error"> {{ error }}</p>
 
 <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
+{% with messages = get_flashed_messages() %} {% if messages %}
+<ul class=flashes>
     {% for message in messages %}
-      <li>{{ message }}</li>
+    <li>{{ message }}</li>
     {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+</ul>
+{% endif %} {% endwith %}
 
-<h2>Login</h2>
+<h1 class="login-header">Login</h1>
 <div class="row">
     <form class="col s12" method="POST">
 
@@ -27,17 +25,18 @@
                 <label for="password">Password</label>
             </div>
         </div>
-
-        <input type="submit" value="Submit">
+        <div class="row submit-row">
+            <div class="col s6 offset-s3">
+                <input type="submit" class="waves-effect waves-light btn" id="sign-in-button" value="Sign In">
+            </div>
+        </div>
     </form>
 </div>
 
 <div class="row">
-    <div class="col sm12">
-        <p class="register-text">Haven't created an account?
-            <br>
+    <div class="col s6 offset-s3" id="no-account-col">
+        <p class="register-text">Haven't created an account?</p>
             <a class="waves-effect waves-light btn" href="/register">Register Now</a>
-        </p>
     </div>
 </div>
 

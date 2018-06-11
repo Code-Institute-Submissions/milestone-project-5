@@ -1,8 +1,8 @@
 
-h2 {
-    color: #EE6E74;
-    text-align: center;
-}
+/*h2 {*/
+/*    color: #EE6E74;*/
+/*    text-align: center;*/
+/*}*/
 
 /***************Recipe Page */
 
@@ -56,7 +56,7 @@ h2 {
 }
 
 #leave-review-row .select-dropdown {
-    text-align: center!important;
+    text-align: center;
 }
 
 .recipe-page-section-header{
@@ -131,13 +131,68 @@ font-weight: 500;
 
 /**************************************visualize data*/
 
+#visualize-data-header{
+      color: #EE6E74;
+      padding-left:3%;
+}
+
+#visualize-data-subheader {
+     color: #BF5896;
+    font-size: 1.5em;
+    margin-top:0.5em;
+    padding-left:3%;
+
+}
+
+.chart-row{
+    padding-left: 10%;
+}
+
+.chart-header {
+    color: #CC444B;
+}
+
+#reset-chart-filters-button{
+    margin-left: 3%;
+}
+
 #categoriesChart .y-axis-label{
    transform: rotate(-90deg);
    transform-origin: center;
 }
 
 
-/*END */
+/********Login and register pages*/
+
+.login-header, .register-header{
+    color: #EE6E74;
+    text-align: center;
+}
+
+
+#sign-in-button, #register-button {
+    color:#fff ;
+}
+
+.submit-row {
+    text-align: center;
+}
+
+#no-account-col {
+    text-align: center;
+}
+
+/*************Search/Index page*/
+
+
+.search-header{
+    color: #EE6E74;
+    text-align: center;
+}
+
+
+/*********End*/
+
 
 .add-recipe-header {
     color:#EE6E74 ;

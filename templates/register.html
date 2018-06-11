@@ -10,8 +10,8 @@
   {% endif %}
 {% endwith %}
 
- <p class="error">{{ error }}</p>
- <h2>Register</h2>
+<p class="error">{{ error }}</p>
+<h1 class="register-header">Register</h1>
 <div class="row">
     <form class="col s12" method="POST">
         <div class="row">
@@ -24,7 +24,11 @@
                 <label for="password">Password</label>
             </div>
         </div>
-        <input type="submit" value="Submit">
+        <div class="row submit-row">
+            <div class="col s6 offset-s3">
+                <input type="submit" class="waves-effect waves-light btn" id="register-button" value="Register">
+            </div>
+        </div>
     </form>
 </div>
 {% endblock %}

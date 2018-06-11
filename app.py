@@ -1695,6 +1695,7 @@ def add_to_favourites(recipe_id):
         return redirect(url_for("login"))
     else:
         add_to_user_favourites_table(recipe_id)
+        flash("Recipe added to favourites")
     return redirect(redirect_url())
 
 

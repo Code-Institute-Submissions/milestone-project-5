@@ -8,9 +8,9 @@
   {% endfor %}
 </ul>
 {% endif %} {% endwith %} {% if filtered_search %}
-<h2>Search Results:</h2>
+<h2 class="search-header">Search Results:</h2>
 {% else %}
-<h2>Searching All Recipes:</h2>
+<h2 class="search-header">Searching All Recipes:</h2>
 {% endif %}
 <div class="row center-align">
   <a href="#" data-target="slide-out" class=" sidenav-trigger waves-effect waves-light btn">Filter Search</a>
@@ -167,7 +167,7 @@
     {% endif %}
 
     <div class="row">
-      <div class="col s12 m6 offset-m3 ">
+      <div class="col s12 m4 offset-m4 ">
         <div class="card ">
 
           <div class="card-image">
