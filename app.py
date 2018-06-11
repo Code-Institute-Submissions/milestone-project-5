@@ -410,25 +410,29 @@ def get_ingredients_dictionary_list():
     end_of_ingredients = False
     ingredients_dictionary_list = []
     counter = 0
-
+    
     while not end_of_ingredients:
         try:
-            ingredient_name = request.form["quantity-{}".format(counter)]
+            ingredient_name = request.form["ingredient-{}".format(counter)]
             if check_if_string_contains_letters(ingredient_name):
                 lowercase_ingredient_name = ingredient_name.lower()
+                print(lowercase_ingredient_name)
                 capitalized_ingredient_name = lowercase_ingredient_name.capitalize()
                 ingredient_dictionary = {
-                    "Quantity": request.form[capitalized_ingredient_name],
-                    "Name": request.form["ingredient-{}".format(counter)]
+                    "Quantity": request.form["quantity-{}".format(counter)],
+                    "Name":capitalized_ingredient_name
                 }
                 ingredients_dictionary_list.append(ingredient_dictionary)
+                print(ingredient_dictionary["Name"])
             else:
                 end_of_ingredients = True
 
         except Exception as e:
             end_of_ingredients = True
-
+            
         counter += 1
+
+        
 
     return ingredients_dictionary_list
 
@@ -738,7 +742,7 @@ def get_form_values():
         "Ingredients": get_ingredients_dictionary_list()
 
     }
-    # print(values_dictionary["Ingredients"])
+    print(values_dictionary["Ingredients"])
     return values_dictionary
 
 
@@ -1349,8 +1353,6 @@ def get_last_recipe_id():
             cursor.execute("SELECT Id FROM Recipes ORDER BY Id DESC LIMIT 1")
             last_id_tuple = cursor.fetchone()
             last_id = last_id_tuple[0]
-            print("last_id")
-            print(last_id)
             return last_id
     except Exception as e:
         print("ERROR GET LAST ID: {}".format(e))
@@ -1416,11 +1418,12 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     RecipeIngredients table. Each has a RecipeId value of 
     the second argument 
     """
-
+    print("this is running")
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
             for ingredient_dictionary in ingredients_dictionary_list:
+                print(ingredient_dictionary["Name"])
                 cursor.execute(
                     'INSERT INTO RecipeIngredients(RecipeId, IngredientId, Quantity) VALUES ("{0}", (SELECT Id FROM Ingredients WHERE Name="{1}"), "{2}")'.format(
                         recipe_id,
@@ -1502,7 +1505,6 @@ def insert_dictionary_into_recipes_table(values_dictionary):
 @login_required
 def add_recipe():
     if request.method == "POST":
-        print("is this working?")
         values_dictionary = get_form_values()
         insert_dictionary_into_recipes_table(values_dictionary)
         recipe_id = get_last_recipe_id()
