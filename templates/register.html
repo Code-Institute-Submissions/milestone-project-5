@@ -1,5 +1,5 @@
  {% extends 'base.html' %} {% block content %}
- <!--from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+ <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -10,9 +10,7 @@
   {% endif %}
 {% endwith %}
 
- 
- 
- {{ error }}
+ <p class="error">{{ error }}</p>
  <h2>Register</h2>
 <div class="row">
     <form class="col s12" method="POST">
@@ -27,10 +25,6 @@
             </div>
         </div>
         <input type="submit" value="Submit">
-
-        
     </form>
 </div>
-
-
 {% endblock %}

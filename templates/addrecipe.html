@@ -1,6 +1,6 @@
  {% extends 'base.html' %} {% block content %}
  
- <!--from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+ <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -13,46 +13,50 @@
 
  
 <h1 class="add-recipe-header">Add Recipe</h1>
+
 <form method="POST" id="add-recipe" enctype="multipart/form-data">
+
     <div class="row">
         <label for="recipe-name">*Recipe Name</label>
         <input type="text" name="recipe-name" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
     </div>
+
     <div class="row">
         <label for="recipe-img">Recipe Image</label>
         <input type="file" name="recipe-img" id="recipe-img" accept="image/*">
     </div>
+
     <div class="row">
         <div class="input-field col s6">
             <select class="difficulty-select" name="difficulty-select">
-      <option value="0" selected>Easy</option>
-      <option value="1">Normal</option>
-      <option value="2">Challenging</option>
-    </select>
+                <option value="0" selected>Easy</option>
+                <option value="1">Normal</option>
+                <option value="2">Challenging</option>
+            </select>
             <label>Difficulty</label>
         </div>
-
-
         <div class="input-field col s6">
             <input id="serves" name="serves" type="number" required>
             <label>*Serves</label>
         </div>
-
     </div>
-
 
     <div class="row">
         <div class="input-field col s9 m4">
             <label for="categories">*Categories</label>
             <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" required>
-
         </div>
     </div>
+
     <div class="row categories-btn-row btn-row">
         <div class="col s3 m3 offset-s9 offset-m0">
-        <a class="btn-floating btn-small waves-effect waves-light red" id="add-category"><i class="material-icons">add</i></a>
-        <a class="btn-floating btn-small waves-effect waves-light red" id="remove-category"><i class="material-icons">remove</i></a>
-    </div>
+            <a class="btn-floating btn-small waves-effect waves-light red" id="add-category">
+                <i class="material-icons">add</i>
+            </a>
+            <a class="btn-floating btn-small waves-effect waves-light red" id="remove-category">
+                <i class="material-icons">remove</i>
+            </a>
+        </div>
     </div>
 
     <div class="row">
@@ -70,11 +74,10 @@
         </div>
         <div class="input-field col s6">
             <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="*Hours" required>
-            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Minutes" >
+            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Minutes">
             <label>Cooking Time</label>
         </div>
     </div>
-
 
     <h6>*Ingredients:</h6>
     <div class="row ingredient-row-0">
@@ -87,11 +90,16 @@
             <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete" placeholder="Honey" required>
         </div>
     </div>
+
     <div class="row ingredient-btn-row btn-row">
-                <div class="col s3 m3 offset-s9 offset-m0">
-        <a class="btn-floating btn-small waves-effect waves-light red" id="add-ingredient"><i class="material-icons">add</i></a>
-        <a class="btn-floating btn-small waves-effect waves-light red" id="remove-ingredient"><i class="material-icons">remove</i></a>
-    </div>
+        <div class="col s3 m3 offset-s9 offset-m0">
+            <a class="btn-floating btn-small waves-effect waves-light red" id="add-ingredient">
+                <i class="material-icons">add</i>
+            </a>
+            <a class="btn-floating btn-small waves-effect waves-light red" id="remove-ingredient">
+                <i class="material-icons">remove</i>
+            </a>
+        </div>
     </div>
 
     <h6>*Instructions:</h6>
@@ -103,21 +111,26 @@
                 </div>
             </li>
         </div>
+
         <div class="row instruction-btn-row btn-row">
-                    <div class="col s3 m3 offset-s9 offset-m0">
-            <a class="btn-floating btn-small waves-effect waves-light red" id="add-instruction"><i class="material-icons">add</i></a>
-            <a class="btn-floating btn-small waves-effect waves-light red" id="remove-instruction"><i class="material-icons">remove</i></a>
-        </div>
+            <div class="col s3 m3 offset-s9 offset-m0">
+                <a class="btn-floating btn-small waves-effect waves-light red" id="add-instruction">
+                    <i class="material-icons">add</i>
+                </a>
+                <a class="btn-floating btn-small waves-effect waves-light red" id="remove-instruction">
+                    <i class="material-icons">remove</i>
+                </a>
+            </div>
         </div>
     </ol>
 
     <p class="required-explanation">*Required field</p>
 
-    <button class="btn waves-effect waves-light submit-btn" type="submit">Submit <i class="material-icons right">send</i></button>
-
+    <button class="btn waves-effect waves-light submit-btn" type="submit">Submit
+        <i class="material-icons right">send</i>
+    </button>
 
 </form>
- 
 <script>
 
     function autocompleteFunction(){
@@ -126,15 +139,12 @@
             data: {
               {% for category in categories %}  "{{ category }}": null, {% endfor %}
             },
-
         });
-        
         
          $('input.ingredientsAutocomplete').autocomplete({
             data: {
               {% for ingredient in ingredients %}  "{{ ingredient }}": null, {% endfor %}
             },
-
         });
     }
     

@@ -1,8 +1,8 @@
+ <!-- displays error message if applicable  -->
  {% extends 'base.html' %} {% block content %}
 <p class="error"> {{ error }}</p>
-<!--<p class="login-message">{{ message|safe }}</p> -->
 
-<!--from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -13,10 +13,10 @@
   {% endif %}
 {% endwith %}
 
-
- <h2>Login</h2>
+<h2>Login</h2>
 <div class="row">
     <form class="col s12" method="POST">
+
         <div class="row">
             <div class="input-field col s6">
                 <input placeholder="Username" id="login-username" name="login-username" type="text" required>
@@ -27,17 +27,16 @@
                 <label for="password">Password</label>
             </div>
         </div>
-        <input type="submit" value="Submit">
 
-        
+        <input type="submit" value="Submit">
     </form>
 </div>
 
 <div class="row">
     <div class="col sm12">
-        <p class="register-text">Haven't created an account?<br>
-        <a class="waves-effect waves-light btn" href="/register">Register Now</a>
-
+        <p class="register-text">Haven't created an account?
+            <br>
+            <a class="waves-effect waves-light btn" href="/register">Register Now</a>
         </p>
     </div>
 </div>

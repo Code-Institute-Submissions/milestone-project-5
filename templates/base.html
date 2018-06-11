@@ -10,13 +10,10 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <!--<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" media="screen,projection" />-->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css" type="text/css" />
-     <!--Needs to be before jquery in script-->
-     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css" type="text/css" />
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>-->
-        <script type="text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
     <title>Recipes</title>
 </head>
@@ -25,45 +22,73 @@
     
 <header>
 
-<!--https://materializecss.com/navbar.html-->
+    <!--template from: https://materializecss.com/navbar.html-->
     <nav>
         <div class="nav-wrapper">
             <a href="/" class="brand-logo">Recipe Wiki</a>
-                  <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+                <i class="material-icons">menu</i>
+            </a>
 
             <ul id="nav-mobile" class="right hide-on-med-and-down ">
-                <li><a href="/">Search</a></li>
-                <li><a href="/addrecipe">Add Recipe</a></li>
-                <li><a href="/visualizedata">Visualize Data</a></li>
+                <li>
+                    <a href="/">Search</a>
+                </li>
+                <li>
+                    <a href="/addrecipe">Add Recipe</a>
+                </li>
+                <li>
+                    <a href="/visualizedata">Visualize Data</a>
+                </li>
                 {% if current_user.is_authenticated %}
-                <li><a href="/userpage/{{ current_user.id}}">{{ current_user.username[0] }}'s Profile</a></li>
-                <li><a href="/logout">Logout</a> </li>
+                <li>
+                    <a href="/userpage/{{ current_user.id}}">{{ current_user.username[0] }}'s Profile</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
                 {% else %}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
+                <li>
+                    <a href="/login">Login</a>
+                </li>
+                <li>
+                    <a href="/register">Register</a>
+                </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
-    
- 
 
-<!--https://materializecss.com/navbar.html-->
-  <ul class="sidenav" id="mobile-demo">
- <li><a href="/">Search</a></li>
-                <li><a href="/addrecipe">Add Recipe</a></li>
-                <li><a href="/visualizedata">Visualize Data</a></li>
-                {% if current_user.is_authenticated %}
-                <li><a href="/userpage/{{ current_user.id}}">{{ current_user.username[0] }}'s Profile</a></li>
-                <li><a href="/logout">Logout</a> </li>
-                {% else %}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-                {% endif %}
-  </ul>
-          
+
+    <!--https://materializecss.com/navbar.html-->
+    <ul class="sidenav" id="mobile-demo">
+        <li>
+            <a href="/">Search</a>
+        </li>
+        <li>
+            <a href="/addrecipe">Add Recipe</a>
+        </li>
+        <li>
+            <a href="/visualizedata">Visualize Data</a>
+        </li>
+        {% if current_user.is_authenticated %}
+        <li>
+            <a href="/userpage/{{ current_user.id}}">{{ current_user.username[0] }}'s Profile</a>
+        </li>
+        <li>
+            <a href="/logout">Logout</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="/login">Login</a>
+        </li>
+        <li>
+            <a href="/register">Register</a>
+        </li>
+        {% endif %}
+    </ul>
+
 </header>
-       
 
     {% block content %} {% endblock %}
 
@@ -74,37 +99,33 @@
     
     //loads materializecss functionality 
         $(document).ready(function() {
-            //requred for select form
-                $('select').formSelect().isMultiple;
+            //required for select form
+             $('select').formSelect().isMultiple;
             //required for sidenav
-                    $('.sidenav').sidenav();
-                    
-                    //required for character limit
-                        $('input#input_text, textarea#blurb').characterCounter();
-                    $('#username').characterCounter()
-                    
-                    //required for collapsible
-                        $('.collapsible').collapsible();
-
-                    //requred for tabs:
-                        $('.tabs').tabs();
-
-  });
+            $('.sidenav').sidenav();
+            //required for form character limit
+            $('input#input_text, textarea#blurb').characterCounter();
+            $('#username').characterCounter()
+            //required for collapsible
+            $('.collapsible').collapsible();
+            //requred for tabs:
+            $('.tabs').tabs();
+         });
   
    
 
  function addOrRemoveCategory(){
-
+     // functionality to add or remove category row on
+     //press of add or remove button 
             let categoryCount = 0;
             
             // for edit page
-            // adjusts count reflect existing forms
+            // adjusts count to reflect number of existing recipe categories 
             for (let i= 1; i < 15; i++){
                 if ($(`#category-${i}`).length > 0){
                     categoryCount = i;
                 }
             }
-            
             
             $("#add-category").click(function() {
                 $(`#category-${categoryCount}`).after(`
@@ -118,8 +139,6 @@
                 categoryCount--;
                  }
             });
-                
-                
  }
  
             
@@ -142,12 +161,14 @@ function addOrRemoveIngredient(){
                         <label for="ingredient">Ingredient</label>
                         <input type="text" name="ingredient-${ingredientCount}" id="ingredient-${ingredientCount}" class="autocomplete ingredientsAutocomplete">
                     </div>
-                    
                   </div>
                 `)
+                //called here so that function reloads after new ingredient 
+                //is added. Enables autocomplete for added rows
                 autocompleteFunction();
             });
-            
+        
+                //same functionality but for filter section of index page
                   $("#add-filter-ingredient").click(function() {
                 $(this).before(`
               <div class="row ingredient-row-${++ingredientCount}">
@@ -160,18 +181,15 @@ function addOrRemoveIngredient(){
                 `)
                 autocompleteFunction();
             });
-
             $("#remove-ingredient").click(function() {
                 if (ingredientCount > 0){
                 $(`.ingredient-row-${ingredientCount}`).remove();
                 ingredientCount--;
                 }
-            });
-            
-}
+            });    
+            }
 
 function addOrRemoveInstruction(){
-
             let instructionCount = 1;
             
              for (let i= 1; i < 15; i++){
@@ -194,17 +212,12 @@ function addOrRemoveInstruction(){
                 $(`.instruction-row-${instructionCount--}`).remove();
                 }
             });
-
-
 }
 
 addOrRemoveCategory();
 addOrRemoveIngredient();
 addOrRemoveInstruction();
        
-
-        // $(document).add()
-  
     </script>
 </body>
 
