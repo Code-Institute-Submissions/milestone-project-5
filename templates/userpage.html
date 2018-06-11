@@ -15,6 +15,9 @@
  
 <h2>{{ user["Username"] }}</h2>
 <h3 class="userpage-recipes-header">Submitted Recipes: </h3>
+{% if not user["Recipes"] %}
+<p class="no-recipes-text">You have not submitted any recipes<br><a class="waves-effect waves-light btn" href="/addrecipe">Add a Recipe</a> </p>
+{% endif %}
 {% for recipe in user["Recipes"] %}
 <!--https://materializecss.com/cards.html-->
 <div class="row">
@@ -73,9 +76,7 @@
 
 
 <h3 class="userpage-recipes-header">Favourite Recipes: </h3>
-{% if not user["Recipes"] %}
-<p class="no-recipe-text">You have not submit any recipes<br><a class="waves-effect waves-light btn" href="/addrecipe">Add a Recipe</a> </p>
-{% endif %}
+
 {% for recipe in user["Favourites"] %}
 <!--https://materializecss.com/cards.html-->
 <div class="row">

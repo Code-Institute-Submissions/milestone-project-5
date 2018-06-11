@@ -1528,6 +1528,7 @@ def check_user_is_logged_in():
     if current_user.is_authenticated:
         return True
     else:
+        flash("You must be logged in to complete this task")
         return False
 
 
