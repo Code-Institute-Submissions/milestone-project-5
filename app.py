@@ -3,12 +3,11 @@ import os
 from random import choice  # to avoid duplicates in file names
 import pymysql
 from flask import Flask, render_template, request, redirect, flash, url_for
-from flask_login import LoginManager, UserMixin, login_user,\
-login_required, current_user,  logout_user  # informed by: https://www.youtube.com/watch?v=2dEM-s3mRLE
+from flask_login import LoginManager, UserMixin, login_user, \
+    login_required, current_user, logout_user  # informed by: https://www.youtube.com/watch?v=2dEM-s3mRLE
 from passlib.hash import sha256_crypt  # informed by: https://pythonprogramming.net/password-hashing-flask-tutorial/
 # for uploading images
-from werkzeug.utils import secure_filename  #informed by: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
-
+from werkzeug.utils import secure_filename  # informed by: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'
@@ -31,7 +30,8 @@ def open_connection():
     helper function that opens the connection.
     Switch between connection and test connection as needed
     """
-    return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763");
+    return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
+                           db="heroku_12eaf3a664b1763")
     # return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
 
@@ -62,7 +62,6 @@ class User(UserMixin):
 
     def is_active(self):
         return self.is_enabled
-
 
 
 @login_manager.user_loader
@@ -96,7 +95,6 @@ def get_username_for_id(user_id):
     finally:
         if connection.open:
             connection.close()
-
 
 
 def get_id_for_username(username):
@@ -442,7 +440,7 @@ def get_ingredients_dictionary_list():
     end_of_ingredients = False
     ingredients_dictionary_list = []
     counter = 0
-    
+
     while not end_of_ingredients:
         try:
             ingredient_name = request.form["ingredient-{}".format(counter)]
@@ -452,7 +450,7 @@ def get_ingredients_dictionary_list():
                 capitalized_ingredient_name = lowercase_ingredient_name.capitalize()
                 ingredient_dictionary = {
                     "Quantity": request.form["quantity-{}".format(counter)],
-                    "Name":capitalized_ingredient_name
+                    "Name": capitalized_ingredient_name
                 }
                 ingredients_dictionary_list.append(ingredient_dictionary)
                 print(ingredient_dictionary["Name"])
@@ -461,7 +459,7 @@ def get_ingredients_dictionary_list():
 
         except Exception as e:
             end_of_ingredients = True
-            
+
         counter += 1
 
     return ingredients_dictionary_list
@@ -536,6 +534,7 @@ def get_recipe_user(recipe_id):
         if connection.open:
             connection.close()
 
+
 def get_converted_difficulty(recipe_id):
     """
     gets the difficulty of the argument recipe, 
@@ -575,7 +574,6 @@ def get_recipe_ingredients(recipe_id):
     finally:
         if connection.open:
             connection.close()
-
 
 
 def get_recipe_instructions(recipe_id):
@@ -713,8 +711,8 @@ def create_recipe_values_with_image(values_dictionary):
     creates values to use in SQL query for adding a 
     new recipe for a recipes table, if the user did submit
     an image
-    """ 
-    
+    """
+
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}", "{8}")'.format(
         values_dictionary["Name"],
         current_user.id,
@@ -889,7 +887,6 @@ def get_excluded_categories_list(filter_categories_list):
                     string_of_placeholders), filter_categories_list)
             returned_tuples = cursor.fetchall()
             category_id_set = {individual_tuple[0] for individual_tuple in returned_tuples}
-            categories_id_list = [category_id for category_id in category_id_set]
 
             return category_id_set
     except Exception as e:
@@ -1114,7 +1111,6 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
     return difficulties_to_exclude
 
 
-
 def get_filter_categories():
     """
     returns false if user has not entered any
@@ -1258,7 +1254,6 @@ def get_ids_that_match_all_filters():
     max_time = get_max_time_filter()
 
     ids_list = filter_by_total_time(ids_list, min_time, max_time)
-
 
     difficulties_list = get_difficulties_filter()
 
@@ -1640,22 +1635,23 @@ def get_userpage_values(user_id):
         "Recipes": get_user_recipes(user_id)
     }
     return dictionary
-    
+
+
 def check_is_current_users_userpage(userpage_user_id):
     """
     returns True if the user is on their own 
     userpage. Otherwise returns False
     """
-    
+
     if not check_user_is_logged_in():
         return False
-        
+
     if userpage_user_id == current_user.id:
         return True
     else:
         return False
-        
-    
+
+
 @app.route("/userpage/<user_id>")
 def userpage(user_id):
     """
@@ -1663,7 +1659,7 @@ def userpage(user_id):
     """
     userpage_values = get_userpage_values(user_id)
     own_page = check_is_current_users_userpage(user_id)
-    return render_template("userpage.html", user=userpage_values, own_page = own_page)
+    return render_template("userpage.html", user=userpage_values, own_page=own_page)
 
 
 @app.route("/addtofavourites/<recipe_id>")
@@ -1777,7 +1773,7 @@ def show_recipe(recipe_id):
             add_user_review(recipe_id)
 
     return render_template("recipe.html", recipe=recipe_values, times=time_values, review_score=average_review_score,
-                           recipe_id=recipe_id, user_id = recipe_user_id)
+                           recipe_id=recipe_id, user_id=recipe_user_id)
 
 
 if __name__ == '__main__':
