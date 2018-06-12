@@ -98,8 +98,6 @@ def get_username_for_id(user_id):
             connection.close()
 
 
-# print(get_username_for_id(12))
-
 
 def get_id_for_username(username):
     """
@@ -275,12 +273,12 @@ def login():
 
 
 @app.route("/logout")
-"""
-functionality to logout user.
-Code from: https://www.youtube.com/watch?v=2dEM-s3mRLE
-"""
 @login_required
 def logout():
+    """
+    functionality to logout user.
+    Code from: https://www.youtube.com/watch?v=2dEM-s3mRLE
+    """
     logout_user()
     flash("Successfully logged out")
     return redirect(url_for("search_recipes"))
