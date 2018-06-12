@@ -1,16 +1,14 @@
 import datetime
 import os
 from random import choice  # to avoid duplicates in file names
-
 import pymysql
 from flask import Flask, render_template, request, redirect, flash, url_for
-from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, \
-    logout_user  # https://www.youtube.com/watch?v=2dEM-s3mRLE
-from passlib.hash import sha256_crypt  # https://pythonprogramming.net/password-hashing-flask-tutorial/
+from flask_login import LoginManager, UserMixin, login_user,\
+login_required, current_user,  logout_user  # informed by: https://www.youtube.com/watch?v=2dEM-s3mRLE
+from passlib.hash import sha256_crypt  # informed by: https://pythonprogramming.net/password-hashing-flask-tutorial/
 # for uploading images
-from werkzeug.utils import secure_filename  # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+from werkzeug.utils import secure_filename  #informed by: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 
-# for managing logins
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'
@@ -19,22 +17,25 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
 test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
+"""
+connection for testing. Using C9 MySQL database: 
+pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
-# test_connection = pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+ClearDB database for deployment on heroku:
+pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
+"""
 
-
-connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
 
 def open_connection():
     """
-    helper function that opens the connection
-    change to connection or test_connection values as needed 
+    helper function that opens the connection.
+    Switch between connection and test connection as needed
     """
     return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763");
     # return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
 
-# http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+# from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 UPLOAD_FOLDER = 'static/images'
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
@@ -44,6 +45,11 @@ ACCOUNT FUNCTIONS
 
 
 class User(UserMixin):
+    """
+    class for creating and logging into
+    users accounts. Code partly 
+    from: https://teamtreehouse.com/community/how-usermixin-and-class-inheritance-work
+    """
     id = int
     username = str
     password = str
@@ -58,18 +64,22 @@ class User(UserMixin):
         return self.is_enabled
 
 
-# https://flask-login.readthedocs.io/en/latest/#how-it-works
+
 @login_manager.user_loader
 def load_user(current_user):
+    """
+    for loading an instance of the 
+    User class. Code party from:
+    https://flask-login.readthedocs.io/en/latest/#how-it-works
+    """
     username = get_username_for_id(current_user)
-    # print("Username: {0}, id: {1}".format(username, current_user))
     return User(current_user, username)
 
 
 def get_username_for_id(user_id):
     """
     returns the username from Users table that
-    is on the same row as the argument userId
+    is on the same row as the argument user_id
     """
 
     try:
@@ -93,8 +103,8 @@ def get_username_for_id(user_id):
 
 def get_id_for_username(username):
     """
-    returns the Id from Ssers that matches the 
-    argument username
+    returns the Id from the Users table that 
+    matches the argument username
     """
 
     try:
@@ -106,7 +116,7 @@ def get_id_for_username(username):
             return table_id
 
     except Exception as e:
-        print("GIFU ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -116,19 +126,18 @@ def get_id_for_username(username):
 def get_encrypted_password():
     """
     returns the user password entered in the
-    registration form encrypted using SHA256 
+    registration form. Encrypts it using sha256
     """
 
     password = request.form["password"]
     encrypted_password = sha256_crypt.encrypt(password)
-    # print(encrypted_password)
     return encrypted_password
 
 
 def add_form_values_to_users():
     """
     adds username and password entered in registration
-    form to Users table
+    form to Users table. 
     """
     name = request.form["username"]
     password = get_encrypted_password()
@@ -148,6 +157,13 @@ def add_form_values_to_users():
 
 @app.route("/register", methods=["POST", "GET"])
 def register_user():
+    """
+    registering page. Only accepts registration if:
+    Username is less than 15 chars
+    Username doesn't already exist 
+    
+    adds values to Users table if registeration successful
+    """
     if request.method == "POST":
         username = request.form["username"]
         already_exists = check_if_username_exists(username)
@@ -172,8 +188,8 @@ def register_user():
 
 def check_if_username_exists(username):
     """
-    checks if a username appears in the Users table
-    returns True if username exists, False otherwise
+    returns True if the argument already exists in the
+    Users table, otherwise returns False
     """
 
     try:
@@ -195,7 +211,8 @@ def check_if_username_exists(username):
 def check_password_correct(username, password):
     """
     returns True if the password matches the username's password
-    in Users table. Returns false otherwise
+    in Users table. Returns false otherwise. Reads passwords
+    using sha256 encryption
     """
 
     try:
@@ -218,6 +235,17 @@ def check_password_correct(username, password):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """"
+    login page. Logs in user if:
+    username is in Users table
+    password matches that user's password
+    
+    if the user's previous page is not the login page,
+    returns user to previous page. Otherwise redirects to 
+    home page
+    
+    Refreshes page with error message if login unsuccessful 
+    """
     if request.method == "POST":
         username = request.form["login-username"]
         password = request.form["password"]
@@ -247,7 +275,10 @@ def login():
 
 
 @app.route("/logout")
-# from https://www.youtube.com/watch?v=2dEM-s3mRLE
+"""
+functionality to logout user.
+Code from: https://www.youtube.com/watch?v=2dEM-s3mRLE
+"""
 @login_required
 def logout():
     logout_user()
@@ -262,7 +293,7 @@ HELPER FUNCTIONS
 
 def redirect_url(default='/'):
     """
-    to enable request.referrer
+    to enable request.referrer. Code
     from: http://flask.pocoo.org/docs/1.0/reqcontext/
     """
     return request.args.get('next') or \
@@ -272,7 +303,8 @@ def redirect_url(default='/'):
 
 def convert_list_to_string_for_sql_search(argument_list):
     """
-    XXX
+    converts argument list into a string correctly formatted 
+    to be inserted into an SQL query
     """
     list_as_string = "{}".format(argument_list)
     formatted_string = list_as_string.replace("[", "(").replace("]", ")").replace("{", "(").replace("}", ")")
@@ -296,10 +328,11 @@ def check_if_string_contains_letters(string):
     return False
 
 
-def get_recipe_image():
+def get_recipe_image_filename():
     """
-    returns the image that the user uploads 
-    returns false if user didn't upload image
+    if the user submitted an image, uploads that
+    image and returns its filename. If the user did
+    not upload an image, returns False
     """
     try:
         image_name = add_recipe_image_and_return_filename()
@@ -315,11 +348,11 @@ def get_recipe_image():
 
 def get_prep_time():
     """
-    returns prep time from the form in datetime format
+    returns prep time from the form in datetime format.
+    If user did not submit a value for minutes, sets their value as 00
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
     prep_hours = request.form["prep-hours"]
-    # print(prep_hours)
     try:
         prep_mins = request.form["prep-mins"]
     except Exception as e:
@@ -355,7 +388,7 @@ def get_cook_time():
 def get_categories_list():
     """
     returns a list of all categories entered 
-    into the form
+    into the add recipe form
     """
     end_of_categories = False
     categories_list = []
@@ -378,7 +411,7 @@ def get_categories_list():
 def get_instructions_list():
     """
     returns a list of all instructions 
-    entered into the form
+    entered into the add recipe form
     """
 
     end_of_instructions = False
@@ -403,8 +436,9 @@ def get_instructions_list():
 def get_ingredients_dictionary_list():
     """
     returns a list of dictionaries. Each dictionary
-    represents an ingredient entered into the form with
-    'Quantity' and 'Name" as keys
+    represents an ingredient entered into the add recipe
+    form, with 'Quantity' and 'Name" as keys. Capitalizes 
+    name value. All other chars set to lowercase
     """
 
     end_of_ingredients = False
@@ -432,16 +466,14 @@ def get_ingredients_dictionary_list():
             
         counter += 1
 
-        
-
     return ingredients_dictionary_list
 
 
 def get_value_from_recipes_table(column, recipe_id):
     """
-    finds the recipe in the Recipes table that has
-    the Id entered as argument. Returns the value for the
-    column entered in argument 
+    identifies a recipe in the Recipes table using the 
+    argument Id. Returns the value of the column entered 
+    as an argument 
     """
 
     try:
@@ -453,7 +485,7 @@ def get_value_from_recipes_table(column, recipe_id):
             return value
 
     except Exception as e:
-        print("ERROR GVFRT: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -477,14 +509,11 @@ def get_recipe_categories(recipe_id):
             return values_list
 
     except Exception as e:
-        print("GRC ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
             connection.close()
-
-
-# print(get_recipe_categories(102))
 
 
 def get_recipe_user(recipe_id):
@@ -503,14 +532,11 @@ def get_recipe_user(recipe_id):
             return username
 
     except Exception as e:
-        print("GRU ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
             connection.close()
-
-
-# print(get_recipe_user(102))
 
 def get_converted_difficulty(recipe_id):
     """
@@ -529,9 +555,9 @@ def get_converted_difficulty(recipe_id):
 
 def get_recipe_ingredients(recipe_id):
     """
-    returns a list the dictionaries for all ingredients in RecipeIngredients
-    that match the recipe_id. Each dictionary has Name and 
-    Quantity keys. String names taken from Ingredients table
+    returns a list the dictionaries for all ingredients in the
+    RecipeIngredients table that match the recipe_id. Each dictionary
+    has Name and Quantity keys. String names taken from Ingredients table
     """
 
     try:
@@ -546,14 +572,12 @@ def get_recipe_ingredients(recipe_id):
             return values_list
 
     except Exception as e:
-        print("GRI ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
             connection.close()
 
-
-# print(get_recipe_ingredients(103))
 
 
 def get_recipe_instructions(recipe_id):
@@ -575,11 +599,10 @@ def get_recipe_instructions(recipe_id):
             list_as_list = [x.replace("]", "") for x in list_as_list]
             list_as_list = [x.replace("'", "") for x in list_as_list]
 
-            # print(list_as_list)
             return list_as_list
 
     except Exception as e:
-        print("ERROR GRI: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -589,7 +612,7 @@ def get_recipe_instructions(recipe_id):
 def get_recipe_reviews(recipe_id):
     """
     returns a list of all scores from the 
-    Reviews table for the argument RecipeId
+    Reviews table for the argument recipe
     """
     try:
         connection = open_connection()
@@ -602,7 +625,7 @@ def get_recipe_reviews(recipe_id):
             return list_of_scores
 
     except Exception as e:
-        print("GRR ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -611,7 +634,8 @@ def get_recipe_reviews(recipe_id):
 
 def get_average_review_score(list_of_scores):
     """
-    returns the average of all values in the argument
+    returns the average of all values in the argument, 
+    rounded to the nearest int
     """
     length_of_list = len(list_of_scores)
     if length_of_list == 0:
@@ -628,7 +652,7 @@ def get_average_review_score(list_of_scores):
 def get_all_categories_from_table():
     """
     returns a list of all category names
-    from the Categories table
+    in the Categories table
     """
     try:
         connection = open_connection()
@@ -639,20 +663,17 @@ def get_all_categories_from_table():
             return categories_list
 
     except Exception as e:
-        print("GACFT ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
             connection.close()
 
 
-# print(get_all_categories_from_table())
-
-
 def get_all_ingredients_from_table():
     """
     returns a list of all ingredient names
-    from the Ingredients table
+    in the Ingredients table
     """
     try:
         connection = open_connection()
@@ -671,7 +692,11 @@ def get_all_ingredients_from_table():
 
 
 def create_recipe_values_without_image(values_dictionary):
-    # must use double quotes inside values string
+    """ 
+    creates values to use in SQL query for adding a 
+    new recipe for a recipes table, if the user did NOT 
+    submit an image
+    """
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}")'.format(
         values_dictionary["Name"],
         current_user.id,
@@ -686,7 +711,12 @@ def create_recipe_values_without_image(values_dictionary):
 
 
 def create_recipe_values_with_image(values_dictionary):
-    # must use double quotes inside values string
+    """ 
+    creates values to use in SQL query for adding a 
+    new recipe for a recipes table, if the user did submit
+    an image
+    """ 
+    
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}", "{8}")'.format(
         values_dictionary["Name"],
         current_user.id,
@@ -708,18 +738,18 @@ OTHER FUNCTIONS
 
 def add_recipe_image_and_return_filename():
     """
-    adds the image uploaded to the form to 
-    static/images folder. Returns the image
-    filename
+    adds the image uploaded on the add recipe form
+    to the project image folder. Adds random ints
+    to end of filename to avoid overwiping files 
+    of the same name. Returns the filename
     """
 
     file = request.files["recipe-img"]
 
-    # three lines of code below are from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+    # two lines of code below are from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
     # added random int to file name to avoid duplicate filenames
     filename = "{0}{1}".format(choice(range(1000)), secure_filename(file.filename))
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    # print(filename)
     return filename
 
 
@@ -731,7 +761,7 @@ def get_form_values():
 
     values_dictionary = {
         "Name": request.form["recipe-name"],
-        "ImageName": get_recipe_image(),
+        "ImageName": get_recipe_image_filename(),
         "Difficulty": request.form["difficulty-select"],
         "Serves": request.form["serves"],
         "Blurb": request.form["blurb"],
@@ -742,7 +772,6 @@ def get_form_values():
         "Ingredients": get_ingredients_dictionary_list()
 
     }
-    print(values_dictionary["Ingredients"])
     return values_dictionary
 
 
@@ -791,7 +820,7 @@ def get_list_of_recipe_ids():
             return list_of_ids
 
     except Exception as e:
-        print("GLORID ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -801,7 +830,7 @@ def get_list_of_recipe_ids():
 def get_recipe_values_for_data_visualization(recipe_id):
     """
     A shorted version of get_recipe_values() that excludes
-    the data not required for visualization. Adds ratings
+    the data not required for visualization. Adds rating
     """
     values_dictionary = {
         "Name": get_value_from_recipes_table("Name", recipe_id),
@@ -815,15 +844,10 @@ def get_recipe_values_for_data_visualization(recipe_id):
     return values_dictionary
 
 
-# print(get_recipe_values_for_data_visualization(105))
-
-
-# print(get_list_of_recipe_ids())
-
 def get_all_data_for_visualization():
     """
     returns a list of dictionaries. Each dictionary 
-    represents a table and contains the information required 
+    represents a recipe and contains the information required 
     to visualize data
     """
     data_dictionary_list = []
@@ -836,20 +860,13 @@ def get_all_data_for_visualization():
     return data_dictionary_list
 
 
-# print(get_all_data_for_visualization())
-
 @app.route("/visualizedata")
 def visualize_data():
+    """
+    renders the visualize data page
+    """
     data = get_all_data_for_visualization()
-    for entry in data:
-        print(entry["Rating"])
     return render_template("visualizedata.html", imported_data=data)
-
-
-# @app.route("/data")
-# def return_data():
-#     data = get_all_data_for_visualization()
-#     return data
 
 
 """
