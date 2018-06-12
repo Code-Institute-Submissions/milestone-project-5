@@ -4,7 +4,7 @@ from flask_login import current_user
 from passlib.handlers.sha2_crypt import \
     sha256_crypt  # informed by: https://pythonprogramming.net/password-hashing-flask-tutorial/
 
-from helpers import convert_list_to_string_for_sql_search, add_average_review_score_to_dictionary_list
+from helpers import convert_list_to_string_for_sql_search, get_average_review_score
 
 test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
@@ -763,3 +763,30 @@ def get_user_recipes(user_id):
     finally:
         if connection.open:
             connection.close()
+
+
+def add_average_review_score_to_dictionary_list(recipe_dictionary_list):
+    """
+    adds a 'Score' key/value pair to each dictionarinary in the
+    argument list. This represents the average review score
+    """
+
+    for recipe in recipe_dictionary_list:
+        recipe["Score"] = int(get_average_review_score(get_recipe_reviews(recipe["Id"])))
+
+    return recipe_dictionary_list
+
+
+def get_converted_difficulty(recipe_id):
+    """
+    gets the difficulty of the argument recipe,
+    converted to the appropriate string
+    """
+    int_id = get_value_from_recipes_table("Difficulty", recipe_id)
+
+    if int_id == 0:
+        return "Easy"
+    elif int_id == 1:
+        return "Normal"
+    else:
+        return "Challenging"

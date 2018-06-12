@@ -1,8 +1,6 @@
 from flask import request, url_for
 from flask_login import current_user
 
-from sql_fuctions import get_recipe_reviews, get_value_from_recipes_table
-
 
 def convert_list_to_string_for_sql_search(argument_list):
     """
@@ -13,18 +11,6 @@ def convert_list_to_string_for_sql_search(argument_list):
     formatted_string = list_as_string.replace("[", "(").replace("]", ")").replace("{", "(").replace("}", ")")
 
     return formatted_string
-
-
-def add_average_review_score_to_dictionary_list(recipe_dictionary_list):
-    """
-    adds a 'Score' key/value pair to each dictionarinary in the
-    argument list. This represents the average review score
-    """
-
-    for recipe in recipe_dictionary_list:
-        recipe["Score"] = int(get_average_review_score(get_recipe_reviews(recipe["Id"])))
-
-    return recipe_dictionary_list
 
 
 def get_average_review_score(list_of_scores):
@@ -68,21 +54,6 @@ def check_if_string_contains_letters(string):
             return True
 
     return False
-
-
-def get_converted_difficulty(recipe_id):
-    """
-    gets the difficulty of the argument recipe,
-    converted to the appropriate string
-    """
-    int_id = get_value_from_recipes_table("Difficulty", recipe_id)
-
-    if int_id == 0:
-        return "Easy"
-    elif int_id == 1:
-        return "Normal"
-    else:
-        return "Challenging"
 
 
 def create_recipe_values_without_image(values_dictionary):

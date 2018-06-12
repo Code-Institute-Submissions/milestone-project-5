@@ -8,8 +8,8 @@ from flask_login import UserMixin, login_user, \
 from werkzeug.utils import secure_filename  # informed by: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 
 from app_init import app, login_manager
-from helpers import add_average_review_score_to_dictionary_list, get_average_review_score, redirect_url, \
-    check_if_string_contains_letters, get_converted_difficulty, create_recipe_values_without_image, \
+from helpers import get_average_review_score, redirect_url, \
+    check_if_string_contains_letters, create_recipe_values_without_image, \
     create_recipe_values_with_image
 from sql_fuctions import open_connection, get_username_for_id, get_id_for_username, add_form_values_to_users, \
     check_if_username_exists, check_password_correct, get_value_from_recipes_table, get_recipe_categories, \
@@ -17,7 +17,8 @@ from sql_fuctions import open_connection, get_username_for_id, get_id_for_userna
     get_all_ingredients_from_table, get_list_of_recipe_ids, filter_by_categories, filter_by_ingredients, \
     filter_by_difficulty, get_search_results, get_last_recipe_id, add_to_categories_if_not_duplicate, \
     add_to_ingredients_if_not_duplicate, add_to_recipe_ingredients, add_to_recipe_categories, add_user_review, \
-    add_to_user_favourites_table, get_username, get_user_favourites, get_user_recipes
+    add_to_user_favourites_table, get_username, get_user_favourites, get_user_recipes, \
+    add_average_review_score_to_dictionary_list, get_converted_difficulty
 
 app.secret_key = 'some_secret'
 
