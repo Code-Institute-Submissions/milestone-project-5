@@ -7,7 +7,7 @@ from flask_login import UserMixin, login_user, \
 from add_recipe import get_form_values
 from app_init import app, login_manager
 from helpers import get_average_review_score, redirect_url, \
-    get_recipe_values, create_time_dictionary
+    create_time_dictionary
 from searching_recipes import get_ids_that_match_all_filters, get_sorted_recipes_list
 from sql_fuctions import open_connection, get_username_for_id, get_id_for_username, add_form_values_to_users, \
     check_if_username_exists, check_password_correct, get_value_from_recipes_table, get_recipe_categories, \
@@ -15,7 +15,7 @@ from sql_fuctions import open_connection, get_username_for_id, get_id_for_userna
     get_all_ingredients_from_table, get_list_of_recipe_ids, get_last_recipe_id, add_to_categories_if_not_duplicate, \
     add_to_ingredients_if_not_duplicate, add_to_recipe_ingredients, add_to_recipe_categories, add_user_review, \
     add_to_user_favourites_table, get_username, get_user_favourites, get_user_recipes, \
-    get_converted_difficulty, insert_dictionary_into_recipes_table
+    get_converted_difficulty, insert_dictionary_into_recipes_table, get_recipe_values
 
 app.secret_key = 'some_secret'
 

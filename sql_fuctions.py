@@ -818,3 +818,28 @@ def insert_dictionary_into_recipes_table(values_dictionary):
     finally:
         if connection.open:
             connection.close()
+
+
+def get_recipe_values(recipe_id):
+    """
+    returns a dictionary with all the values required
+    to render the recipe.html page. Recipe identified
+    by the Id in argument
+    """
+
+    values_dictionary = {
+        "Name": get_value_from_recipes_table("Name", recipe_id),
+        "Categories": get_recipe_categories(recipe_id),
+        "ImageName": get_value_from_recipes_table("ImageName", recipe_id),
+        "Blurb": get_value_from_recipes_table("Blurb", recipe_id),
+        "Username": get_recipe_user(recipe_id),
+        "Difficulty": get_converted_difficulty(recipe_id),
+        "PrepTime": get_value_from_recipes_table("PrepTime", recipe_id),
+        "CookTime": get_value_from_recipes_table("CookTime", recipe_id),
+        "Serves": get_value_from_recipes_table("Serves", recipe_id),
+        "Ingredients": get_recipe_ingredients(recipe_id),
+        "Instructions": get_recipe_instructions(recipe_id),
+        "Reviews": get_recipe_reviews(recipe_id)
+
+    }
+    return values_dictionary
