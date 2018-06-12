@@ -1,6 +1,9 @@
 from flask import request, url_for
 from flask_login import current_user
 
+from sql_fuctions import get_value_from_recipes_table, get_recipe_categories, get_recipe_user, get_converted_difficulty, \
+    get_recipe_ingredients, get_recipe_instructions, get_recipe_reviews
+
 
 def convert_list_to_string_for_sql_search(argument_list):
     """
@@ -94,3 +97,60 @@ def create_recipe_values_with_image(values_dictionary):
         values_dictionary["Instructions"])
 
     return values
+
+
+def get_recipe_values(recipe_id):
+    """
+    returns a dictionary with all the values required
+    to render the recipe.html page. Recipe identified
+    by the Id in argument
+    """
+
+    values_dictionary = {
+        "Name": get_value_from_recipes_table("Name", recipe_id),
+        "Categories": get_recipe_categories(recipe_id),
+        "ImageName": get_value_from_recipes_table("ImageName", recipe_id),
+        "Blurb": get_value_from_recipes_table("Blurb", recipe_id),
+        "Username": get_recipe_user(recipe_id),
+        "Difficulty": get_converted_difficulty(recipe_id),
+        "PrepTime": get_value_from_recipes_table("PrepTime", recipe_id),
+        "CookTime": get_value_from_recipes_table("CookTime", recipe_id),
+        "Serves": get_value_from_recipes_table("Serves", recipe_id),
+        "Ingredients": get_recipe_ingredients(recipe_id),
+        "Instructions": get_recipe_instructions(recipe_id),
+        "Reviews": get_recipe_reviews(recipe_id)
+
+    }
+    return values_dictionary
+
+
+def return_timedelta_full_hours(timedelta_time):
+    """
+    returns the number of full hours in
+    the timedelta argument
+    """
+
+    return timedelta_time.seconds // 3600
+
+
+def return_timedelta_remaining_minutes(timedelta_time):
+    """
+    returns the the remaining minutes from the
+    timedelta argument after subtracting the full hours
+    """
+    return (timedelta_time.seconds % 3600) // 60
+
+
+def create_time_dictionary(recipe_dictionary):
+    """
+    returns a dictionaries with the hours and minutes
+    for both prep and cook time
+    """
+    time_dictionary = {
+        "PrepHours": return_timedelta_full_hours(recipe_dictionary["PrepTime"]),
+        "PrepMins": return_timedelta_remaining_minutes(recipe_dictionary["PrepTime"]),
+        "CookHours": return_timedelta_full_hours(recipe_dictionary["CookTime"]),
+        "CookMins": return_timedelta_remaining_minutes(recipe_dictionary["CookTime"])
+    }
+
+    return time_dictionary

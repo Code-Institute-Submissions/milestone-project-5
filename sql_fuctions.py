@@ -5,7 +5,8 @@ from flask_login import current_user
 from passlib.handlers.sha2_crypt import \
     sha256_crypt  # informed by: https://pythonprogramming.net/password-hashing-flask-tutorial/
 
-from helpers import convert_list_to_string_for_sql_search, get_average_review_score
+from helpers import convert_list_to_string_for_sql_search, get_average_review_score, create_recipe_values_with_image, \
+    create_recipe_values_without_image
 
 test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
@@ -791,3 +792,29 @@ def get_converted_difficulty(recipe_id):
         return "Normal"
     else:
         return "Challenging"
+
+
+def insert_dictionary_into_recipes_table(values_dictionary):
+    """
+    function to insert the retrieved dictionary of
+    add recipe form values into the MySQL database
+    """
+
+    if values_dictionary["ImageName"]:
+        insert_into = "(Name, UserId, ImageName, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
+        values = create_recipe_values_with_image(values_dictionary)
+    else:
+        insert_into = "(Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
+        values = create_recipe_values_without_image(values_dictionary)
+
+    try:
+        connection = open_connection()
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
+            connection.commit()
+    except Exception as e:
+        print("ERROR: {0}".format(e))
+        # connection.close()
+    finally:
+        if connection.open:
+            connection.close()
