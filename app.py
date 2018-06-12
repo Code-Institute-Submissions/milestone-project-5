@@ -201,7 +201,7 @@ def check_if_username_exists(username):
                 return False
             return True
     except Exception as e:
-        print("ERROR check_if_username_exists: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -226,7 +226,7 @@ def check_password_correct(username, password):
             return password_correct
 
     except Exception as e:
-        print("ERROR check_password_correct: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -684,7 +684,7 @@ def get_all_ingredients_from_table():
             return ingredients_list
 
     except Exception as e:
-        print("GAIFT ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -895,20 +895,18 @@ def get_excluded_categories_list(filter_categories_list):
 
             return category_id_set
     except Exception as e:
-        print("GECL ERROR {}".format(e))
+        print("ERROR {}".format(e))
 
     finally:
         if connection.open:
             connection.close()
 
 
-# print(get_excluded_categories_set(["Mexican", "Irish"]))
-
 def filter_by_categories(recipe_ids_list, filter_categories_list):
     """
     removes ids from the argument list that are
-    not matched with any of the filter categories in
-    the RecipeCategories table
+    not don't have at least one of the categories 
+    argument categories list. Returns remaining ids
     """
 
     recipe_ids_string = convert_list_to_string_for_sql_search(recipe_ids_list)
@@ -929,7 +927,7 @@ def filter_by_categories(recipe_ids_list, filter_categories_list):
             id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
             return id_list
     except Exception as e:
-        print("FBC ERROR {}".format(e))
+        print("ERROR {}".format(e))
 
     finally:
         if connection.open:
@@ -956,21 +954,18 @@ def get_excluded_ingredients_list(filter_ingredients_list):
             ingredient_id_list = [ingredient_id for ingredient_id in ingredient_id_set]
             return ingredient_id_list
     except Exception as e:
-        print("GEIS ERROR {}".format(e))
+        print("ERROR {}".format(e))
 
     finally:
         if connection.open:
             connection.close()
 
 
-# print(get_excluded_ingredients_set(["Milk", "Butter"]))
-
-
 def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
     """
     returns a list of ids for all recipes that
     don't contain any of the ingredients in the 
-    argument set
+    argument ingredients list
     """
     recipe_ids_string = convert_list_to_string_for_sql_search(recipe_ids_list)
 
@@ -989,7 +984,7 @@ def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
             id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
             return id_list
     except Exception as e:
-        print("FBC ERROR {}".format(e))
+        print("ERROR {}".format(e))
 
     finally:
         if connection.open:
@@ -1000,7 +995,7 @@ def get_recipes_average_review_score(recipe_ids_list):
     """
     returns a dictionary with the Id and average 
     review score for all recipes included in the
-    argument  list
+    argument list
     """
 
     average_review_list = []
@@ -1028,10 +1023,11 @@ def add_average_review_score_to_dictionary_list(recipe_dictionary_list):
 
 def sort_recipe_dictionaries_by_score(recipes_dictionary_list):
     """
-    sorts the argument list of directions in descending order
+    sorts the argument list of dictionaries in descending order
     of their 'Score' value
     """
-    # from:https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python
+    # below line of code from:
+    # https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python
     sorted_list = sorted(recipes_dictionary_list, key=lambda k: k['Score'], reverse=True)
 
     return sorted_list
@@ -1055,7 +1051,8 @@ def filter_by_review_score(recipe_ids_list, min_score, max_score):
 def get_recipes_total_time(ids_list):
     """
     returns a list of dictionaries with the Id
-    and total (prep+cook)  time for all recipes
+    and total(prep+cook) time for all recipes in 
+    the argument list
     """
     total_time_list = []
     for recipe_id in ids_list:
@@ -1070,8 +1067,9 @@ def get_recipes_total_time(ids_list):
 
 def filter_by_total_time(ids_list, min_time, max_time):
     """
-    returns a list of recipes ids for all recipes 
-    whose total time is between or equal to the arguments
+    returns a list of recipes ids for all recipes in the 
+    argument ids list whose total time is between or equal to the
+    other two arguments
     """
 
     # convert max and min times to timedelta
@@ -1090,12 +1088,11 @@ def filter_by_total_time(ids_list, min_time, max_time):
 
 def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
     """
-    returns all recipes that have a difficulty score
-    contained in the argument list
+    returns a list of ids for all recipes that have a
+    difficulty value contained in the argument difficulties list
     """
 
     possible_difficulties = ["0", "1", "2"]
-    # difficulties_to_exclude = list(set(possible_difficulties)-set(list_of_difficulties))
     difficulties_to_exclude = [difficulty for difficulty in possible_difficulties if
                                difficulty not in list_of_difficulties]
 
@@ -1110,7 +1107,7 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
             return id_list
 
     except Exception as e:
-        print("FBD ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1119,28 +1116,12 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
     return difficulties_to_exclude
 
 
-def combine_lists_and_remove_common_elements(list_of_lists):
-    """
-    returns a list with all unique values in the 
-    argument
-    """
-
-    element_set = set()
-
-    for individual_list in list_of_lists:
-        for element in individual_list:
-            element_set.add(element)
-
-    element_list = list(element_set)
-
-    return element_list
-
 
 def get_filter_categories():
     """
     returns false if user has not entered any
-    categories to filter by. Otherwise returns list 
-    of category names
+    categories to filter by. Otherwise returns a 
+    list of their selected category names
     """
 
     at_least_one_category = check_if_string_contains_letters(request.form["category-0"])
@@ -1259,7 +1240,6 @@ def get_ids_that_match_all_filters():
     the user's filters
     """
     ids_list = get_list_of_recipe_ids()
-    # print(ids_list)
 
     filter_categories = get_filter_categories()
     if filter_categories:
@@ -1269,30 +1249,23 @@ def get_ids_that_match_all_filters():
     filter_ingredients = get_filter_ingredients()
     if filter_ingredients:
         ids_list = filter_by_ingredients(ids_list, filter_ingredients)
-        # print("FI")
-        # print(ids_list)
 
     min_score = get_min_score_filter()
     max_score = get_max_score_filter()
 
     if (min_score != 0) or (max_score != 5):
         ids_list = filter_by_review_score(ids_list, min_score, max_score)
-        # print("score")
-        # print(ids_list)
 
     min_time = get_min_time_filter()
     max_time = get_max_time_filter()
 
     ids_list = filter_by_total_time(ids_list, min_time, max_time)
-    # print("time")
-    # print(ids_list)
+
 
     difficulties_list = get_difficulties_filter()
 
     if len(difficulties_list) > 0:
         ids_list = filter_by_difficulty(ids_list, difficulties_list)
-        # print("diff")
-        # print(ids_list)
 
     return ids_list
 
@@ -1312,7 +1285,7 @@ def get_search_results(recipe_ids_list):
                             "ImageName": individual_tuple[3]} for individual_tuple in returned_tuples]
             return values_list
     except Exception as e:
-        print("GSR ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1336,6 +1309,11 @@ def get_sorted_recipes_list(ids_list):
 
 @app.route("/", methods=["POST", "GET"])
 def search_recipes():
+    """
+    renders home/search page. Shows all recipes 
+    matching the user's filters. Otherwise shows 
+    all recipes in database. Recipes sorted by avg score 
+    """
     categories = get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
     filtered_search = False
@@ -1360,10 +1338,9 @@ INTERACTING WITH MYSQL
 
 def get_last_recipe_id():
     """
-    returns the value of the last Id created in
-    MySQL
+    returns the most recent Id added to 
+    the Recipes table
     """
-
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
@@ -1372,7 +1349,7 @@ def get_last_recipe_id():
             last_id = last_id_tuple[0]
             return last_id
     except Exception as e:
-        print("ERROR GET LAST ID: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1385,7 +1362,6 @@ def add_to_categories_if_not_duplicate(category_list):
     category name does not already exist in table
     code from: https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table
     """
-    # print(category_list)
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
@@ -1398,8 +1374,7 @@ def add_to_categories_if_not_duplicate(category_list):
             connection.commit()
 
     except Exception as e:
-        print("ERROR ADD TO CATAGORIES: {}".format(e))
-        # connection.close()    
+        print("ERROR: {}".format(e))
     finally:
         if connection.open:
             connection.close()
@@ -1422,8 +1397,7 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
                         ingredient_name))
             connection.commit()
     except Exception as e:
-        print("ERROR ADD TO INGREDIENTS: {}".format(e))
-        # connection.close()
+        print("ERROR: {}".format(e))
     finally:
         if connection.open:
             connection.close()
@@ -1435,7 +1409,6 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     RecipeIngredients table. Each has a RecipeId value of 
     the second argument 
     """
-    print("this is running")
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
@@ -1450,8 +1423,7 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
 
             connection.commit()
     except Exception as e:
-        print("RECIPEINGRedients ERROR: {}".format(e))
-        # connection.close()
+        print("ERROR: {}".format(e))
     finally:
         if connection.open:
             connection.close()
@@ -1462,7 +1434,6 @@ def add_to_recipe_categories(categories_list, recipe_id):
     adds each category in categories_list to RecipeCategories
     table. Each has a RecipeId value of the second argument 
     """
-
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
@@ -1473,29 +1444,17 @@ def add_to_recipe_categories(categories_list, recipe_id):
 
             connection.commit()
     except Exception as e:
-        print("add to recipe categories error: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
             connection.close()
 
 
-# def test_function():
-#     try:
-#         with connection.cursor() as cursor:
-#             cursor.execute("SET FOREIGN_KEY_CHECKS=0")
-#             insert_into = "(Name, UserId, Difficulty, Serves, Blurb, PrepTime, CookTime, Instructions)"
-#             values = '("Chicken Fillet Role", "123", "1", "4", "From spar. Good chicken fillet", "11:12:00", "04:10:00", "{}")'.format("['First do this', 'Then do that', 'Then this']")
-#             cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
-#             connection.commit()
-#     finally:
-#         connection.close()
-
-
 def insert_dictionary_into_recipes_table(values_dictionary):
     """
     function to insert the retrieved dictionary of 
-    form values into the MySQL database
+    add recipe form values into the MySQL database
     """
 
     if values_dictionary["ImageName"]:
@@ -1511,7 +1470,7 @@ def insert_dictionary_into_recipes_table(values_dictionary):
             cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
             connection.commit()
     except Exception as e:
-        print("ERROR  INSERT into recipes: {0}".format(e))
+        print("ERROR: {0}".format(e))
         # connection.close()
     finally:
         if connection.open:
@@ -1521,6 +1480,11 @@ def insert_dictionary_into_recipes_table(values_dictionary):
 @app.route("/addrecipe", methods=["POST", "GET"])
 @login_required
 def add_recipe():
+    """
+    renders the add recipe page. If the user 
+    submits a recipe, adds the values to the appropriate 
+    SQL tables
+    """
     if request.method == "POST":
         values_dictionary = get_form_values()
         insert_dictionary_into_recipes_table(values_dictionary)
@@ -1529,12 +1493,9 @@ def add_recipe():
         add_to_ingredients_if_not_duplicate(values_dictionary["Ingredients"])
         add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
         add_to_recipe_categories(values_dictionary["Categories"], recipe_id)
-        # print(values_dictionary["Instructions"])
-
         return redirect("/recipe/{}".format(recipe_id))
 
     categories = get_all_categories_from_table()
-    # print(categories)
     ingredients = get_all_ingredients_from_table()
     return render_template("addrecipe.html", categories=categories, ingredients=ingredients)
 
@@ -1555,7 +1516,8 @@ def add_user_review(recipe_id):
     """
     gets the review posted by the user and adds
     it to the Reviews table along with the UserId.
-    Deletes any previous user review of that recipe
+    If user has already submitted a rating for that recipe,
+    deletes that rating.
     """
     score = request.form["user-review"]
     user_id = current_user.id
@@ -1568,7 +1530,7 @@ def add_user_review(recipe_id):
                                                                                                     score))
             connection.commit()
     except Exception as e:
-        print("AUR ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1592,7 +1554,7 @@ def add_to_user_favourites_table(recipe_id):
                 'INSERT INTO UserFavourites(UserId, RecipeId) VALUES ("{0}", "{1}");'.format(user_id, recipe_id))
             connection.commit()
     except Exception as e:
-        print("ATUFT ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1613,7 +1575,7 @@ def get_username(user_id):
             return username
 
     except Exception as e:
-        print("GU ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1625,7 +1587,6 @@ def get_user_favourites(user_id):
     returns a list of recipe ids for
     all of the argument user's favourite recipes
     """
-
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
@@ -1638,7 +1599,7 @@ def get_user_favourites(user_id):
             values_list = add_average_review_score_to_dictionary_list(values_list)
             return values_list
     except Exception as e:
-        print("GUF ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1663,7 +1624,7 @@ def get_user_recipes(user_id):
             return values_list
 
     except Exception as e:
-        print("GUR ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1693,16 +1654,15 @@ def check_is_current_users_userpage(userpage_user_id):
         
     if userpage_user_id == current_user.id:
         return True
-        
     else:
         return False
         
     
-        
-
-
 @app.route("/userpage/<user_id>")
 def userpage(user_id):
+    """
+    renders the userpage for the argument user id
+    """
     userpage_values = get_userpage_values(user_id)
     own_page = check_is_current_users_userpage(user_id)
     return render_template("userpage.html", user=userpage_values, own_page = own_page)
@@ -1710,6 +1670,10 @@ def userpage(user_id):
 
 @app.route("/addtofavourites/<recipe_id>")
 def add_to_favourites(recipe_id):
+    """
+    adds the argument recipe and the current
+    user's id to the UserFavourites table
+    """
     user_logged_in = check_user_is_logged_in()
     if not user_logged_in:
         return redirect(url_for("login"))
@@ -1753,6 +1717,9 @@ def create_time_dictionary(recipe_dictionary):
 
 @app.route("/edit/<recipe_id>")
 def edit_recipe(recipe_id):
+    """
+    renders the edit recipe page
+    """
     categories = get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
     recipe_dictionary = get_recipe_values(recipe_id)
@@ -1766,6 +1733,10 @@ def edit_recipe(recipe_id):
 
 @app.route("/delete/<recipe_id>")
 def delete_recipe(recipe_id):
+    """
+    deletes a recipe from the Recipes table, along with all
+    connected data from other tables
+    """
     try:
         connection = open_connection()
         with connection.cursor() as cursor:
@@ -1779,7 +1750,7 @@ def delete_recipe(recipe_id):
             connection.commit()
 
     except Exception as e:
-        print("GU ERROR: {}".format(e))
+        print("ERROR: {}".format(e))
 
     finally:
         if connection.open:
@@ -1790,13 +1761,17 @@ def delete_recipe(recipe_id):
 
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
+    """
+    renders the recipe page
+    """
     recipe_values = get_recipe_values(recipe_id)
     recipe_user_id = get_id_for_username(recipe_values["Username"])
     time_values = create_time_dictionary(recipe_values)
     average_review_score = get_average_review_score(recipe_values["Reviews"])
 
+    # represents the user submitting a review score
+    # adds to Reviews table
     if request.method == "POST":
-
         user_logged_in = check_user_is_logged_in()
         if not user_logged_in:
             return redirect(url_for("login"))
