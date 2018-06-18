@@ -35,7 +35,7 @@ The database schema was initially planned out using the Entity Relationship Diag
 The diagram was created before the decision to commit to using an SQL database, rather than a NoSQL database. However, the diagram confirmed that an SQL schema was feasible.  While the SQL design limited the amount that the schema could change throughout development, the final database schema still had some deviations from the initial outline. Most notably, the ‘Allegories/Suitable For’ table was removed, as this data could instead be included in the ‘Categories’ table. 
 
 ### Current Database Schema
-The current database schema is found in the [database_schema][(https://github.com/Paddywc/milestone-project -4/blob/master/database_schema/database_schema.txt) directory. 
+The current database schema is found in the [database_schema](https://github.com/Paddywc/milestone-project -4/blob/master/database_schema/database_schema.txt) directory. 
 Note that there are currently two MySQL databases. The original/testing Cloud9 database, and the ClearDB database used in the live Heroku app. However, as the MongoDB database was initially created as a clone of the Cloud9 database, they have identical schemas. 
 
 ## Tech Used
