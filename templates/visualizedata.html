@@ -85,7 +85,7 @@ function showCategoriesChart(ndx){
 let chart= dc.rowChart("#categoriesChart")
 let dim = ndx.dimension(dc.pluck("Categories"));
 
-// reduce add function
+// reduce add, remove and initial functions 
 // from: https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
 function reduceAdd(p, v) {
   v.Categories.forEach (function(val, idx) {
@@ -108,6 +108,7 @@ function reduceInitial() {
 let group = dim.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial).value();;
 
 // hack to make dc.js charts work
+//also from  https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
 group.all = function() {
   var newObject = [];
   for (var key in this) {

@@ -1,0 +1,86 @@
+| Tables_in_heroku_12eaf3a664b1763 |
++----------------------------------+
+| categories                       |
+| ingredients                      |
+| recipecategories                 |
+| recipeingredients                |
+| recipes                          |
+| reviews                          |
+| userfavourites                   |
+| users                            |
++----------------------------------+
+
+CATEGORIES:
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| Id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Name  | varchar(20) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+
+INGREDIENTS:
+-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| Id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Name  | varchar(15) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+
+RECIPECATEGORIES:
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| RecipeId   | int(11) | NO   | MUL | NULL    |       |
+| CategoryId | int(11) | NO   | MUL | NULL    |       |
++------------+---------+------+-----+---------+-------+
+
+RECIPEINGREDIENTS:
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| RecipeId     | int(11)     | NO   | MUL | NULL    |       |
+| IngredientId | int(11)     | NO   | MUL | NULL    |       |
+| Quantity     | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+
+RECIPES:
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| Id           | int(11)      | NO   | PRI | NULL    | auto_increment |
+| Name         | varchar(40)  | NO   |     | NULL    |                |
+| UserId       | int(11)      | NO   | MUL | NULL    |                |
+| Difficulty   | tinyint(4)   | NO   |     | NULL    |                |
+| Serves       | tinyint(4)   | NO   |     | NULL    |                |
+| Blurb        | varchar(100) | NO   |     | NULL    |                |
+| PrepTime     | time         | NO   |     | NULL    |                |
+| CookTime     | time         | NO   |     | NULL    |                |
+| Instructions | text         | NO   |     | NULL    |                |
+| ImageName    | varchar(50)  | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+
+REVIEWS:
++----------+------------+------+-----+---------+-------+
+| Field    | Type       | Null | Key | Default | Extra |
++----------+------------+------+-----+---------+-------+
+| UserId   | int(11)    | NO   | MUL | NULL    |       |
+| RecipeId | int(11)    | NO   | MUL | NULL    |       |
+| Score    | tinyint(4) | NO   |     | NULL    |       |
++----------+------------+------+-----+---------+-------+
+
+USERFAVOURITES:
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| UserId   | int(11) | NO   | MUL | NULL    |       |
+| RecipeId | int(11) | NO   | MUL | NULL    |       |
++----------+---------+------+-----+---------+-------+
+
+USERS:
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| Id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Password | char(77)    | YES  |     | NULL    |                |
+| Username | varchar(15) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+

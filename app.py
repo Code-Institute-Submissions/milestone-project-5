@@ -2,7 +2,6 @@ import os
 from flask import render_template, request, redirect, flash, url_for
 from flask_login import UserMixin, login_user, \
     login_required, current_user, logout_user  # informed by: https://www.youtube.com/watch?v=2dEM-s3mRLE
-# for uploading images
 
 from add_recipe import get_form_values
 from app_init import app, login_manager

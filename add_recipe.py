@@ -3,7 +3,7 @@ import os
 from random import choice
 
 from flask import request
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename# for uploading images
 
 from app_init import app
 from helpers import check_if_string_contains_letters
