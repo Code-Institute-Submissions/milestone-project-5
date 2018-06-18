@@ -31,10 +31,11 @@ Recipes are stored in a MySQL database. Users upload recipes using a HTML POST f
 ### Developing the Database Schema
 The database schema was initially planned out using the Entity Relationship Diagram(ERD) below:
 ![ERD]( https://i.snag.gy/xephD3.jpg)
+
 The diagram was created before the decision to commit to using an SQL database, rather than a NoSQL database. However, the diagram confirmed that an SQL schema was feasible.  While the SQL design limited the amount that the schema could change throughout development, the final database schema still had some deviations from the initial outline. Most notably, the ‘Allegories/Suitable For’ table was removed, as this data could instead be included in the ‘Categories’ table. 
 
 ### Current Database Schema
-The current database schema is found in the (database_schema )[ https://github.com/Paddywc/milestone-project -4/blob/master/database_schema/database_schema.txt] directory. 
+The current database schema is found in the [database_schema][(https://github.com/Paddywc/milestone-project -4/blob/master/database_schema/database_schema.txt) directory. 
 Note that there are currently two MySQL databases. The original/testing Cloud9 database, and the ClearDB database used in the live Heroku app. However, as the MongoDB database was initially created as a clone of the Cloud9 database, they have identical schemas. 
 
 ## Tech Used
@@ -43,13 +44,13 @@ Note that there are currently two MySQL databases. The original/testing Cloud9 d
     *	To store the recipe data
     *	Users read table rows that meet certain conditions when they search recipes and apply filters 
     *	To create and read user ids, usernames, and (encrypted) passwords. This enables Flask login/user functionality
--	**Python3** and  [**PyMySQL**]( https://pymysql.readthedocs.io/en/latest/)
+-	**Python3** and  [**PyMySQL**](https://pymysql.readthedocs.io/en/latest/)
     *	Together retrieve the user’s form submission and upload this data to the SQL table(s)
     *	For validating login information by checking user data against existing values in the Users table
     *	To quickly populate SQL tables with data during testing
     *	For aggregating database values. E.g. average recipe review score
     *	Majority of application was built using Python3 and Flask
--	 [**Flask**]( http://flask.pocoo.org/)
+-	[**Flask**](http://flask.pocoo.org/)
     *	For binding functions to URLs using routing 
     *	To render HTML templates and include Python programming within these templates. This included inserting python variables into JavaScript scripts 
     *	To trigger functions on GET or POST requests
@@ -58,11 +59,11 @@ Note that there are currently two MySQL databases. The original/testing Cloud9 d
     *	Grid system used for page layout
     *	Used to style website, including forms, navbar and sidebar
     *	Autocomplete functionality used in forms 
--	**JavaScript** and  [**jQuery**]( https://jquery.com/)
+-	**JavaScript** and  [**jQuery**](https://jquery.com/)
     *	Used to enable Materialize functionality, including select forms, sidenavs, character counter, and tabs 
     *	For adding and removing form rows
     *	D3 and DC code for visualizing data written using JavaScript
--	[**DC**](https://dc-js.github.io/dc.js/) and  [**D3**]( https://d3js.org/)
+-	[**DC**](https://dc-js.github.io/dc.js/) and  [**D3**](https://d3js.org/)
     *	For creating and rendering the interactive charts on the data visualization page 
 - [**Heroku**](https://paddywc-recipe-wiki.herokuapp.com/)
     *	The live version of the web app is hosted on Heroku
@@ -79,7 +80,7 @@ Note that there are currently two MySQL databases. The original/testing Cloud9 d
 - Code for sorting dictionaries in python is from [Mario F on stackoverflow]( https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python)
 - MySQL code for inserting values into a table if they do not already exist in that table is from [user5505982 on stackoverflow]( https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table). Code was changed to reflect the data and tables of the application
 - Code for displaying flask flash messages is from the [Flask Documentation](http://flask.pocoo.org/docs/1.0/patterns/flashing/)
-- Using SQL data to generate charts required replacing single quotation marks with double quotation marks before parsing. The line of code used to do so was taken from (RafH  on stackoverflow)[ https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote]
+- Using SQL data to generate charts required replacing single quotation marks with double quotation marks before parsing. The line of code used to do so was taken from [RafH  on stackoverflow](https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote)
 - Code for creating  and rendering charts on data visualization page is from [DJ Martin on stackoverflow]( https://stackoverflow.com/questions/21114336/how-to-add-axis-labels-for-row-chart-using-dc-js-or-d3-js), the [dc-js Github repository](https://github.com/dc-js/dc.js/blob/master/web/examples/row.html), [Kostya Marchenko on stackoverflow](https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1) and [cssndrx  on stackoverflow](https://stackoverflow.com/questions/13576906/d3-tick-marks-on-integers-only). The sources are referenced as comments above where the code is used. 
 - Code for implementing Materialize styles and functions are from the [Materialize documentation]( https://materializecss.com/)
 
