@@ -8,7 +8,7 @@ from app_init import app, login_manager
 from helpers import get_average_review_score, redirect_url, \
     create_time_dictionary
 from searching_recipes import get_ids_that_match_all_filters, get_sorted_recipes_list
-from sql_fuctions import open_connection, get_username_for_id, get_id_for_username, add_form_values_to_users, \
+from sql_fuctions import open_connection, close_connection_if_open, get_username_for_id, get_id_for_username, add_form_values_to_users, \
     check_if_username_exists, check_password_correct, get_value_from_recipes_table, get_recipe_categories, \
     get_recipe_ingredients, get_recipe_reviews, get_all_categories_from_table, \
     get_all_ingredients_from_table, get_list_of_recipe_ids, get_last_recipe_id, add_to_categories_if_not_duplicate, \
@@ -26,6 +26,8 @@ login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/3
 # from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 UPLOAD_FOLDER = 'static/images'
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+connection = open_connection()
 
 """
 ACCOUNT FUNCTIONS
@@ -56,7 +58,7 @@ class User(UserMixin):
 def load_user(current_user):
     """
     for loading an instance of the 
-    User class. Code party from:
+    User class. Code partly from:
     https://flask-login.readthedocs.io/en/latest/#how-it-works
     """
     username = get_username_for_id(current_user)
@@ -348,8 +350,7 @@ def delete_recipe(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
     return redirect(redirect_url())
 

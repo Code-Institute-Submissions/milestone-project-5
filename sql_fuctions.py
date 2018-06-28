@@ -28,6 +28,13 @@ def open_connection():
                            db="heroku_12eaf3a664b1763")
     # return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
+def close_connection_if_open(connection):
+    """
+    closes the connection if open
+    """
+    if connection.open:
+            connection.close()
+    
 
 def get_username_for_id(user_id):
     """
@@ -47,8 +54,7 @@ def get_username_for_id(user_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_id_for_username(username):
@@ -69,8 +75,7 @@ def get_id_for_username(username):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def add_form_values_to_users():
@@ -90,8 +95,7 @@ def add_form_values_to_users():
         print("Error: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def check_if_username_exists(username):
@@ -112,8 +116,7 @@ def check_if_username_exists(username):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def check_password_correct(username, password):
@@ -137,8 +140,7 @@ def check_password_correct(username, password):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_encrypted_password():
@@ -171,8 +173,7 @@ def get_value_from_recipes_table(column, recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_recipe_categories(recipe_id):
@@ -195,8 +196,7 @@ def get_recipe_categories(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_recipe_user(recipe_id):
@@ -218,8 +218,7 @@ def get_recipe_user(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_recipe_ingredients(recipe_id):
@@ -244,8 +243,7 @@ def get_recipe_ingredients(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_recipe_instructions(recipe_id):
@@ -273,8 +271,7 @@ def get_recipe_instructions(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_recipe_reviews(recipe_id):
@@ -296,8 +293,7 @@ def get_recipe_reviews(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_all_categories_from_table():
@@ -317,8 +313,7 @@ def get_all_categories_from_table():
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_all_ingredients_from_table():
@@ -338,8 +333,7 @@ def get_all_ingredients_from_table():
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_list_of_recipe_ids():
@@ -360,8 +354,7 @@ def get_list_of_recipe_ids():
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_excluded_categories_list(filter_categories_list):
@@ -387,8 +380,7 @@ def get_excluded_categories_list(filter_categories_list):
         print("ERROR {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def filter_by_categories(recipe_ids_list, filter_categories_list):
@@ -419,8 +411,7 @@ def filter_by_categories(recipe_ids_list, filter_categories_list):
         print("ERROR {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_excluded_ingredients_list(filter_ingredients_list):
@@ -446,8 +437,7 @@ def get_excluded_ingredients_list(filter_ingredients_list):
         print("ERROR {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
@@ -476,8 +466,7 @@ def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
         print("ERROR {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
@@ -504,8 +493,7 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
     return difficulties_to_exclude
 
@@ -528,8 +516,7 @@ def get_search_results(recipe_ids_list):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
     return True
 
 
@@ -549,8 +536,7 @@ def get_last_recipe_id():
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def add_to_categories_if_not_duplicate(category_list):
@@ -573,8 +559,7 @@ def add_to_categories_if_not_duplicate(category_list):
     except Exception as e:
         print("ERROR: {}".format(e))
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
@@ -596,8 +581,7 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
     except Exception as e:
         print("ERROR: {}".format(e))
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
@@ -622,8 +606,7 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def add_to_recipe_categories(categories_list, recipe_id):
@@ -644,8 +627,7 @@ def add_to_recipe_categories(categories_list, recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def add_user_review(recipe_id):
@@ -669,8 +651,7 @@ def add_user_review(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
     return score
 
@@ -693,8 +674,7 @@ def add_to_user_favourites_table(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_username(user_id):
@@ -714,8 +694,7 @@ def get_username(user_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_user_favourites(user_id):
@@ -738,8 +717,7 @@ def get_user_favourites(user_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_user_recipes(user_id):
@@ -763,8 +741,7 @@ def get_user_recipes(user_id):
         print("ERROR: {}".format(e))
 
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def add_average_review_score_to_dictionary_list(recipe_dictionary_list):
@@ -816,8 +793,7 @@ def insert_dictionary_into_recipes_table(values_dictionary):
         print("ERROR: {0}".format(e))
         # connection.close()
     finally:
-        if connection.open:
-            connection.close()
+        close_connection_if_open(connection)
 
 
 def get_recipe_values(recipe_id):
