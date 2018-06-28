@@ -18,19 +18,28 @@ ClearDB database for deployment on heroku:
 pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
 """
 
+connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
+                               db="heroku_12eaf3a664b1763")
+# connection =pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
-def open_connection():
+def open_connection_if_not_already_open():
     """
-    helper function that opens the connection.
-    Switch between connection and test connection as needed
+    helper function that opens the connection.Connection is a global
+    variable within sql_fuctions.py Switch between connection 
+    and test connection as needed
     """
-    return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-                           db="heroku_12eaf3a664b1763")
-    # return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+    if connection.open:
+            return connection
+    else:
+        # return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+        return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
+                               db="heroku_12eaf3a664b1763")
+                               
 
-def close_connection_if_open(connection):
+def close_connection_if_open():
     """
-    closes the connection if open
+    closes the connection if open. Connection is 
+    global variable within sql_functions.py
     """
     if connection.open:
             connection.close()
@@ -43,7 +52,7 @@ def get_username_for_id(user_id):
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users WHERE Id ="{}";'.format(user_id))
             table_username_tuple = cursor.fetchone()
@@ -53,9 +62,6 @@ def get_username_for_id(user_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_id_for_username(username):
     """
@@ -64,7 +70,7 @@ def get_id_for_username(username):
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Users WHERE Username ="{}";'.format(username))
             table_id_tuple = cursor.fetchone()
@@ -73,9 +79,6 @@ def get_id_for_username(username):
 
     except Exception as e:
         print("ERROR: {}".format(e))
-
-    finally:
-        close_connection_if_open(connection)
 
 
 def add_form_values_to_users():
@@ -87,15 +90,12 @@ def add_form_values_to_users():
     password = get_encrypted_password()
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('INSERT INTO Users(Username, Password) VALUES ("{0}", "{1}");'.format(name, password))
             connection.commit()
     except Exception as e:
         print("Error: {}".format(e))
-
-    finally:
-        close_connection_if_open(connection)
 
 
 def check_if_username_exists(username):
@@ -105,7 +105,7 @@ def check_if_username_exists(username):
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users WHERE Username="{}";'.format(username))
             username_tuple = cursor.fetchone()
@@ -114,9 +114,6 @@ def check_if_username_exists(username):
             return True
     except Exception as e:
         print("ERROR: {}".format(e))
-
-    finally:
-        close_connection_if_open(connection)
 
 
 def check_password_correct(username, password):
@@ -127,7 +124,7 @@ def check_password_correct(username, password):
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Password FROM Users WHERE Username="{}";'.format(username))
             table_password_tuple = cursor.fetchone()
@@ -138,10 +135,6 @@ def check_password_correct(username, password):
 
     except Exception as e:
         print("ERROR: {}".format(e))
-
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_encrypted_password():
     """
@@ -162,7 +155,7 @@ def get_value_from_recipes_table(column, recipe_id):
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT {0} FROM Recipes WHERE Id ="{1}";'.format(column, recipe_id))
             returned_tuple = cursor.fetchone()
@@ -172,9 +165,6 @@ def get_value_from_recipes_table(column, recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_recipe_categories(recipe_id):
     """
@@ -182,7 +172,7 @@ def get_recipe_categories(recipe_id):
     that match the recipe_id. String names taken from Categories table
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'SELECT Name FROM Categories INNER JOIN RecipeCategories on RecipeCategories.CategoryId = '
@@ -195,8 +185,7 @@ def get_recipe_categories(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
+
 
 
 def get_recipe_user(recipe_id):
@@ -205,7 +194,7 @@ def get_recipe_user(recipe_id):
     recipe identified in the argument
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'SELECT Username FROM Users INNER JOIN Recipes on Users.Id = Recipes.UserId WHERE Recipes.Id = "{}";'.format(
@@ -217,9 +206,6 @@ def get_recipe_user(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_recipe_ingredients(recipe_id):
     """
@@ -229,7 +215,7 @@ def get_recipe_ingredients(recipe_id):
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'SELECT Ingredients.Name, Quantity FROM RecipeIngredients INNER JOIN Ingredients on Ingredients.Id = RecipeIngredients.IngredientId INNER JOIN Recipes on RecipeIngredients.RecipeId = Recipes.Id WHERE Recipes.Id = "{}";'.format(
@@ -242,9 +228,6 @@ def get_recipe_ingredients(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_recipe_instructions(recipe_id):
     """
@@ -252,7 +235,7 @@ def get_recipe_instructions(recipe_id):
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Instructions FROM Recipes WHERE Id ="{}";'.format(recipe_id))
             returned_tuple = cursor.fetchone()
@@ -270,9 +253,6 @@ def get_recipe_instructions(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_recipe_reviews(recipe_id):
     """
@@ -280,7 +260,7 @@ def get_recipe_reviews(recipe_id):
     Reviews table for the argument recipe
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'SELECT Score FROM Reviews INNER JOIN Recipes on Recipes.Id = Reviews.RecipeId  WHERE Recipes.Id = "{}";'.format(
@@ -292,9 +272,6 @@ def get_recipe_reviews(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_all_categories_from_table():
     """
@@ -302,7 +279,7 @@ def get_all_categories_from_table():
     in the Categories table
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Name FROM Categories;')
             returned_tuples = cursor.fetchall()
@@ -312,9 +289,6 @@ def get_all_categories_from_table():
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_all_ingredients_from_table():
     """
@@ -322,7 +296,7 @@ def get_all_ingredients_from_table():
     in the Ingredients table
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Name FROM Ingredients;')
             returned_tuples = cursor.fetchall()
@@ -332,9 +306,6 @@ def get_all_ingredients_from_table():
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_list_of_recipe_ids():
     """
@@ -343,7 +314,7 @@ def get_list_of_recipe_ids():
     """
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Recipes;')
             returned_tuples = cursor.fetchall()
@@ -352,9 +323,6 @@ def get_list_of_recipe_ids():
 
     except Exception as e:
         print("ERROR: {}".format(e))
-
-    finally:
-        close_connection_if_open(connection)
 
 
 def get_excluded_categories_list(filter_categories_list):
@@ -367,7 +335,7 @@ def get_excluded_categories_list(filter_categories_list):
     string_of_placeholders = ",".join(['%s'] * len(filter_categories_list))
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'SELECT Id FROM Categories INNER JOIN RecipeCategories ON Categories.Id = RecipeCategories.CategoryId  WHERE Categories.Name not in ({}) ;'.format(
@@ -379,8 +347,6 @@ def get_excluded_categories_list(filter_categories_list):
     except Exception as e:
         print("ERROR {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
 
 
 def filter_by_categories(recipe_ids_list, filter_categories_list):
@@ -396,7 +362,7 @@ def filter_by_categories(recipe_ids_list, filter_categories_list):
     excluded_categories_string = convert_list_to_string_for_sql_search(excluded_categories_id_list)
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
 
             cursor.execute('SELECT RecipeId FROM RecipeCategories INNER JOIN Categories ' +
@@ -410,9 +376,6 @@ def filter_by_categories(recipe_ids_list, filter_categories_list):
     except Exception as e:
         print("ERROR {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_excluded_ingredients_list(filter_ingredients_list):
     """
@@ -424,7 +387,7 @@ def get_excluded_ingredients_list(filter_ingredients_list):
     string_of_placeholders = ",".join(['%s'] * len(filter_ingredients_list))
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'SELECT Id FROM Ingredients INNER JOIN RecipeIngredients ON Ingredients.Id = RecipeIngredients.IngredientId  WHERE Ingredients.Name not in ({}) ;'.format(
@@ -436,8 +399,6 @@ def get_excluded_ingredients_list(filter_ingredients_list):
     except Exception as e:
         print("ERROR {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
 
 
 def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
@@ -452,7 +413,7 @@ def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
     excluded_ingredients_string = convert_list_to_string_for_sql_search(excluded_ingredients_list)
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
 
             cursor.execute('SELECT RecipeId FROM RecipeIngredients ' +
@@ -465,8 +426,6 @@ def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
     except Exception as e:
         print("ERROR {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
 
 
 def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
@@ -481,7 +440,7 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
 
     string_of_placeholders = ",".join(['%s'] * len(difficulties_to_exclude))
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id FROM Recipes WHERE Difficulty not in ({}) ;'.format(string_of_placeholders),
                            difficulties_to_exclude)
@@ -491,9 +450,6 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
 
     except Exception as e:
         print("ERROR: {}".format(e))
-
-    finally:
-        close_connection_if_open(connection)
 
     return difficulties_to_exclude
 
@@ -505,7 +461,7 @@ def get_search_results(recipe_ids_list):
     """
     ids_list_string = convert_list_to_string_for_sql_search(recipe_ids_list)
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes WHERE Id in  {};'.format(ids_list_string))
             returned_tuples = cursor.fetchall()
@@ -515,8 +471,6 @@ def get_search_results(recipe_ids_list):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
     return True
 
 
@@ -526,7 +480,7 @@ def get_last_recipe_id():
     the Recipes table
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute("SELECT Id FROM Recipes ORDER BY Id DESC LIMIT 1")
             last_id_tuple = cursor.fetchone()
@@ -535,8 +489,6 @@ def get_last_recipe_id():
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
 
 
 def add_to_categories_if_not_duplicate(category_list):
@@ -546,7 +498,7 @@ def add_to_categories_if_not_duplicate(category_list):
     code from: https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             for category in category_list:
                 lower_case = category.lower()
@@ -558,9 +510,6 @@ def add_to_categories_if_not_duplicate(category_list):
 
     except Exception as e:
         print("ERROR: {}".format(e))
-    finally:
-        close_connection_if_open(connection)
-
 
 def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
     """
@@ -571,7 +520,7 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
 
     ingredients_name_list = [ingredient_dictionary["Name"] for ingredient_dictionary in ingredients_dictionary_list]
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             for ingredient_name in ingredients_name_list:
                 cursor.execute(
@@ -580,9 +529,6 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
             connection.commit()
     except Exception as e:
         print("ERROR: {}".format(e))
-    finally:
-        close_connection_if_open(connection)
-
 
 def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     """
@@ -591,7 +537,7 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     the second argument
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             for ingredient_dictionary in ingredients_dictionary_list:
                 print(ingredient_dictionary["Name"])
@@ -605,8 +551,6 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
             connection.commit()
     except Exception as e:
         print("ERROR: {}".format(e))
-    finally:
-        close_connection_if_open(connection)
 
 
 def add_to_recipe_categories(categories_list, recipe_id):
@@ -615,7 +559,7 @@ def add_to_recipe_categories(categories_list, recipe_id):
     table. Each has a RecipeId value of the second argument
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             for category in categories_list:
                 cursor.execute(
@@ -625,9 +569,6 @@ def add_to_recipe_categories(categories_list, recipe_id):
             connection.commit()
     except Exception as e:
         print("ERROR: {}".format(e))
-
-    finally:
-        close_connection_if_open(connection)
 
 
 def add_user_review(recipe_id):
@@ -640,7 +581,7 @@ def add_user_review(recipe_id):
     score = request.form["user-review"]
     user_id = current_user.id
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('DELETE FROM Reviews WHERE UserId = "{0}" and RecipeId = "{1}";'.format(user_id, recipe_id))
             cursor.execute(
@@ -650,8 +591,6 @@ def add_user_review(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
 
     return score
 
@@ -663,7 +602,7 @@ def add_to_user_favourites_table(recipe_id):
     """
     user_id = current_user.id
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'DELETE FROM UserFavourites WHERE UserId = "{0}" and RecipeId = "{1}";'.format(user_id, recipe_id))
@@ -673,17 +612,13 @@ def add_to_user_favourites_table(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
-
 def get_username(user_id):
     """
     returns the username that matches the
     argument user_id
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Username FROM Users WHERE Id = "{}";'.format(user_id))
             returned_tuple = cursor.fetchone()
@@ -693,9 +628,6 @@ def get_username(user_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_user_favourites(user_id):
     """
@@ -703,7 +635,7 @@ def get_user_favourites(user_id):
     all of the argument user's favourite recipes
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute(
                 'SELECT Id, Name, Blurb, ImageName FROM Recipes INNER JOIN UserFavourites ON UserFavourites.RecipeId = Recipes.Id WHERE UserFavourites.UserId = "{}";'.format(
@@ -716,9 +648,6 @@ def get_user_favourites(user_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_user_recipes(user_id):
     """
@@ -728,7 +657,7 @@ def get_user_recipes(user_id):
     fields
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute('SELECT Id, Name, Blurb, ImageName FROM Recipes WHERE UserId = "{}";'.format(user_id))
             returned_tuples = cursor.fetchall()
@@ -740,8 +669,6 @@ def get_user_recipes(user_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-    finally:
-        close_connection_if_open(connection)
 
 
 def add_average_review_score_to_dictionary_list(recipe_dictionary_list):
@@ -785,16 +712,12 @@ def insert_dictionary_into_recipes_table(values_dictionary):
         values = create_recipe_values_without_image(values_dictionary)
 
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO Recipes{0} VALUES {1};".format(insert_into, values))
             connection.commit()
     except Exception as e:
         print("ERROR: {0}".format(e))
-        # connection.close()
-    finally:
-        close_connection_if_open(connection)
-
 
 def get_recipe_values(recipe_id):
     """

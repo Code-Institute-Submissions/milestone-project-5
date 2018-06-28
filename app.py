@@ -8,7 +8,7 @@ from app_init import app, login_manager
 from helpers import get_average_review_score, redirect_url, \
     create_time_dictionary
 from searching_recipes import get_ids_that_match_all_filters, get_sorted_recipes_list
-from sql_fuctions import open_connection, close_connection_if_open, get_username_for_id, get_id_for_username, add_form_values_to_users, \
+from sql_fuctions import open_connection_if_not_already_open, close_connection_if_open, get_username_for_id, get_id_for_username, add_form_values_to_users, \
     check_if_username_exists, check_password_correct, get_value_from_recipes_table, get_recipe_categories, \
     get_recipe_ingredients, get_recipe_reviews, get_all_categories_from_table, \
     get_all_ingredients_from_table, get_list_of_recipe_ids, get_last_recipe_id, add_to_categories_if_not_duplicate, \
@@ -27,7 +27,7 @@ login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/3
 UPLOAD_FOLDER = 'static/images'
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-connection = open_connection()
+connection = open_connection_if_not_already_open()
 
 """
 ACCOUNT FUNCTIONS
@@ -77,8 +77,8 @@ def register_user():
     if request.method == "POST":
         username = request.form["username"]
         already_exists = check_if_username_exists(username)
-
         if len(username) > 15:
+            close_connection_if_open()
             error_message = "ERROR. Username can't be more than 15 characters"
             return render_template("register.html", error=error_message)
 
@@ -86,10 +86,12 @@ def register_user():
             add_form_values_to_users()
             flash("You have successfully registered your account")
             flash("Please login now")
+            close_connection_if_open()
             return redirect(url_for("login"))
 
 
         else:
+            close_connection_if_open()
             error_message = "ERROR: Username already exists. Please try a different username"
             return render_template("register.html", error=error_message)
 
@@ -129,17 +131,20 @@ def login():
         existing_username = check_if_username_exists(username)
         if not existing_username:
             error = "ERROR: Username '{0}' not found in our database".format(username)
+            close_connection_if_open()
             return render_template("login.html", error=error)
 
         correct_password = check_password_correct(username, password)
         if not correct_password:
             error = "ERROR: Password incorrect"
+            close_connection_if_open()
             return render_template("login.html", error=error)
 
         user_id = get_id_for_username(username)
         user = User(user_id, username)
         login_user(user)
         flash("Successfully logged in")
+        close_connection_if_open()
         # checks if /login is in the redirect_url()
         if request.path not in redirect_url():
             return redirect(redirect_url())
@@ -158,6 +163,7 @@ def logout():
     Code from: https://www.youtube.com/watch?v=2dEM-s3mRLE
     """
     logout_user()
+    close_connection_if_open()
     flash("Successfully logged out")
     return redirect(url_for("search_recipes"))
 
@@ -207,6 +213,7 @@ def visualize_data():
     renders the visualize data page
     """
     data = get_all_data_for_visualization()
+    close_connection_if_open()
     return render_template("visualizedata.html", imported_data=data)
 
 
@@ -234,6 +241,7 @@ def search_recipes():
         ids_list = get_list_of_recipe_ids()
 
     recipes_list = get_sorted_recipes_list(ids_list)
+    close_connection_if_open()
     return render_template("index.html", filtered_search=filtered_search,
                            categories=categories, ingredients=ingredients, recipes_list=recipes_list)
 
@@ -259,10 +267,12 @@ def add_recipe():
         add_to_ingredients_if_not_duplicate(values_dictionary["Ingredients"])
         add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
         add_to_recipe_categories(values_dictionary["Categories"], recipe_id)
+        close_connection_if_open()
         return redirect("/recipe/{}".format(recipe_id))
 
     categories = get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
+    close_connection_if_open()
     return render_template("addrecipe.html", categories=categories, ingredients=ingredients)
 
 
@@ -305,6 +315,7 @@ def userpage(user_id):
     """
     userpage_values = get_userpage_values(user_id)
     own_page = check_is_current_users_userpage(user_id)
+    close_connection_if_open()
     return render_template("userpage.html", user=userpage_values, own_page=own_page)
 
 
@@ -324,6 +335,7 @@ def edit_recipe(recipe_id):
     if recipe_dictionary["ImageName"]:
         flash("Please reupload recipe image")
 
+    close_connection_if_open()
     return render_template("edit.html", recipe=recipe_dictionary, time_dictionary=time_dictionary,
                            categories=categories, ingredients=ingredients)
 
@@ -335,7 +347,7 @@ def delete_recipe(recipe_id):
     connected data from other tables
     """
     try:
-        connection = open_connection()
+        connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             cursor.execute("SET FOREIGN_KEY_CHECKS=0")
             cursor.execute('DELETE FROM Recipes WHERE Id = "{}";'.format(recipe_id))
@@ -350,7 +362,7 @@ def delete_recipe(recipe_id):
         print("ERROR: {}".format(e))
 
     finally:
-        close_connection_if_open(connection)
+        close_connection_if_open()
 
     return redirect(redirect_url())
 
@@ -373,10 +385,12 @@ def show_recipe(recipe_id):
     if request.method == "POST":
         user_logged_in = check_user_is_logged_in()
         if not user_logged_in:
+            close_connection_if_open()
             return redirect(url_for("login"))
         else:
             add_user_review(recipe_id)
-
+            
+    close_connection_if_open()
     return render_template("recipe.html", recipe=recipe_values, times=time_values, review_score=average_review_score,
                            recipe_id=recipe_id, user_id=recipe_user_id)
 
@@ -389,10 +403,12 @@ def add_to_favourites(recipe_id):
     """
     user_logged_in = check_user_is_logged_in()
     if not user_logged_in:
+        close_connection_if_open()
         return redirect(url_for("login"))
     else:
         add_to_user_favourites_table(recipe_id)
         flash("Recipe added to favourites")
+    close_connection_if_open()
     return redirect(redirect_url())
 
 
