@@ -68,7 +68,7 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)">{% if recipe["Blurb"] %} {{ recipe["Blurb"] }} {% endif %} </textarea>
+            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)">{% if recipe["Blurb"] %}{{ recipe["Blurb"] }}{% endif %}</textarea>
             <label for="blurb">Blurb</label>
         </div>
     </div>
@@ -117,8 +117,7 @@
         <div class="row instruction-row-{{ loop.index }}">
             <li>
                 <div class="instruction-input-field col s10">
-                    <textarea id="instruction-{{ loop.index }}" name="instruction-{{ loop.index }}" class="materialize-textarea">{{ instruction|safe }}
-                    </textarea>
+                    <textarea id="instruction-{{ loop.index }}" name="instruction-{{ loop.index }}" class="materialize-textarea">{{ instruction|safe }}</textarea>
                 </div>
             </li>
         </div>

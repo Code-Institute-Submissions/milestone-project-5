@@ -11,7 +11,7 @@ from helpers import check_if_string_contains_letters
 
 def get_prep_time():
     """
-    returns prep time from the form in datetime format.
+    returns prep time from the form in time format.
     If user did not submit a value for minutes, sets their value as 00
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
@@ -31,7 +31,7 @@ def get_prep_time():
 
 def get_cook_time():
     """
-    returns prep time from the form in datetime format
+    returns prep time from the form in time format
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
     cook_hours = request.form["cook-hours"]
@@ -122,7 +122,7 @@ def get_ingredients_dictionary_list():
             else:
                 end_of_ingredients = True
 
-        except Exception as e:
+        except Exception:
             end_of_ingredients = True
 
         counter += 1
@@ -149,6 +149,7 @@ def get_form_values():
         "Ingredients": get_ingredients_dictionary_list()
 
     }
+    
     return values_dictionary
 
 

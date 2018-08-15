@@ -30,7 +30,7 @@ def get_average_review_score(list_of_scores):
     return average_of_scores
 
 
-def redirect_url(default='/'):
+def redirect_url(default='search_recipes'):
     """
     to enable request.referrer. Code
     from: http://flask.pocoo.org/docs/1.0/reqcontext/

@@ -14,7 +14,7 @@ from sql_fuctions import open_connection_if_not_already_open, close_connection_i
     get_all_ingredients_from_table, get_list_of_recipe_ids, get_last_recipe_id, add_to_categories_if_not_duplicate, \
     add_to_ingredients_if_not_duplicate, add_to_recipe_ingredients, add_to_recipe_categories, add_user_review, \
     add_to_user_favourites_table, get_username, get_user_favourites, get_user_recipes, \
-    get_converted_difficulty, insert_dictionary_into_recipes_table, get_recipe_values
+    get_converted_difficulty, insert_dictionary_into_recipes_table, get_recipe_values, get_recipe_user, update_recipe
 
 app.secret_key = 'some_secret'
 
@@ -322,49 +322,67 @@ def userpage(user_id):
 """
 EDIT AND DELETE RECIPES 
 """
-
-@app.route("/edit/<recipe_id>")
+@app.route("/edit/<recipe_id>", methods=["POST", "GET"])
+@login_required
 def edit_recipe(recipe_id):
     """
-    renders the edit recipe page
+    renders the edit recipe page if the 
+    current user is the user who submitted the
+    recipe. Otherwise redirects to home page
     """
-    categories = get_all_categories_from_table()
-    ingredients = get_all_ingredients_from_table()
-    recipe_dictionary = get_recipe_values(recipe_id)
-    time_dictionary = create_time_dictionary(recipe_dictionary)
-    if recipe_dictionary["ImageName"]:
-        flash("Please reupload recipe image")
-
-    close_connection_if_open()
-    return render_template("edit.html", recipe=recipe_dictionary, time_dictionary=time_dictionary,
-                           categories=categories, ingredients=ingredients)
-
-
+    
+    recipe_user = get_recipe_user(recipe_id)
+    if recipe_user == current_user.username[0]:
+        if request.method == "POST":
+            update_recipe(recipe_id)
+            return redirect("/recipe/{}".format(recipe_id))
+    
+        
+        categories = get_all_categories_from_table()
+        ingredients = get_all_ingredients_from_table()
+        recipe_dictionary = get_recipe_values(recipe_id)
+        time_dictionary = create_time_dictionary(recipe_dictionary)
+        if recipe_dictionary["ImageName"]:
+            flash("Please reupload recipe image")
+    
+        close_connection_if_open()
+        return render_template("edit.html", recipe=recipe_dictionary, time_dictionary=time_dictionary,
+                               categories=categories, ingredients=ingredients)
+    else:
+        return redirect(url_for("search_recipes"))
+        
 @app.route("/delete/<recipe_id>")
+@login_required
 def delete_recipe(recipe_id):
     """
     deletes a recipe from the Recipes table, along with all
-    connected data from other tables
+    connected data from other tables. Only possible if the 
+    current user is the user who submitted the recipe. Otherwise
+    returns home 
     """
-    try:
-        connection = open_connection_if_not_already_open()
-        with connection.cursor() as cursor:
-            cursor.execute("SET FOREIGN_KEY_CHECKS=0")
-            cursor.execute('DELETE FROM Recipes WHERE Id = "{}";'.format(recipe_id))
-            cursor.execute('DELETE FROM RecipeCategories WHERE RecipeId = "{}";'.format(recipe_id))
-            cursor.execute('DELETE FROM RecipeCategories WHERE RecipeId = "{}";'.format(recipe_id))
-            cursor.execute('DELETE FROM RecipeIngredients WHERE RecipeId = "{}";'.format(recipe_id))
-            cursor.execute('DELETE FROM Reviews WHERE RecipeId = "{}";'.format(recipe_id))
-            cursor.execute('DELETE FROM UserFavourites WHERE RecipeId = "{}";'.format(recipe_id))
-            connection.commit()
-
-    except Exception as e:
-        print("ERROR: {}".format(e))
-
-    finally:
-        close_connection_if_open()
-
-    return redirect(redirect_url())
+    recipe_user = get_recipe_user(recipe_id)
+    if recipe_user == current_user.username[0]:
+        try:
+            connection = open_connection_if_not_already_open()
+            with connection.cursor() as cursor:
+                cursor.execute("SET FOREIGN_KEY_CHECKS=0")
+                cursor.execute('DELETE FROM Recipes WHERE Id = "{}";'.format(recipe_id))
+                cursor.execute('DELETE FROM RecipeCategories WHERE RecipeId = "{}";'.format(recipe_id))
+                cursor.execute('DELETE FROM RecipeCategories WHERE RecipeId = "{}";'.format(recipe_id))
+                cursor.execute('DELETE FROM RecipeIngredients WHERE RecipeId = "{}";'.format(recipe_id))
+                cursor.execute('DELETE FROM Reviews WHERE RecipeId = "{}";'.format(recipe_id))
+                cursor.execute('DELETE FROM UserFavourites WHERE RecipeId = "{}";'.format(recipe_id))
+                connection.commit()
+    
+        except Exception as e:
+            print("ERROR: {}".format(e))
+    
+        finally:
+            close_connection_if_open()
+    
+        return redirect(redirect_url())
+    else:
+        return redirect(url_for("search_recipes"))
 
 
 """

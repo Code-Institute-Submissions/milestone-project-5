@@ -7,6 +7,8 @@ from passlib.handlers.sha2_crypt import \
 
 from helpers import convert_list_to_string_for_sql_search, get_average_review_score, create_recipe_values_with_image, \
     create_recipe_values_without_image
+    
+from add_recipe import get_form_values
 
 test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
@@ -18,9 +20,9 @@ ClearDB database for deployment on heroku:
 pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
 """
 
-connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-                               db="heroku_12eaf3a664b1763")
-# connection =pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+# connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
+#                               db="heroku_12eaf3a664b1763")
+connection =pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
 def open_connection_if_not_already_open():
     """
@@ -31,9 +33,9 @@ def open_connection_if_not_already_open():
     if connection.open:
             return connection
     else:
-        # return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
-        return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-                               db="heroku_12eaf3a664b1763")
+        return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+        # return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
+                            #   db="heroku_12eaf3a664b1763")
                                
 
 def close_connection_if_open():
@@ -68,7 +70,6 @@ def get_id_for_username(username):
     returns the Id from the Users table that
     matches the argument username
     """
-
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -342,8 +343,9 @@ def get_excluded_categories_list(filter_categories_list):
                     string_of_placeholders), filter_categories_list)
             returned_tuples = cursor.fetchall()
             category_id_set = {individual_tuple[0] for individual_tuple in returned_tuples}
+            category_id_list = [category_id for category_id in category_id_set]
 
-            return category_id_set
+            return category_id_list
     except Exception as e:
         print("ERROR {}".format(e))
 
@@ -534,13 +536,13 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     """
     adds the ingredients in the ingredients_dictionary to
     RecipeIngredients table. Each has a RecipeId value of
-    the second argument
+    the second argument. Converts ingredient name in argument
+    dictionary to matching IngredientId from the Ingredients table
     """
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             for ingredient_dictionary in ingredients_dictionary_list:
-                print(ingredient_dictionary["Name"])
                 cursor.execute(
                     'INSERT INTO RecipeIngredients(RecipeId, IngredientId, Quantity) VALUES ("{0}", (SELECT Id FROM Ingredients WHERE Name="{1}"), "{2}")'.format(
                         recipe_id,
@@ -718,6 +720,35 @@ def insert_dictionary_into_recipes_table(values_dictionary):
             connection.commit()
     except Exception as e:
         print("ERROR: {0}".format(e))
+        
+def update_recipe(recipe_id):
+    """
+    update the argument recipe using the data posted
+    by the user on the edit recipes page
+    """
+    
+    values_dictionary = get_form_values()
+    
+    columns_to_set = ["Name",  "Difficulty", "Serves", "Blurb", "PrepTime", "CookTime", "Instructions"]
+    values_to_insert = []
+    for column in columns_to_set:
+        values_to_insert.append(values_dictionary[column])
+
+    try:
+        connection = open_connection_if_not_already_open()
+        with connection.cursor() as cursor:
+            for i in range(len(columns_to_set)):
+                cursor.execute('UPDATE Recipes SET {0} = "{1}" WHERE Id = {2};'.format(columns_to_set[i], values_to_insert[i], recipe_id))
+            cursor.execute("DELETE FROM RecipeCategories WHERE RecipeId = {};".format(recipe_id))
+            cursor.execute("DELETE FROM RecipeIngredients WHERE RecipeId = {};".format(recipe_id))
+            connection.commit()
+            add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
+            add_to_recipe_categories(values_dictionary["Categories"], recipe_id)
+    
+    except Exception as e:
+            print("ERROR: {0}".format(e))
+    
+        
 
 def get_recipe_values(recipe_id):
     """

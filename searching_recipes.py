@@ -76,7 +76,7 @@ def filter_by_total_time(ids_list, min_time, max_time):
     argument ids list whose total time is between or equal to the
     other two arguments
     """
-
+    
     # convert max and min times to timedelta
     # code from https://stackoverflow.com/questions/35241643/convert-datetime-time-into-datetime-timedelta-in-python-3-4?noredirect=1&lq=1
     timedelta_min_time = datetime.datetime.combine(datetime.date.min, min_time) - datetime.datetime.min
@@ -114,9 +114,20 @@ def get_filter_ingredients():
 
     at_least_one_ingredient = check_if_string_contains_letters(request.form["ingredient-0"])
     if at_least_one_ingredient:
-        ingredients_dictionary_list = get_ingredients_dictionary_list()
-        ingredients_name_list = [ingredient["Name"] for ingredient in ingredients_dictionary_list]
-        # print (ingredients_name_list)
+        ingredients_name_list = []
+        end_of_ingredients = False
+        counter = 0
+        while not end_of_ingredients:
+            try:
+                ingredient_name = request.form["ingredient-{}".format(counter)]
+                lowercase_ingredient_name = ingredient_name.lower()
+                capitalized_ingredient_name = lowercase_ingredient_name.capitalize()
+                ingredients_name_list.append(capitalized_ingredient_name)
+                counter += 1
+                
+            except Exception:
+                end_of_ingredients = True
+        
         return ingredients_name_list
     return False
 
@@ -202,7 +213,6 @@ def get_difficulties_filter():
     """
     try:
         difficulties = request.form.getlist("difficulties-filter")
-        # print(difficulties)
         return difficulties
     except Exception as e:
         return False
@@ -218,7 +228,6 @@ def get_ids_that_match_all_filters():
     filter_categories = get_filter_categories()
     if filter_categories:
         ids_list = filter_by_categories(ids_list, filter_categories)
-        print("FC {}".format(ids_list))
 
     filter_ingredients = get_filter_ingredients()
     if filter_ingredients:
