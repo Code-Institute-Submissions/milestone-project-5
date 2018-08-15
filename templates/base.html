@@ -5,21 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css"/>
 
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css"
+          type="text/css"/>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
     <title>Recipes Wiki</title>
 </head>
 
 <body>
-    
+
 <header>
 
     <!--template from: https://materializecss.com/navbar.html-->
@@ -92,9 +94,9 @@
 
 <main>
     {% block content %} {% endblock %}
- </main> 
+</main>
 
-    <script type="text/javascript">
+<script type="text/javascript">
     //loads materializecss functionality 
         $(document).ready(function() {
             //required for select form
@@ -216,7 +218,8 @@ addOrRemoveCategory();
 addOrRemoveIngredient();
 addOrRemoveInstruction();
        
-    </script>
+
+</script>
 </body>
 
 </html>

@@ -2,9 +2,10 @@ import datetime
 
 from flask import request
 
-from add_recipe import get_categories_list, get_ingredients_dictionary_list
+from add_recipe import get_categories_list
 from helpers import get_average_review_score, check_if_string_contains_letters
-from sql_fuctions import get_recipe_reviews, get_value_from_recipes_table, get_list_of_recipe_ids, filter_by_categories, \
+from sql_functions import get_recipe_reviews, get_value_from_recipes_table, get_list_of_recipe_ids, \
+    filter_by_categories, \
     filter_by_ingredients, filter_by_difficulty, get_search_results, add_average_review_score_to_dictionary_list
 
 
@@ -31,6 +32,7 @@ def sort_recipe_dictionaries_by_score(recipes_dictionary_list):
     sorts the argument list of dictionaries in descending order
     of their 'Score' value
     """
+
     # below line of code from:
     # https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python
     sorted_list = sorted(recipes_dictionary_list, key=lambda k: k['Score'], reverse=True)
@@ -59,6 +61,7 @@ def get_recipes_total_time(ids_list):
     and total(prep+cook) time for all recipes in
     the argument list
     """
+
     total_time_list = []
     for recipe_id in ids_list:
         total_time_list.append({
@@ -163,6 +166,7 @@ def get_min_time_filter():
     returns the min time selected by the user.
     Returns 0:00 if no min time selected
     """
+
     try:
         min_hours = request.form["min-hours"]
     except Exception as e:
@@ -207,10 +211,11 @@ def get_max_time_filter():
 
 def get_difficulties_filter():
     """
-    returns a lsit of all difficulties selected
+    returns a list of all difficulties selected
     by the user. Returns false if no difficulties
     selected
     """
+
     try:
         difficulties = request.form.getlist("difficulties-filter")
         return difficulties
@@ -220,9 +225,10 @@ def get_difficulties_filter():
 
 def get_ids_that_match_all_filters():
     """
-    returns a lsit of recipe ids that match all
+    returns a list of recipe ids that match all
     the user's filters
     """
+
     ids_list = get_list_of_recipe_ids()
 
     filter_categories = get_filter_categories()
@@ -258,6 +264,7 @@ def get_sorted_recipes_list(ids_list):
     the user's search results, sorted in descending
     order by score. Returns "no_results" if ids_list is empty
     """
+
     if len(ids_list) == 0:
         return "no_results"
     recipes_list = get_search_results(ids_list)

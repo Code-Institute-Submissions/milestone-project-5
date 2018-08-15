@@ -1,5 +1,5 @@
  {% extends 'base.html' %} {% block content %}
-    
+
 <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -50,7 +50,7 @@ function getParsedData(){
 //required to parse data
 let stringDataWithDoubleQuotes = stringData.replace(/'/g, '"');
 let data = JSON.parse(stringDataWithDoubleQuotes);
-var ndx = crossfilter(data); 
+var ndx = crossfilter(data);
 return ndx;
 }
 
@@ -85,7 +85,7 @@ function showCategoriesChart(ndx){
 let chart= dc.rowChart("#categoriesChart")
 let dim = ndx.dimension(dc.pluck("Categories"));
 
-// reduce add, remove and initial functions 
+// reduce add, remove and initial functions
 // from: https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
 function reduceAdd(p, v) {
   v.Categories.forEach (function(val, idx) {
@@ -102,7 +102,7 @@ function reduceRemove(p, v) {
 }
 
 function reduceInitial() {
-  return {};  
+  return {};
 }
 
 let group = dim.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial).value();;
@@ -137,7 +137,7 @@ chart
     .dimension(dim)
     .group(group)
     .render();
-    
+
 AddXAxis(chart, "Count");
 AddYAxis(chart, "Category")
 chart.ordering(function(d) { return -d.value; });
@@ -145,7 +145,7 @@ chart.ordering(function(d) { return -d.value; });
 
 showCategoriesChart(ndx)
 
-function showDifficultyChart(ndx){    
+function showDifficultyChart(ndx){
 let chart = dc.pieChart("#difficultyChart")
 let dim = ndx.dimension(dc.pluck("Difficulty"));
 let group = dim.group()
@@ -172,23 +172,23 @@ let dim = ndx.dimension(dc.pluck("Rating"));
 let group = dim.group();
 //from D3 dashboard lesson
 chart
-        .width(400) 
+        .width(400)
         .height(300)
-        .margins({ top: 10, right: 50, bottom: 30, left: 50 }) 
-        .dimension(dim) 
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .dimension(dim)
         .group(group)
         .transitionDuration(500)
-        .x(d3.scale.ordinal()) 
-        .xUnits(dc.units.ordinal) 
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
         .xAxisLabel("Average Rating")
         .yAxisLabel("Count")
         .yAxis().ticks(group.max)
-        
+
         // two lines below from: https://stackoverflow.com/questions/13576906/d3-tick-marks-on-integers-only
         //makes ticks ints not floats
         .tickFormat(d3.format("d"))
-          .tickSubdivide(0); 
-        
+          .tickSubdivide(0);
+
     chart.render();
 }
 

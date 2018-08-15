@@ -1,21 +1,22 @@
- {% extends 'base.html' %} {% block content %}
- <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+{% extends 'base.html' %} {% block content %}
+<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
+{% if messages %}
+<ul class=flashes>
     {% for message in messages %}
-      <li>{{ message }}</li>
+    <li>{{ message }}</li>
     {% endfor %}
-    </ul>
-  {% endif %}
+</ul>
+{% endif %}
 {% endwith %}
 
- 
+
 <h1 class="add-recipe-header">Edit Recipe</h1>
 <form method="POST" id="add-recipe" enctype="multipart/form-data">
     <div class="row">
         <label for="recipe-name">Recipe Name*</label>
-        <input type="text" name="recipe-name" id="recipe-name" value="{{ recipe['Name'] }}" placeholder="Flambéed chicken with asparagus" required>
+        <input type="text" name="recipe-name" id="recipe-name" value="{{ recipe['Name'] }}"
+               placeholder="Flambéed chicken with asparagus" required>
     </div>
 
     <div class="row">
@@ -51,7 +52,9 @@
     <div class="row">
         <div class="input-field col s9 m4">
             <label for="categories">Categories*</label> {% for category in recipe["Categories"] %}
-            <input type="text" name="category-{{ loop.index-1 }}" id="category-{{ loop.index-1 }}" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" value="{{ category }}" required> {% endfor %}
+            <input type="text" name="category-{{ loop.index-1 }}" id="category-{{ loop.index-1 }}"
+                   class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" value="{{ category }}"
+                   required> {% endfor %}
         </div>
     </div>
 
@@ -68,20 +71,25 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)">{% if recipe["Blurb"] %}{{ recipe["Blurb"] }}{% endif %}</textarea>
+            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100"
+                      placeholder="A sentence or two about your dish(max 100 chars)">{% if recipe["Blurb"] %}{{ recipe["Blurb"] }}{% endif %}</textarea>
             <label for="blurb">Blurb</label>
         </div>
     </div>
 
     <div class="row">
         <div class="input-field col s6">
-            <input id="prep-hours" name="prep-hours" class="col s4" type="number" value="{{ time_dictionary['PrepHours'] }}" placeholder="Hours" required>
-            <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1" value="{{ time_dictionary['PrepMins'] }}" placeholder="Minutes " required>
+            <input id="prep-hours" name="prep-hours" class="col s4" type="number"
+                   value="{{ time_dictionary['PrepHours'] }}" placeholder="Hours" required>
+            <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1"
+                   value="{{ time_dictionary['PrepMins'] }}" placeholder="Minutes " required>
             <label>Preparation Time*</label>
         </div>
         <div class="input-field col s6">
-            <input id="cook-hours" name="cook-hours" class="col s4" type="number" value="{{ time_dictionary['CookHours'] }}" placeholder="Hours" required>
-            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59" value="{{ time_dictionary['CookMins'] }}" placeholder="Minutes " required>
+            <input id="cook-hours" name="cook-hours" class="col s4" type="number"
+                   value="{{ time_dictionary['CookHours'] }}" placeholder="Hours" required>
+            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59"
+                   value="{{ time_dictionary['CookMins'] }}" placeholder="Minutes " required>
             <label>Cooking Time*</label>
         </div>
     </div>
@@ -91,11 +99,14 @@
     <div class="row ingredient-row ingredient-row-0">
         <div class="input-field col s4">
             <label for="quantity">Quantity</label>
-            <input type="text" name="quantity-{{ loop.index -1 }}" id="quantity-{{ loop.index -1 }}" value="{{ ingredient['Quantity'] }}" placeholder="1/2 Teaspoon" required>
+            <input type="text" name="quantity-{{ loop.index -1 }}" id="quantity-{{ loop.index -1 }}"
+                   value="{{ ingredient['Quantity'] }}" placeholder="1/2 Teaspoon" required>
         </div>
         <div class="input-field col s4">
             <label for="ingredient">Ingredient</label>
-            <input type="text" name="ingredient-{{ loop.index - 1 }}" id="ingredient-{{ loop.index -1 }}" class="autocomplete ingredientsAutocomplete" value="{{ ingredient['Ingredient'] }}" placeholder="Honey" required>
+            <input type="text" name="ingredient-{{ loop.index - 1 }}" id="ingredient-{{ loop.index -1 }}"
+                   class="autocomplete ingredientsAutocomplete" value="{{ ingredient['Ingredient'] }}"
+                   placeholder="Honey" required>
         </div>
     </div>
     {% endfor %}
@@ -117,7 +128,8 @@
         <div class="row instruction-row-{{ loop.index }}">
             <li>
                 <div class="instruction-input-field col s10">
-                    <textarea id="instruction-{{ loop.index }}" name="instruction-{{ loop.index }}" class="materialize-textarea">{{ instruction|safe }}</textarea>
+                    <textarea id="instruction-{{ loop.index }}" name="instruction-{{ loop.index }}"
+                              class="materialize-textarea">{{ instruction|safe }}</textarea>
                 </div>
             </li>
         </div>
@@ -162,5 +174,6 @@
         $(document).ready(function() {
             autocompleteFunction()
     });
+
 </script>
 {% endblock %}

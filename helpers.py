@@ -7,6 +7,7 @@ def convert_list_to_string_for_sql_search(argument_list):
     converts argument list into a string correctly formatted
     to be inserted into an SQL query
     """
+
     list_as_string = "{}".format(argument_list)
     formatted_string = list_as_string.replace("[", "(").replace("]", ")").replace("{", "(").replace("}", ")")
 
@@ -18,6 +19,7 @@ def get_average_review_score(list_of_scores):
     returns the average of all values in the argument,
     rounded to the nearest int
     """
+
     length_of_list = len(list_of_scores)
     if length_of_list == 0:
         return 0
@@ -35,6 +37,7 @@ def redirect_url(default='search_recipes'):
     to enable request.referrer. Code
     from: http://flask.pocoo.org/docs/1.0/reqcontext/
     """
+
     return request.args.get('next') or \
            request.referrer or \
            url_for(default)
@@ -62,6 +65,7 @@ def create_recipe_values_without_image(values_dictionary):
     new recipe for a recipes table, if the user did NOT
     submit an image
     """
+
     values = '("{0}", "{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}")'.format(
         values_dictionary["Name"],
         current_user.id,
@@ -110,6 +114,7 @@ def return_timedelta_remaining_minutes(timedelta_time):
     returns the the remaining minutes from the
     timedelta argument after subtracting the full hours
     """
+
     return (timedelta_time.seconds % 3600) // 60
 
 
@@ -118,6 +123,7 @@ def create_time_dictionary(recipe_dictionary):
     returns a dictionaries with the hours and minutes
     for both prep and cook time
     """
+
     time_dictionary = {
         "PrepHours": return_timedelta_full_hours(recipe_dictionary["PrepTime"]),
         "PrepMins": return_timedelta_remaining_minutes(recipe_dictionary["PrepTime"]),

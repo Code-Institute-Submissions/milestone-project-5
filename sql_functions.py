@@ -1,14 +1,14 @@
-import pymysql
 import os
+
+import pymysql
 from flask import request
 from flask_login import current_user
 from passlib.handlers.sha2_crypt import \
     sha256_crypt  # informed by: https://pythonprogramming.net/password-hashing-flask-tutorial/
 
+from add_recipe import get_form_values
 from helpers import convert_list_to_string_for_sql_search, get_average_review_score, create_recipe_values_with_image, \
     create_recipe_values_without_image
-    
-from add_recipe import get_form_values
 
 test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
@@ -22,30 +22,33 @@ pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "
 
 # connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
 #                               db="heroku_12eaf3a664b1763")
-connection =pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+connection = pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+
 
 def open_connection_if_not_already_open():
     """
     helper function that opens the connection.Connection is a global
-    variable within sql_fuctions.py Switch between connection 
+    variable within sql_functions.py Switch between connection
     and test connection as needed
     """
+
     if connection.open:
-            return connection
+        return connection
     else:
         return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
         # return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-                            #   db="heroku_12eaf3a664b1763")
-                               
+        #   db="heroku_12eaf3a664b1763")
+
 
 def close_connection_if_open():
     """
     closes the connection if open. Connection is 
     global variable within sql_functions.py
     """
+
     if connection.open:
-            connection.close()
-    
+        connection.close()
+
 
 def get_username_for_id(user_id):
     """
@@ -70,6 +73,7 @@ def get_id_for_username(username):
     returns the Id from the Users table that
     matches the argument username
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -87,6 +91,7 @@ def add_form_values_to_users():
     adds username and password entered in registration
     form to Users table.
     """
+
     name = request.form["username"]
     password = get_encrypted_password()
 
@@ -137,6 +142,7 @@ def check_password_correct(username, password):
     except Exception as e:
         print("ERROR: {}".format(e))
 
+
 def get_encrypted_password():
     """
     returns the user password entered in the
@@ -172,6 +178,7 @@ def get_recipe_categories(recipe_id):
     returns a list the names of all categories in RecipeCategories
     that match the recipe_id. String names taken from Categories table
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -187,13 +194,12 @@ def get_recipe_categories(recipe_id):
         print("ERROR: {}".format(e))
 
 
-
-
 def get_recipe_user(recipe_id):
     """
     returns the username of the user who submitted the
     recipe identified in the argument
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -260,6 +266,7 @@ def get_recipe_reviews(recipe_id):
     returns a list of all scores from the
     Reviews table for the argument recipe
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -279,6 +286,7 @@ def get_all_categories_from_table():
     returns a list of all category names
     in the Categories table
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -296,6 +304,7 @@ def get_all_ingredients_from_table():
     returns a list of all ingredient names
     in the Ingredients table
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -350,7 +359,6 @@ def get_excluded_categories_list(filter_categories_list):
         print("ERROR {}".format(e))
 
 
-
 def filter_by_categories(recipe_ids_list, filter_categories_list):
     """
     removes ids from the argument list that are
@@ -402,13 +410,13 @@ def get_excluded_ingredients_list(filter_ingredients_list):
         print("ERROR {}".format(e))
 
 
-
 def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
     """
     returns a list of ids for all recipes that
     don't contain any of the ingredients in the
     argument ingredients list
     """
+
     recipe_ids_string = convert_list_to_string_for_sql_search(recipe_ids_list)
 
     excluded_ingredients_list = get_excluded_ingredients_list(filter_ingredients_list)
@@ -429,7 +437,6 @@ def filter_by_ingredients(recipe_ids_list, filter_ingredients_list):
         print("ERROR {}".format(e))
 
 
-
 def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
     """
     returns a list of ids for all recipes that have a
@@ -448,7 +455,8 @@ def filter_by_difficulty(recipe_ids_list, list_of_difficulties):
                            difficulties_to_exclude)
             returned_tuples = cursor.fetchall()
             id_list = [individual_tuple[0] for individual_tuple in returned_tuples]
-            return id_list
+            id_list_to_return = [recipe_id for recipe_id in id_list if recipe_id in recipe_ids_list]
+            return id_list_to_return
 
     except Exception as e:
         print("ERROR: {}".format(e))
@@ -461,6 +469,7 @@ def get_search_results(recipe_ids_list):
     returns all data required to render a user's
     search results (except score) after filters have been applied
     """
+
     ids_list_string = convert_list_to_string_for_sql_search(recipe_ids_list)
     try:
         connection = open_connection_if_not_already_open()
@@ -481,6 +490,7 @@ def get_last_recipe_id():
     returns the most recent Id added to
     the Recipes table
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -492,13 +502,13 @@ def get_last_recipe_id():
         print("ERROR: {}".format(e))
 
 
-
 def add_to_categories_if_not_duplicate(category_list):
     """
     adds each category to Categories SQL table if
     category name does not already exist in table
     code from: https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -512,6 +522,7 @@ def add_to_categories_if_not_duplicate(category_list):
 
     except Exception as e:
         print("ERROR: {}".format(e))
+
 
 def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
     """
@@ -532,6 +543,7 @@ def add_to_ingredients_if_not_duplicate(ingredients_dictionary_list):
     except Exception as e:
         print("ERROR: {}".format(e))
 
+
 def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     """
     adds the ingredients in the ingredients_dictionary to
@@ -539,6 +551,7 @@ def add_to_recipe_ingredients(ingredients_dictionary_list, recipe_id):
     the second argument. Converts ingredient name in argument
     dictionary to matching IngredientId from the Ingredients table
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -560,6 +573,7 @@ def add_to_recipe_categories(categories_list, recipe_id):
     adds each category in categories_list to RecipeCategories
     table. Each has a RecipeId value of the second argument
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -580,6 +594,7 @@ def add_user_review(recipe_id):
     If user has already submitted a rating for that recipe,
     deletes that rating.
     """
+
     score = request.form["user-review"]
     user_id = current_user.id
     try:
@@ -593,7 +608,6 @@ def add_user_review(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
-
     return score
 
 
@@ -602,6 +616,7 @@ def add_to_user_favourites_table(recipe_id):
     adds user_id and recipe_id to the UserFavourites. Deletes
     any previous row with these values
     """
+
     user_id = current_user.id
     try:
         connection = open_connection_if_not_already_open()
@@ -614,11 +629,13 @@ def add_to_user_favourites_table(recipe_id):
     except Exception as e:
         print("ERROR: {}".format(e))
 
+
 def get_username(user_id):
     """
     returns the username that matches the
     argument user_id
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -636,6 +653,7 @@ def get_user_favourites(user_id):
     returns a list of recipe ids for
     all of the argument user's favourite recipes
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -658,6 +676,7 @@ def get_user_recipes(user_id):
     dictionary contains Id, Name, Blurb, and ImageName
     fields
     """
+
     try:
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
@@ -670,7 +689,6 @@ def get_user_recipes(user_id):
 
     except Exception as e:
         print("ERROR: {}".format(e))
-
 
 
 def add_average_review_score_to_dictionary_list(recipe_dictionary_list):
@@ -690,6 +708,7 @@ def get_converted_difficulty(recipe_id):
     gets the difficulty of the argument recipe,
     converted to the appropriate string
     """
+
     int_id = get_value_from_recipes_table("Difficulty", recipe_id)
 
     if int_id == 0:
@@ -720,16 +739,17 @@ def insert_dictionary_into_recipes_table(values_dictionary):
             connection.commit()
     except Exception as e:
         print("ERROR: {0}".format(e))
-        
+
+
 def update_recipe(recipe_id):
     """
     update the argument recipe using the data posted
     by the user on the edit recipes page
     """
-    
+
     values_dictionary = get_form_values()
-    
-    columns_to_set = ["Name",  "Difficulty", "Serves", "Blurb", "PrepTime", "CookTime", "Instructions"]
+
+    columns_to_set = ["Name", "Difficulty", "Serves", "Blurb", "PrepTime", "CookTime", "Instructions"]
     values_to_insert = []
     for column in columns_to_set:
         values_to_insert.append(values_dictionary[column])
@@ -738,17 +758,18 @@ def update_recipe(recipe_id):
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             for i in range(len(columns_to_set)):
-                cursor.execute('UPDATE Recipes SET {0} = "{1}" WHERE Id = {2};'.format(columns_to_set[i], values_to_insert[i], recipe_id))
+                cursor.execute(
+                    'UPDATE Recipes SET {0} = "{1}" WHERE Id = {2};'.format(columns_to_set[i], values_to_insert[i],
+                                                                            recipe_id))
             cursor.execute("DELETE FROM RecipeCategories WHERE RecipeId = {};".format(recipe_id))
             cursor.execute("DELETE FROM RecipeIngredients WHERE RecipeId = {};".format(recipe_id))
             connection.commit()
             add_to_recipe_ingredients(values_dictionary["Ingredients"], recipe_id)
             add_to_recipe_categories(values_dictionary["Categories"], recipe_id)
-    
+
     except Exception as e:
-            print("ERROR: {0}".format(e))
-    
-        
+        print("ERROR: {0}".format(e))
+
 
 def get_recipe_values(recipe_id):
     """

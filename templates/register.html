@@ -1,13 +1,13 @@
- {% extends 'base.html' %} {% block content %}
- <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+{% extends 'base.html' %} {% block content %}
+<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
+{% if messages %}
+<ul class=flashes>
     {% for message in messages %}
-      <li>{{ message }}</li>
+    <li>{{ message }}</li>
     {% endfor %}
-    </ul>
-  {% endif %}
+</ul>
+{% endif %}
 {% endwith %}
 
 <p class="error">{{ error }}</p>

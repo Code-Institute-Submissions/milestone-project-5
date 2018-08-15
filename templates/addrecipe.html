@@ -1,17 +1,16 @@
- {% extends 'base.html' %} {% block content %}
- 
- <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+{% extends 'base.html' %} {% block content %}
+
+<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
 {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
+{% if messages %}
+<ul class=flashes>
     {% for message in messages %}
-      <li>{{ message }}</li>
+    <li>{{ message }}</li>
     {% endfor %}
-    </ul>
-  {% endif %}
+</ul>
 {% endwith %}
 
- 
+
 <h1 class="add-recipe-header">Add Recipe</h1>
 
 <form method="POST" id="add-recipe" enctype="multipart/form-data">
@@ -44,7 +43,8 @@
     <div class="row">
         <div class="input-field col s9 m4">
             <label for="categories">*Categories</label>
-            <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" required>
+            <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete"
+                   placeholder="Mexican, Vegetarian" required>
         </div>
     </div>
 
@@ -61,20 +61,25 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)"></textarea>
+            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100"
+                      placeholder="A sentence or two about your dish(max 100 chars)"></textarea>
             <label for="blurb">Blurb</label>
         </div>
     </div>
 
     <div class="row">
         <div class="input-field col s6">
-            <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="*Hours"  max="20" required>
-            <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1" placeholder="Minutes">
+            <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="*Hours" max="20"
+                   required>
+            <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1"
+                   placeholder="Minutes">
             <label>Preparation Time</label>
         </div>
         <div class="input-field col s6">
-            <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="*Hours" max="20" required>
-            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Minutes">
+            <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="*Hours" max="20"
+                   required>
+            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59"
+                   placeholder="Minutes">
             <label>Cooking Time</label>
         </div>
     </div>
@@ -87,7 +92,8 @@
         </div>
         <div class="input-field col s4">
             <label for="ingredient">Ingredient</label>
-            <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete" placeholder="Honey" required>
+            <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete"
+                   placeholder="Honey" required>
         </div>
     </div>
 
@@ -151,6 +157,8 @@
         $(document).ready(function() {
             autocompleteFunction()
     });
+
+
 </script>
 
 

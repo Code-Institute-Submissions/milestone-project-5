@@ -3,7 +3,7 @@ import os
 from random import choice
 
 from flask import request
-from werkzeug.utils import secure_filename# for uploading images
+from werkzeug.utils import secure_filename  # for uploading images
 
 from app_init import app
 from helpers import check_if_string_contains_letters
@@ -15,6 +15,7 @@ def get_prep_time():
     If user did not submit a value for minutes, sets their value as 00
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
+
     prep_hours = request.form["prep-hours"]
     try:
         prep_mins = request.form["prep-mins"]
@@ -34,6 +35,7 @@ def get_cook_time():
     returns prep time from the form in time format
     code partly from:  https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object
     """
+
     cook_hours = request.form["cook-hours"]
     try:
         cook_mins = request.form["cook-mins"]
@@ -53,6 +55,7 @@ def get_categories_list():
     returns a list of all categories entered
     into the add recipe form
     """
+
     end_of_categories = False
     categories_list = []
     counter = 0
@@ -176,6 +179,7 @@ def get_recipe_image_filename():
     image and returns its filename. If the user did
     not upload an image, returns False
     """
+
     try:
         image_name = add_recipe_image_and_return_filename()
         image_added = True
