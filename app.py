@@ -1,5 +1,4 @@
 import os
-
 from flask import render_template, request, redirect, flash, url_for
 from flask_login import UserMixin, login_user, \
     login_required, current_user, logout_user  # informed by: https://www.youtube.com/watch?v=2dEM-s3mRLE
@@ -9,8 +8,7 @@ from app_init import app, login_manager
 from helpers import get_average_review_score, redirect_url, \
     create_time_dictionary
 from searching_recipes import get_ids_that_match_all_filters, get_sorted_recipes_list
-from sql_functions import open_connection_if_not_already_open, close_connection_if_open, get_username_for_id, \
-    get_id_for_username, add_form_values_to_users, \
+from sql_functions import open_connection_if_not_already_open, close_connection_if_open, get_username_for_id, get_id_for_username, add_form_values_to_users, \
     check_if_username_exists, check_password_correct, get_value_from_recipes_table, get_recipe_categories, \
     get_recipe_ingredients, get_recipe_reviews, get_all_categories_from_table, \
     get_all_ingredients_from_table, get_list_of_recipe_ids, get_last_recipe_id, add_to_categories_if_not_duplicate, \
@@ -22,6 +20,8 @@ app.secret_key = 'some_secret'
 
 login_manager.init_app(app)
 login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
+
+
 
 # from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 UPLOAD_FOLDER = 'static/images'
@@ -40,6 +40,7 @@ class User(UserMixin):
     users accounts. Code partly 
     from: https://teamtreehouse.com/community/how-usermixin-and-class-inheritance-work
     """
+    
     id = int
     username = str
     password = str
@@ -61,6 +62,7 @@ def load_user(current_user):
     User class. Code partly from:
     https://flask-login.readthedocs.io/en/latest/#how-it-works
     """
+    
     username = get_username_for_id(current_user)
     return User(current_user, username)
 
@@ -72,8 +74,9 @@ def register_user():
     Username is less than 15 chars
     Username doesn't already exist 
     
-    adds values to Users table if registration successful
+    adds values to Users table if registeration successful
     """
+    
     if request.method == "POST":
         username = request.form["username"]
         already_exists = check_if_username_exists(username)
@@ -103,11 +106,13 @@ def check_user_is_logged_in():
     return True if the user is logged in.
     Returns False otherwise
     """
+    
     if current_user.is_authenticated:
         return True
     else:
         flash("You must be logged in to complete this task")
         return False
+
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -123,6 +128,7 @@ def login():
     
     Refreshes page with error message if login unsuccessful 
     """
+    
     if request.method == "POST":
         username = request.form["login-username"]
         password = request.form["password"]
@@ -167,6 +173,7 @@ def logout():
     return redirect(url_for("search_recipes"))
 
 
+
 """
 VISUALIZING DATA
 """
@@ -177,6 +184,7 @@ def get_recipe_values_for_data_visualization(recipe_id):
     A shorted version of get_recipe_values() that excludes
     the data not required for visualization. Adds rating
     """
+    
     values_dictionary = {
         "Name": get_value_from_recipes_table("Name", recipe_id),
         "Categories": get_recipe_categories(recipe_id),
@@ -210,6 +218,7 @@ def visualize_data():
     """
     renders the visualize data page
     """
+    
     data = get_all_data_for_visualization()
     close_connection_if_open()
     return render_template("visualizedata.html", imported_data=data)
@@ -227,6 +236,7 @@ def search_recipes():
     matching the user's filters. Otherwise shows 
     all recipes in database. Recipes sorted by avg score 
     """
+    
     categories = get_all_categories_from_table()
     ingredients = get_all_ingredients_from_table()
     filtered_search = False
@@ -257,6 +267,7 @@ def add_recipe():
     submits a recipe, adds the values to the appropriate 
     SQL tables
     """
+    
     if request.method == "POST":
         values_dictionary = get_form_values()
         insert_dictionary_into_recipes_table(values_dictionary)
@@ -278,13 +289,12 @@ def add_recipe():
 USERPAGE
 """
 
-
 def get_userpage_values(user_id):
     """
     return a dictionary with all the values required to
     render the userpage template
     """
-
+    
     dictionary = {
         "Username": get_username(user_id),
         "Favourites": get_user_favourites(user_id),
@@ -313,7 +323,7 @@ def userpage(user_id):
     """
     renders the userpage for the argument user id
     """
-
+    
     userpage_values = get_userpage_values(user_id)
     own_page = check_is_current_users_userpage(user_id)
     close_connection_if_open()
@@ -323,8 +333,6 @@ def userpage(user_id):
 """
 EDIT AND DELETE RECIPES 
 """
-
-
 @app.route("/edit/<recipe_id>", methods=["POST", "GET"])
 @login_required
 def edit_recipe(recipe_id):
@@ -333,27 +341,27 @@ def edit_recipe(recipe_id):
     current user is the user who submitted the
     recipe. Otherwise redirects to home page
     """
-
+    
     recipe_user = get_recipe_user(recipe_id)
     if recipe_user == current_user.username[0]:
         if request.method == "POST":
             update_recipe(recipe_id)
             return redirect("/recipe/{}".format(recipe_id))
-
+    
+        
         categories = get_all_categories_from_table()
         ingredients = get_all_ingredients_from_table()
         recipe_dictionary = get_recipe_values(recipe_id)
         time_dictionary = create_time_dictionary(recipe_dictionary)
         if recipe_dictionary["ImageName"]:
             flash("Please reupload recipe image")
-
+    
         close_connection_if_open()
         return render_template("edit.html", recipe=recipe_dictionary, time_dictionary=time_dictionary,
                                categories=categories, ingredients=ingredients)
     else:
         return redirect(url_for("search_recipes"))
-
-
+        
 @app.route("/delete/<recipe_id>")
 @login_required
 def delete_recipe(recipe_id):
@@ -363,7 +371,7 @@ def delete_recipe(recipe_id):
     current user is the user who submitted the recipe. Otherwise
     returns home 
     """
-
+    
     recipe_user = get_recipe_user(recipe_id)
     if recipe_user == current_user.username[0]:
         try:
@@ -377,13 +385,13 @@ def delete_recipe(recipe_id):
                 cursor.execute('DELETE FROM Reviews WHERE RecipeId = "{}";'.format(recipe_id))
                 cursor.execute('DELETE FROM UserFavourites WHERE RecipeId = "{}";'.format(recipe_id))
                 connection.commit()
-
+    
         except Exception as e:
             print("ERROR: {}".format(e))
-
+    
         finally:
             close_connection_if_open()
-
+    
         return redirect(redirect_url())
     else:
         return redirect(url_for("search_recipes"))
@@ -392,14 +400,12 @@ def delete_recipe(recipe_id):
 """
 RECIPE PAGE
 """
-
-
 @app.route("/recipe/<recipe_id>", methods=["GET", "POST"])
 def show_recipe(recipe_id):
     """
     renders the recipe page
     """
-
+    
     recipe_values = get_recipe_values(recipe_id)
     recipe_user_id = get_id_for_username(recipe_values["Username"])
     time_values = create_time_dictionary(recipe_values)
@@ -414,7 +420,7 @@ def show_recipe(recipe_id):
             return redirect(url_for("login"))
         else:
             add_user_review(recipe_id)
-
+            
     close_connection_if_open()
     return render_template("recipe.html", recipe=recipe_values, times=time_values, review_score=average_review_score,
                            recipe_id=recipe_id, user_id=recipe_user_id)
@@ -426,7 +432,7 @@ def add_to_favourites(recipe_id):
     adds the argument recipe and the current
     user's id to the UserFavourites table
     """
-
+    
     user_logged_in = check_user_is_logged_in()
     if not user_logged_in:
         close_connection_if_open()
@@ -436,6 +442,7 @@ def add_to_favourites(recipe_id):
         flash("Recipe added to favourites")
     close_connection_if_open()
     return redirect(redirect_url())
+
 
 
 if __name__ == '__main__':

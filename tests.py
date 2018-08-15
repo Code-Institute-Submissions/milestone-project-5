@@ -7,16 +7,6 @@ from werkzeug.testapp import test_app
 from werkzeug.wrappers import BaseResponse
 
 from flask import Flask
-from sql_fuctions import open_connection_if_not_already_open, close_connection_if_open, get_username_for_id, \
-    get_id_for_username, add_form_values_to_users, \
-    check_if_username_exists, check_password_correct, get_value_from_recipes_table, get_recipe_ingredients, \
-    get_recipe_reviews, get_all_categories_from_table, \
-    get_all_ingredients_from_table, get_list_of_recipe_ids, get_last_recipe_id, add_to_categories_if_not_duplicate, \
-    add_to_ingredients_if_not_duplicate, add_to_recipe_ingredients, add_to_recipe_categories, get_user_favourites, \
-    get_user_recipes, \
-    insert_dictionary_into_recipes_table, get_recipe_values, get_recipe_user, \
-    get_recipe_instructions, get_recipe_categories, get_excluded_categories_list, get_excluded_ingredients_list, \
-    add_average_review_score_to_dictionary_list
 
 from add_recipe import get_prep_time, get_cook_time, get_categories_list, get_ingredients_dictionary_list, \
     get_form_values
@@ -44,11 +34,6 @@ app = Flask(__name__)
 login_manager.init_app(app)
 login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
 
-app = Flask(__name__)
-c = app.test_client()
-
-login_manager.init_app(app)
-login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
 
 
 class TestAddRecipe(unittest.TestCase):
