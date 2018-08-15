@@ -16,9 +16,10 @@
 and a comma for after all except the final one  -->
 <h4 id="recipe-categories">
 {% for category in recipe["Categories"] %}
-{{ category }}
 {% if not loop.last %}
-,
+{{ category }},
+{% else %}
+{{ category }}
 {% endif %}
 {% endfor %}
 </h4>
