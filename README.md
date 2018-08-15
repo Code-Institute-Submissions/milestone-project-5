@@ -1,6 +1,6 @@
 # Recipe Wiki
 ## Overview
-![Screenshot]( https://i.snag.gy/F9CdIt.jpg)
+![Screenshot](https://i.snag.gy/GsnEXw.jpg)
 
 ### What it the website for? 
 Sharing and saving recipes 
@@ -95,7 +95,7 @@ Instructions on how to use the testing database are found in the **Contributing*
     *	Create a python3 venv folder within this project folder
     *	Activate the environment using either _. venv/bin/activate_ or _venv\Scripts\activate_
     *	Within this activated environment, install Flask by using the following command : _pip install Flask_. Note that you will need to have pip installed.  If you do not, install pip by following [these instructions]( https://pip.pypa.io/en/stable/installing/)
-5.            Ensure that you are running the MySQL database.  The username and password for this database are found at the top of the [sql_functions.py file](https://github.com/Paddywc/milestone-project-4/blob/testing/sql_functions.py). If you encounter any problems, follow [these instructions](https://stackoverflow.com/questions/6885164/pymysql-cant-connect-to-mysql-on-localhost) for troubleshooting. 
+5.  Ensure that you are running the MySQL database.  The username and password for this database are found at the top of the [sql_functions.py file](https://github.com/Paddywc/milestone-project-4/blob/testing/sql_functions.py). If you encounter any problems, follow [these instructions](https://stackoverflow.com/questions/6885164/pymysql-cant-connect-to-mysql-on-localhost) for troubleshooting. 
 6.	Run the code in run.py
 7.	Well done! The project is now up and running. Click the link in your terminal to view the web app. If you are missing any dependencies, check the requirments.txt file.
 
@@ -107,7 +107,7 @@ Always clone from the default GitHub branch: [Testing](https://github.com/Paddyw
 The app is hosted on [Heroku]( https://paddywc-recipe-wiki.herokuapp.com/). The code used is from the [heroku branch](https://github.com/Paddywc/milestone-project-4/tree/heroku) of the GitHub repository. The code is identical to the [default (testing) branch]( https://github.com/Paddywc/milestone-project-4/tree/testing), except that it connects to the ClearDB database, rather than the testing database. The changes appear in the declaration of the ‘connection’ variable, and the open_connection_if_not_already_open() function, both found near the beginning  of the [sql_functions.py file](https://github.com/Paddywc/milestone-project-4/blob/testing/sql_functions.py). 
 
 ### ClearDB Query Limits
-There is an hourly limit to the database queries that a user can make on the live Heroku app. This is a limitation of the free ClearDB plan. Using SQL on Heroku requires a service designed to work on the platform, such as ClearDB. However, exceeding the hourly query limit may cause the app to crash. It will work correctly again once the limit resets. 
+There is an hourly limit to the database queries that a user can make on the live Heroku app. This is a limitation of the free ClearDB plan. Using SQL on Heroku requires a service designed to work on the platform, such as ClearDB. However, exceeding the hourly query limit may cause the app to crash. These will normally be TypeErrors, caused by a NoneType object. It will work correctly again once the limit resets. 
 
 ## Credits
 
