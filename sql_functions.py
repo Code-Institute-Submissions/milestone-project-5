@@ -10,34 +10,23 @@ from add_recipe import get_form_values
 from helpers import convert_list_to_string_for_sql_search, get_average_review_score, create_recipe_values_with_image, \
     create_recipe_values_without_image
 
-test_username = os.getenv("C9_USER")
 username = "b3fca7f37ee0f5"
-"""
-connection for testing. Using C9 MySQL database: 
-pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
 
-ClearDB database for deployment on heroku:
-pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user= username, password = "6e996cb2", db="heroku_12eaf3a664b1763")
-"""
-
-# connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-#                               db="heroku_12eaf3a664b1763")
-connection = pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
+connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
+                              db="heroku_12eaf3a664b1763")
 
 
 def open_connection_if_not_already_open():
     """
     helper function that opens the connection.Connection is a global
-    variable within sql_functions.py Switch between connection
-    and test connection as needed
+    variable within sql_functions.py
     """
 
     if connection.open:
         return connection
     else:
-        return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
-        # return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-        #   db="heroku_12eaf3a664b1763")
+        return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
+          db="heroku_12eaf3a664b1763")
 
 
 def close_connection_if_open():
