@@ -1,16 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 
-<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
-{% with messages = get_flashed_messages() %} {% if messages %}
-<ul class=flashes>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %} {% endwith %} {% if filtered_search %}
-<h2 class="search-header">Search Results:</h2>
+
+<div class="row home-header-section">
+    
+<h1 class="home-header">Recipe Wiki</h1>
+<h2 class="home-subheader">Find Recipes. Share Recipes. </h2>
+</div>
+{% if filtered_search %}
+<h3 class="search-header">Search Results:</h3>
 {% else %}
-<h2 class="search-header">Searching All Recipes:</h2>
+<h3 class="search-header">Searching All Recipes:</h3>
 {% endif %}
 <div class="row center-align">
     <a href="#" data-target="slide-out" class=" sidenav-trigger waves-effect waves-light btn">Filter Search</a>

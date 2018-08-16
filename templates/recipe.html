@@ -1,14 +1,10 @@
  {% extends 'base.html' %} {% block content %} 
-<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+
+{% if is_recipe_user %}
+<div class="row edit-recipe-btn-row">
+ <button onclick="location.href='/edit/{{ recipe_id }}'"  class="btn waves-effect edit-recipe-btn waves-light submit-btn" type="submit">Edit Recipe </button>
+</div>
+{% endif %}
 
 <h1 id="recipe-page-header">{{ recipe["Name"] }}</h1>
 

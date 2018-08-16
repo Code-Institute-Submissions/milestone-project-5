@@ -1,6 +1,7 @@
 /***************General */
+
 .row {
-/*to prevent overflow on mobile*/
+    /*to prevent overflow on mobile*/
     margin-left: 0!important;
     margin-right: 0!important;
 }
@@ -10,7 +11,60 @@
     color: #26a69a !important;
 }
 
+.message-row{
+    /*colors taken from bootstrap alart*/
+    background-color: #d4edda;
+    margin: 0 !important;
+    color: #155724;
+}
+
+.message-row .message {
+    margin: 0;
+    padding: 1%;
+}
+
+
+/*************Search/Index page*/
+
+.home-header-section {
+    text-align: center;
+    background-image: url("https://www.galonamission.com/wp-content/uploads/2016/10/Creamy-White-Chicken-Chili-9-9.jpg");
+    min-height: 25vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.home-header-section .home-header {
+    display: none;
+    margin-top: 0;
+    color: #CC444B;
+}
+
+.home-header-section .home-subheader {
+    font-weight: 600;
+    color: #CC444B;
+    padding-top: 4vh;
+    margin-top: 0;
+}
+
+.search-header {
+    color: #EE6E74;
+    text-align: center;
+
+}
+
+
 /***************Recipe Page */
+
+.edit-recipe-btn-row{
+    text-align: center;
+}
+.edit-recipe-btn {
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #recipe-page-header {
     color: #EE6E74;
     text-align: center;
@@ -34,7 +88,8 @@
 }
 
 #add-to-favourites-row {
-    text-align: center}
+    text-align: center
+}
 
 #from-user-row {
     text-align: center;
@@ -111,7 +166,8 @@
     font-weight: 500;
 }
 
-#recipe-page-ingredients ul,#recipe-page-ingredients li {
+#recipe-page-ingredients ul,
+#recipe-page-ingredients li {
     list-style-type: disc !important;
     margin-bottom: 1em;
 }
@@ -130,6 +186,7 @@
 }
 
 /**************************************visualize data*/
+
 #visualize-data-header {
     color: #EE6E74;
     padding-left: 3%;
@@ -160,12 +217,15 @@
 }
 
 /********Login and register pages*/
-.login-header,.register-header {
+
+.login-header,
+.register-header {
     color: #EE6E74;
     text-align: center;
 }
 
-#sign-in-button,#register-button {
+#sign-in-button,
+#register-button {
     color: #fff;
 }
 
@@ -173,17 +233,19 @@
     text-align: center;
 }
 
+.register-text {
+    color:#BF5896 ;
+    font-size: 1.2em;
+}
+
 #no-account-col {
     text-align: center;
 }
 
-/*************Search/Index page*/
-.search-header {
-    color: #EE6E74;
-    text-align: center;
-}
+
 
 /****************Userpage*/
+
 #userpage-header {
     color: #EE6E74;
     text-align: center;
@@ -196,6 +258,7 @@
 }
 
 /****************Add/Edit Recipe page*/
+
 .ingredient-row {
     margin-bottom: 0!important;
 }
@@ -269,52 +332,62 @@ form .submit-btn {
 }
 
 /********************Tablets and above*/
+
 @media(min-width: 750px) {
+    
+   .home-header-section .home-header {
+        display: block;
+        height: 25vh;
+        width:  100%;
+        
+    }
+    .home-header-section .home-subheader {
+        color: #BF5896;
+        width:  100%;
+        margin-top: -3vh;
+        padding-top: 0;
+    }
     form .row {
-    padding-left: 20px;
-}
+        padding-left: 20px;
+    }
 
- .row {
-    margin-left: 0.75rem;
-    margin-right: 0.75rem;
-}
+    .row {
+        margin-left: 0.75rem;
+        margin-right: 0.75rem;
+    }
 
- .brand-logo {
-    padding-left: 1% !important;
-}
+    form h6 {
+        padding-left: 20px;
+    }
 
- form h6 {
-    padding-left: 20px;
-}
+    #recipe-page-header {
+        font-size: 4.5em;
+    }
 
- #recipe-page-header {
-    font-size: 4.5em;
-}
+    .recipe-page-section-header {
+        font-size: 2em;
+    }
 
- .recipe-page-section-header {
-    font-size: 2em;
-}
+    #recipe-categories {
+        font-size: 2em;
+    }
 
- #recipe-categories {
-    font-size: 2em;
-}
+    #recipe-img-row img {
+        width: 30vw;
+        height: 30vw;
+    }
 
- #recipe-img-row img {
-    width: 30vw;
-    height: 30vw;
-}
+    .non-mobile {
+        display: block;
+    }
 
- .non-mobile {
-    display: block;
-}
+    .mobile {
+        display: none
+    }
 
- .mobile {
-    display: none }
-
- .userpage-recipes-header {
-    margin-left: 0.5%;
-    font-size: 3em;
-}
+    .userpage-recipes-header {
+        margin-left: 0.5%;
+        font-size: 3em;
+    }
 
 }
-

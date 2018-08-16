@@ -749,6 +749,8 @@ def update_recipe(recipe_id):
     values_dictionary = get_form_values()
 
     columns_to_set = ["Name", "Difficulty", "Serves", "Blurb", "PrepTime", "CookTime", "Instructions"]
+    if values_dictionary["ImageName"]:
+        columns_to_set.append("ImageName")
     values_to_insert = []
     for column in columns_to_set:
         values_to_insert.append(values_dictionary[column])

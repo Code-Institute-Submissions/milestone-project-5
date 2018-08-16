@@ -93,6 +93,15 @@
 </header>
 
 <main>
+    <!--Displays flask flash messages. Code partly from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
+{% with messages = get_flashed_messages() %} {% if messages %}
+    {% for message in messages %}
+    <div class="row message-row">
+       <p class="message">{{ message }}</p>
+    </div>
+    {% endfor %}
+{% endif %} {% endwith %} 
+
     {% block content %} {% endblock %}
 </main>
 

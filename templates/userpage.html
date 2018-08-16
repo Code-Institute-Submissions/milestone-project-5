@@ -1,18 +1,6 @@
  {% extends 'base.html' %} {% block content %}
  
- <!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-    <!--prevents 'you must be logged in' message from appearing-->
-    {% if own_page %}
-      <li>{{ message }}</li>
-      {% endif %}
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+
 
 <h1 id="userpage-header">{{ user["Username"] }}</h1>
 

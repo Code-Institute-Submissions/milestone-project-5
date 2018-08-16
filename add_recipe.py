@@ -185,7 +185,6 @@ def get_recipe_image_filename():
         image_added = True
     except Exception as e:
         image_added = False
-
     if image_added:
         return image_name
     else:

@@ -346,6 +346,7 @@ def edit_recipe(recipe_id):
     if recipe_user == current_user.username[0]:
         if request.method == "POST":
             update_recipe(recipe_id)
+            flash("Recipe updated")
             return redirect("/recipe/{}".format(recipe_id))
     
         
@@ -391,7 +392,7 @@ def delete_recipe(recipe_id):
     
         finally:
             close_connection_if_open()
-    
+        flash("Recipe deleted")
         return redirect(redirect_url())
     else:
         return redirect(url_for("search_recipes"))
@@ -406,6 +407,11 @@ def show_recipe(recipe_id):
     renders the recipe page
     """
     
+    recipe_user = get_recipe_user(recipe_id)
+    if recipe_user == current_user.username[0]:
+        is_recipe_user = True
+    else:
+        is_recipe_user = False
     recipe_values = get_recipe_values(recipe_id)
     recipe_user_id = get_id_for_username(recipe_values["Username"])
     time_values = create_time_dictionary(recipe_values)
@@ -420,10 +426,11 @@ def show_recipe(recipe_id):
             return redirect(url_for("login"))
         else:
             add_user_review(recipe_id)
+            flash("Recipe rated!")
             
     close_connection_if_open()
     return render_template("recipe.html", recipe=recipe_values, times=time_values, review_score=average_review_score,
-                           recipe_id=recipe_id, user_id=recipe_user_id)
+                           recipe_id=recipe_id, user_id=recipe_user_id, is_recipe_user=is_recipe_user)
 
 
 @app.route("/addtofavourites/<recipe_id>")
