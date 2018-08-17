@@ -101,7 +101,7 @@ def register_user():
     return render_template("register.html")
 
 
-def check_user_is_logged_in():
+def check_user_is_logged_in(display_login_message=True):
     """
     return True if the user is logged in.
     Returns False otherwise
@@ -110,7 +110,8 @@ def check_user_is_logged_in():
     if current_user.is_authenticated:
         return True
     else:
-        flash("You must be logged in to complete this task")
+        if display_login_message:
+            flash("You must be logged in to complete this task")
         return False
 
 
@@ -309,7 +310,7 @@ def check_is_current_users_userpage(userpage_user_id):
     userpage. Otherwise returns False
     """
 
-    if not check_user_is_logged_in():
+    if not check_user_is_logged_in(False):
         return False
 
     if userpage_user_id == current_user.id:
@@ -406,12 +407,13 @@ def show_recipe(recipe_id):
     """
     renders the recipe page
     """
-    
-    recipe_user = get_recipe_user(recipe_id)
-    if recipe_user == current_user.username[0]:
-        is_recipe_user = True
-    else:
-        is_recipe_user = False
+    user_logged_in = check_user_is_logged_in(False)
+    is_recipe_user = False
+    if user_logged_in:
+        recipe_user = get_recipe_user(recipe_id)
+        if recipe_user == current_user.username[0]:
+            is_recipe_user = True
+        
     recipe_values = get_recipe_values(recipe_id)
     recipe_user_id = get_id_for_username(recipe_values["Username"])
     time_values = create_time_dictionary(recipe_values)

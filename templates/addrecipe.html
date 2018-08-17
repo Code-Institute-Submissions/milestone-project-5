@@ -6,13 +6,17 @@
 <form method="POST" id="add-recipe" enctype="multipart/form-data">
 
     <div class="row">
-        <label for="recipe-name">*Recipe Name</label>
-        <input type="text" name="recipe-name" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
+        <div class="col s12 m6">
+            <label for="recipe-name">*Recipe Name</label>
+            <input type="text" name="recipe-name" id="recipe-name" placeholder="Flambéed chicken with asparagus" required>
+        </div>
     </div>
 
     <div class="row">
-        <label for="recipe-img">Recipe Image</label>
-        <input type="file" name="recipe-img" id="recipe-img" accept="image/*">
+        <div class="col s12">
+            <label for="recipe-img">Recipe Image</label>
+            <input type="file" name="recipe-img" id="recipe-img" accept="image/*">
+        </div>
     </div>
 
     <div class="row">
@@ -33,8 +37,7 @@
     <div class="row">
         <div class="input-field col s9 m4">
             <label for="categories">*Categories</label>
-            <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete"
-                   placeholder="Mexican, Vegetarian" required>
+            <input type="text" name="category-0" id="category-0" class="autocomplete categoriesAutocomplete" placeholder="Mexican, Vegetarian" required>
         </div>
     </div>
 
@@ -50,26 +53,21 @@
     </div>
 
     <div class="row">
-        <div class="input-field col s12">
-            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100"
-                      placeholder="A sentence or two about your dish(max 100 chars)"></textarea>
+        <div class="input-field col s12 m8">
+            <textarea id="blurb" name="blurb" class="materialize-textarea" data-length="100" placeholder="A sentence or two about your dish(max 100 chars)"></textarea>
             <label for="blurb">Blurb</label>
         </div>
     </div>
 
     <div class="row">
         <div class="input-field col s6">
-            <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="*Hours" max="20"
-                   required>
-            <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1"
-                   placeholder="Minutes">
+            <input id="prep-hours" name="prep-hours" class="col s4" type="number" placeholder="*Hrs" max="20" required>
+            <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1" placeholder="Mins">
             <label>Preparation Time</label>
         </div>
         <div class="input-field col s6">
-            <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="*Hours" max="20"
-                   required>
-            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59"
-                   placeholder="Minutes">
+            <input id="cook-hours" name="cook-hours" class="col s4" type="number" placeholder="*Hrs" max="20" required>
+            <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59" placeholder="Mins">
             <label>Cooking Time</label>
         </div>
     </div>
@@ -82,8 +80,7 @@
         </div>
         <div class="input-field col s4">
             <label for="ingredient">Ingredient</label>
-            <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete"
-                   placeholder="Honey" required>
+            <input type="text" name="ingredient-0" id="ingredient-0" class="autocomplete ingredientsAutocomplete" placeholder="Honey" required>
         </div>
     </div>
 
@@ -129,7 +126,9 @@
 </form>
 <script>
 
-    function autocompleteFunction(){
+//enables autocomplete functionality for ingredients and categories 
+//code partly from: https://materializecss.com/autocomplete.html
+function autocompleteFunction(){
             
         $('input.categoriesAutocomplete').autocomplete({
             data: {
@@ -147,8 +146,9 @@
         $(document).ready(function() {
             autocompleteFunction()
     });
-
-
+    
+    
+    
 </script>
 
 

@@ -1,4 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Arapey|Lobster|Raleway:400,600,700');
+
+
 /***************General */
+
+body {
+    font-family: 'Raleway', sans-serif;
+}
 
 .row {
     /*to prevent overflow on mobile*/
@@ -11,7 +18,7 @@
     color: #26a69a !important;
 }
 
-.message-row{
+.message-row {
     /*colors taken from bootstrap alart*/
     background-color: #d4edda;
     margin: 0 !important;
@@ -23,6 +30,15 @@
     padding: 1%;
 }
 
+/***************Navbar */
+
+.brand-logo {
+    font-family: 'Lobster', cursive;
+}
+
+.nav-mobile {
+    font-family: 'Arapey', serif;
+}
 
 /*************Search/Index page*/
 
@@ -38,6 +54,8 @@
     display: none;
     margin-top: 0;
     color: #CC444B;
+    font-family: 'Lobster', cursive;
+
 }
 
 .home-header-section .home-subheader {
@@ -45,20 +63,63 @@
     color: #CC444B;
     padding-top: 4vh;
     margin-top: 0;
+    font-family: 'Arapey', serif;
+
 }
 
 .search-header {
     color: #EE6E74;
     text-align: center;
-
+    font-family: 'Arapey', serif;
 }
+
+.sidenav {
+    font-weight: 600
+}
+
+.tabs {
+    font-weight: 700;
+}
+
+
+/****************Recipe Cards*/
+
+.card-content {
+    color: #AA242B;
+}
+
+.card .card-title {
+    width: 100%;
+    text-align: center;
+    color: #CC444B !important;
+    font-family: 'Lobster', cursive;
+    font-size: 1.5em !important;
+    margin-bottom: 0.5em !important;
+}
+
+.card .card-content {
+    text-align: center;
+    font-family: 'Arapey', serif;
+    font-size: 1.6em;
+}
+
+.card .card-action {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.card .card-action a {
+    margin-right: 0 !important;
+}
+
 
 
 /***************Recipe Page */
 
-.edit-recipe-btn-row{
+.edit-recipe-btn-row {
     text-align: center;
 }
+
 .edit-recipe-btn {
     margin-top: 3%;
     margin-left: auto;
@@ -70,12 +131,14 @@
     text-align: center;
     font-size: 3em;
     text-transform: capitalize;
+    font-family: 'Lobster', cursive;
 }
 
 #recipe-categories {
     text-align: center;
     color: #BF5896;
     font-size: 2em;
+    font-family: 'Arapey', serif;
 }
 
 #recipe-img-row {
@@ -121,21 +184,26 @@
 
 .recipe-page-section-header {
     text-transform: uppercase;
+    font-family: 'Arapey', serif;
     font-size: 1.5em;
     font-weight: 700;
     color: #EE6E74;
-    /*padding-left: 10%;
-    */
 }
 
 #info-row {
     text-align: center;
+    font-size: 1.2em;
+}
+
+#info-row .col {
+    margin-bottom: 1%;
 }
 
 #info-row .info-row-title {
     color: #BF5896;
     font-size: 1.1em;
     font-weight: 500;
+    font-family: 'Arapey', serif;
 }
 
 #info-row #recipe-page-time-col {
@@ -149,6 +217,10 @@
 #blurb-row {
     line-height: 200%;
     vertical-align: middle;
+}
+
+#blurb {
+    padding-bottom: 3em;
 }
 
 #recipe-page-blurb-row blockquote {
@@ -169,11 +241,11 @@
 #recipe-page-ingredients ul,
 #recipe-page-ingredients li {
     list-style-type: disc !important;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 #instructions-row {
-    margin-top: 5em;
+    margin-top: 3em;
 }
 
 #recipe-page-instructions {
@@ -185,78 +257,6 @@
     padding-left: 1%;
 }
 
-/**************************************visualize data*/
-
-#visualize-data-header {
-    color: #EE6E74;
-    padding-left: 3%;
-}
-
-#visualize-data-subheader {
-    color: #BF5896;
-    font-size: 1.5em;
-    margin-top: 0.5em;
-    padding-left: 3%;
-}
-
-.chart-row {
-    padding-left: 10%;
-}
-
-.chart-header {
-    color: #CC444B;
-}
-
-#reset-chart-filters-button {
-    margin-left: 3%;
-}
-
-#categoriesChart .y-axis-label {
-    transform: rotate(-90deg);
-    transform-origin: center;
-}
-
-/********Login and register pages*/
-
-.login-header,
-.register-header {
-    color: #EE6E74;
-    text-align: center;
-}
-
-#sign-in-button,
-#register-button {
-    color: #fff;
-}
-
-.submit-row {
-    text-align: center;
-}
-
-.register-text {
-    color:#BF5896 ;
-    font-size: 1.2em;
-}
-
-#no-account-col {
-    text-align: center;
-}
-
-
-
-/****************Userpage*/
-
-#userpage-header {
-    color: #EE6E74;
-    text-align: center;
-}
-
-.userpage-recipes-header {
-    padding-left: 2%;
-    font-size: 2em;
-    color: #CC444B;
-}
-
 /****************Add/Edit Recipe page*/
 
 .ingredient-row {
@@ -266,29 +266,7 @@
 .add-recipe-header {
     color: #EE6E74;
     margin-left: 2%;
-}
-
-.card-content {
-    color: #AA242B;
-}
-
-.card .card-title {
-    width: 100%;
-    text-align: center;
-    color: #CC444B !important;
-    font-weight: 600 !important;
-}
-
-.card .card-content {
-    text-align: center;
-}
-
-.card .card-action {
-    text-align: center;
-}
-
-.card .card-action a {
-    margin-right: 0 !important;
+    font-family: 'Arapey', serif;
 }
 
 form .row {
@@ -331,19 +309,100 @@ form .submit-btn {
     padding-right: 2%;
 }
 
+
+/**************************************visualize data*/
+
+#visualize-data-header {
+    color: #EE6E74;
+    padding-left: 3%;
+    font-family: 'Arapey', serif;
+}
+
+#visualize-data-subheader {
+    color: #BF5896;
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    padding-left: 3%;
+}
+
+.chart-row {
+    padding-left: 10%;
+}
+
+.chart-header {
+    color: #CC444B;
+    font-family: 'Arapey', serif;
+}
+
+#reset-chart-filters-button {
+    margin-left: 3%;
+}
+
+#categoriesChart .y-axis-label {
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+/********Login and register pages*/
+
+.login-header,
+.register-header {
+    color: #EE6E74;
+    text-align: center;
+    font-family: 'Arapey', serif;
+
+}
+
+#sign-in-button,
+#register-button {
+    color: #fff;
+}
+
+.submit-row {
+    text-align: center;
+}
+
+.register-text {
+    color: #BF5896;
+    font-size: 1.2em;
+}
+
+#no-account-col {
+    text-align: center;
+}
+
+
+
+/****************Userpage*/
+
+#userpage-header {
+    color: #EE6E74;
+    text-align: center;
+    font-family: 'Arapey', serif;
+}
+
+.userpage-recipes-header {
+    padding-left: 2%;
+    font-size: 2em;
+    color: #CC444B;
+    font-family: 'Arapey', serif;
+}
+
+
+
 /********************Tablets and above*/
 
 @media(min-width: 750px) {
-    
-   .home-header-section .home-header {
+
+    .home-header-section .home-header {
         display: block;
         height: 25vh;
-        width:  100%;
-        
+        width: 100%;
+
     }
     .home-header-section .home-subheader {
         color: #BF5896;
-        width:  100%;
+        width: 100%;
         margin-top: -3vh;
         padding-top: 0;
     }
@@ -365,16 +424,38 @@ form .submit-btn {
     }
 
     .recipe-page-section-header {
-        font-size: 2em;
+        font-size: 2.5em;
     }
 
     #recipe-categories {
-        font-size: 2em;
+        font-size: 2.3em;
     }
 
     #recipe-img-row img {
         width: 30vw;
         height: 30vw;
+    }
+
+    #info-row .col {
+        margin-bottom: 0;
+    }
+
+    #instructions-row {
+        margin-top: 5em;
+    }
+
+    #recipe-page-ingredients,
+    #recipe-page-instructions {
+        font-size: 1.4em;
+    }
+
+    #recipe-page-ingredients ul,
+    #recipe-page-ingredients li {
+        margin-top: 0;
+    }
+
+    #blurb {
+        padding-bottom: 0;
     }
 
     .non-mobile {
