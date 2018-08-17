@@ -16,16 +16,14 @@ from sql_functions import open_connection_if_not_already_open, close_connection_
     add_to_user_favourites_table, get_username, get_user_favourites, get_user_recipes, \
     get_converted_difficulty, insert_dictionary_into_recipes_table, get_recipe_values, get_recipe_user, update_recipe
 
+"""
+PROJECT SETTINGS
+"""
+
 app.secret_key = 'some_secret'
 
 login_manager.init_app(app)
 login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
-
-
-
-# from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
-UPLOAD_FOLDER = 'static/images'
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 connection = open_connection_if_not_already_open()
 
@@ -101,7 +99,7 @@ def register_user():
     return render_template("register.html")
 
 
-def check_user_is_logged_in():
+def check_user_is_logged_in(display_login_message=True):
     """
     return True if the user is logged in.
     Returns False otherwise
@@ -110,7 +108,8 @@ def check_user_is_logged_in():
     if current_user.is_authenticated:
         return True
     else:
-        flash("You must be logged in to complete this task")
+        if display_login_message:
+            flash("You must be logged in to complete this task")
         return False
 
 
@@ -309,7 +308,7 @@ def check_is_current_users_userpage(userpage_user_id):
     userpage. Otherwise returns False
     """
 
-    if not check_user_is_logged_in():
+    if not check_user_is_logged_in(False):
         return False
 
     if userpage_user_id == current_user.id:
@@ -346,6 +345,7 @@ def edit_recipe(recipe_id):
     if recipe_user == current_user.username[0]:
         if request.method == "POST":
             update_recipe(recipe_id)
+            flash("Recipe updated")
             return redirect("/recipe/{}".format(recipe_id))
     
         
@@ -391,7 +391,7 @@ def delete_recipe(recipe_id):
     
         finally:
             close_connection_if_open()
-    
+        flash("Recipe deleted")
         return redirect(redirect_url())
     else:
         return redirect(url_for("search_recipes"))
@@ -405,7 +405,13 @@ def show_recipe(recipe_id):
     """
     renders the recipe page
     """
-    
+    user_logged_in = check_user_is_logged_in(False)
+    is_recipe_user = False
+    if user_logged_in:
+        recipe_user = get_recipe_user(recipe_id)
+        if recipe_user == current_user.username[0]:
+            is_recipe_user = True
+        
     recipe_values = get_recipe_values(recipe_id)
     recipe_user_id = get_id_for_username(recipe_values["Username"])
     time_values = create_time_dictionary(recipe_values)
@@ -420,10 +426,11 @@ def show_recipe(recipe_id):
             return redirect(url_for("login"))
         else:
             add_user_review(recipe_id)
+            flash("Recipe rated!")
             
     close_connection_if_open()
     return render_template("recipe.html", recipe=recipe_values, times=time_values, review_score=average_review_score,
-                           recipe_id=recipe_id, user_id=recipe_user_id)
+                           recipe_id=recipe_id, user_id=recipe_user_id, is_recipe_user=is_recipe_user)
 
 
 @app.route("/addtofavourites/<recipe_id>")

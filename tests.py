@@ -304,7 +304,7 @@ class TestApp(unittest.TestCase):
         with c:
             response = c.get("/")
             self.assertEqual(response.status_code, 200)
-            self.assertTrue(b'<h2 class="search-header">' in response.data)
+            self.assertTrue(b'<h3 class="search-header">' in response.data)
 
     def test_add_recipe_page(self):
         """
@@ -404,7 +404,7 @@ class TestApp(unittest.TestCase):
             random_other_user_recipe = choice(other_user_recipe_ids)
             response = c.get("/edit/{}".format(random_other_user_recipe), follow_redirects=True)
             self.assertEqual(response.status_code, 200)
-            self.assertTrue(b'<h2 class="search-header">' in response.data)
+            self.assertTrue(b'<h3 class="search-header">' in response.data)
 
             current_users_recipes = get_user_recipes(12)
             current_user_recipe_ids = [recipe["Id"] for recipe in current_users_recipes]
@@ -733,8 +733,8 @@ class TestSQLFunctions(unittest.TestCase):
         should_be_salad = get_value_from_recipes_table("Name", 122)
         self.assertEqual(should_be_salad, "Salad")
 
-        should_be_visa_photo = get_value_from_recipes_table("ImageName", 119)
-        self.assertEqual(should_be_visa_photo, "788Visa_photo.jpg")
+        should_be_3504 = get_value_from_recipes_table("ImageName", 119)
+        self.assertEqual(should_be_3504, "3504526591.jpg")
 
         should_be_a_tin_of_baked_beans = get_value_from_recipes_table("Blurb", 127)
         self.assertEqual(should_be_a_tin_of_baked_beans, "A tin of baked beans")
@@ -950,8 +950,8 @@ class TestSQLFunctions(unittest.TestCase):
             returned_tuples = cursor.fetchall()
             returned_ids = [returned_tuple[0] for returned_tuple in returned_tuples]
             returned_ids_string = convert_list_to_string_for_sql_search(returned_ids)
-            cursor.execute("DELETE FROM Categories WHERE Id IN {} ;".format(returned_ids_string))
             cursor.execute("DELETE FROM RecipeCategories WHERE CategoryId IN {} ;".format(returned_ids_string))
+            cursor.execute("DELETE FROM Categories WHERE Id IN {} ;".format(returned_ids_string))
             connection.commit()
 
     def test_can_add_to_recpie_ingredients(self):
@@ -994,8 +994,8 @@ class TestSQLFunctions(unittest.TestCase):
             returned_tuples = cursor.fetchall()
             returned_ids = [returned_tuple[0] for returned_tuple in returned_tuples]
             returned_ids_string = convert_list_to_string_for_sql_search(returned_ids)
-            cursor.execute("DELETE FROM Ingredients WHERE Id IN {} ;".format(returned_ids_string))
             cursor.execute("DELETE FROM RecipeIngredients WHERE IngredientId IN {} ;".format(returned_ids_string))
+            cursor.execute("DELETE FROM Ingredients WHERE Id IN {} ;".format(returned_ids_string))
             connection.commit()
 
     def test_can_add_user_review(self):
@@ -1168,4 +1168,5 @@ class TestSQLFunctions(unittest.TestCase):
             connection = open_connection_if_not_already_open()
             with connection.cursor() as cursor:
                 cursor.execute('DELETE FROM Recipes WHERE Name = "{}"; '.format("Test Inserting"))
+                cursor.execute('DELETE FROM Categories WHERE Name ="German";')
                 connection.commit()

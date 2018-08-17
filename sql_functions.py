@@ -749,6 +749,8 @@ def update_recipe(recipe_id):
     values_dictionary = get_form_values()
 
     columns_to_set = ["Name", "Difficulty", "Serves", "Blurb", "PrepTime", "CookTime", "Instructions"]
+    if values_dictionary["ImageName"]:
+        columns_to_set.append("ImageName")
     values_to_insert = []
     for column in columns_to_set:
         values_to_insert.append(values_dictionary[column])
@@ -757,9 +759,15 @@ def update_recipe(recipe_id):
         connection = open_connection_if_not_already_open()
         with connection.cursor() as cursor:
             for i in range(len(columns_to_set)):
-                cursor.execute(
-                    'UPDATE Recipes SET {0} = "{1}" WHERE Id = {2};'.format(columns_to_set[i], values_to_insert[i],
-                                                                            recipe_id))
+                # if instructions 
+                if i == 6:
+                    cursor.execute(
+                        'UPDATE Recipes SET {0} = "{1}" WHERE Id = {2};'.format(columns_to_set[i], str(values_to_insert[i]),
+                                                                                recipe_id))
+                else:
+                    cursor.execute(
+                        'UPDATE Recipes SET {0} = "{1}" WHERE Id = {2};'.format(columns_to_set[i], values_to_insert[i],
+                                                                                recipe_id))
             cursor.execute("DELETE FROM RecipeCategories WHERE RecipeId = {};".format(recipe_id))
             cursor.execute("DELETE FROM RecipeIngredients WHERE RecipeId = {};".format(recipe_id))
             connection.commit()

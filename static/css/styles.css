@@ -1,320 +1,449 @@
+@import url('https://fonts.googleapis.com/css?family=Arapey|Lobster|Raleway:400,600,700');
+
 /***************General */
+
+body {
+	font-family: 'Raleway', sans-serif;
+}
+
 .row {
-/*to prevent overflow on mobile*/
-    margin-left: 0!important;
-    margin-right: 0!important;
+	/*to prevent overflow on mobile*/
+	margin-left: 0!important;
+	margin-right: 0!important;
 }
 
-.flashes li {
-    margin-left: 1em;
-    color: #26a69a !important;
+.message-row {
+	/*colors taken from bootstrap alart*/
+	background-color: #d4edda;
+	margin: 0 !important;
+	color: #155724;
 }
 
-/***************Recipe Page */
-#recipe-page-header {
-    color: #EE6E74;
-    text-align: center;
-    font-size: 3em;
-    text-transform: capitalize;
+.message-row .message {
+	margin: 0;
+	padding: 1%;
 }
 
-#recipe-categories {
-    text-align: center;
-    color: #BF5896;
-    font-size: 2em;
+
+/***************Navbar */
+
+.brand-logo {
+	font-family: 'Lobster', cursive;
 }
 
-#recipe-img-row {
-    text-align: center;
+.nav-mobile {
+	font-family: 'Arapey', serif;
 }
 
-#recipe-img-row img {
-    width: 60vw;
-    height: 60vw;
-}
-
-#add-to-favourites-row {
-    text-align: center}
-
-#from-user-row {
-    text-align: center;
-    color: #881D5E;
-    font-size: 1.2em;
-    margin: 5px auto;
-}
-
-#review-score-row {
-    text-align: center;
-    margin: 0 auto;
-}
-
-#leave-review-row {
-    margin-top: -1em;
-}
-
-#leave-review-row select {
-    text-align: center;
-}
-
-#leave-review-row li {
-    text-align: center;
-}
-
-#leave-review-row .select-dropdown {
-    text-align: center;
-}
-
-.recipe-page-section-header {
-    text-transform: uppercase;
-    font-size: 1.5em;
-    font-weight: 700;
-    color: #EE6E74;
-    /*padding-left: 10%;
-    */
-}
-
-#info-row {
-    text-align: center;
-}
-
-#info-row .info-row-title {
-    color: #BF5896;
-    font-size: 1.1em;
-    font-weight: 500;
-}
-
-#info-row #recipe-page-time-col {
-    margin-top: -1%;
-}
-
-.non-mobile {
-    display: none;
-}
-
-#blurb-row {
-    line-height: 200%;
-    vertical-align: middle;
-}
-
-#recipe-page-blurb-row blockquote {
-    font-size: 1.1em;
-    color: #D783B6;
-    font-weight: 600;
-    font-style: italic;
-}
-
-#recipe-page-blurb {
-    font-size: 1.3em;
-}
-
-#recipe-page-ingredients {
-    font-weight: 500;
-}
-
-#recipe-page-ingredients ul,#recipe-page-ingredients li {
-    list-style-type: disc !important;
-    margin-bottom: 1em;
-}
-
-#instructions-row {
-    margin-top: 5em;
-}
-
-#recipe-page-instructions {
-    font-weight: 500;
-    padding-left: 0;
-}
-
-#recipe-page-instructions ol {
-    padding-left: 1%;
-}
-
-/**************************************visualize data*/
-#visualize-data-header {
-    color: #EE6E74;
-    padding-left: 3%;
-}
-
-#visualize-data-subheader {
-    color: #BF5896;
-    font-size: 1.5em;
-    margin-top: 0.5em;
-    padding-left: 3%;
-}
-
-.chart-row {
-    padding-left: 10%;
-}
-
-.chart-header {
-    color: #CC444B;
-}
-
-#reset-chart-filters-button {
-    margin-left: 3%;
-}
-
-#categoriesChart .y-axis-label {
-    transform: rotate(-90deg);
-    transform-origin: center;
-}
-
-/********Login and register pages*/
-.login-header,.register-header {
-    color: #EE6E74;
-    text-align: center;
-}
-
-#sign-in-button,#register-button {
-    color: #fff;
-}
-
-.submit-row {
-    text-align: center;
-}
-
-#no-account-col {
-    text-align: center;
-}
 
 /*************Search/Index page*/
+
+.home-header-section {
+	text-align: center;
+	background-image: url("https://www.galonamission.com/wp-content/uploads/2016/10/Creamy-White-Chicken-Chili-9-9.jpg");
+	min-height: 25vh;
+	background-size: cover;
+	background-position: center;
+}
+
+.home-header-section .home-header {
+	display: none;
+	margin-top: 0;
+	color: #CC444B;
+	font-family: 'Lobster', cursive;
+}
+
+.home-header-section .home-subheader {
+	font-weight: 600;
+	color: #CC444B;
+	padding-top: 4vh;
+	margin-top: 0;
+	font-family: 'Arapey', serif;
+}
+
 .search-header {
-    color: #EE6E74;
-    text-align: center;
+	color: #EE6E74;
+	text-align: center;
+	font-family: 'Arapey', serif;
 }
 
-/****************Userpage*/
-#userpage-header {
-    color: #EE6E74;
-    text-align: center;
+.sidenav {
+	font-weight: 600
 }
 
-.userpage-recipes-header {
-    padding-left: 2%;
-    font-size: 2em;
-    color: #CC444B;
+.tabs {
+	font-weight: 700;
 }
 
-/****************Add/Edit Recipe page*/
-.ingredient-row {
-    margin-bottom: 0!important;
-}
 
-.add-recipe-header {
-    color: #EE6E74;
-    margin-left: 2%;
-}
+/****************Recipe Cards*/
 
 .card-content {
-    color: #AA242B;
+	color: #AA242B;
 }
 
 .card .card-title {
-    width: 100%;
-    text-align: center;
-    color: #CC444B !important;
-    font-weight: 600 !important;
+	width: 100%;
+	text-align: center;
+	color: #CC444B !important;
+	font-family: 'Lobster', cursive;
+	font-size: 1.5em !important;
+	margin-bottom: 0.5em !important;
 }
 
 .card .card-content {
-    text-align: center;
+	text-align: center;
+	font-family: 'Arapey', serif;
+	font-size: 1.6em;
 }
 
 .card .card-action {
-    text-align: center;
+	text-align: center;
+	font-size: 1.3em;
 }
 
 .card .card-action a {
-    margin-right: 0 !important;
+	margin-right: 0 !important;
+}
+
+
+/***************Recipe Page */
+
+.edit-recipe-btn-row {
+	text-align: center;
+}
+
+.edit-recipe-btn {
+	margin-top: 3%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#recipe-page-header {
+	color: #EE6E74;
+	text-align: center;
+	font-size: 3em;
+	text-transform: capitalize;
+	font-family: 'Lobster', cursive;
+}
+
+#recipe-categories {
+	text-align: center;
+	color: #BF5896;
+	font-size: 2em;
+	font-family: 'Arapey', serif;
+}
+
+#recipe-img-row {
+	text-align: center;
+}
+
+#recipe-img-row img {
+	width: 60vw;
+	height: 60vw;
+}
+
+#add-to-favourites-row {
+	text-align: center
+}
+
+#from-user-row {
+	text-align: center;
+	color: #881D5E;
+	font-size: 1.2em;
+	margin: 5px auto;
+}
+
+#review-score-row {
+	text-align: center;
+	margin: 0 auto;
+}
+
+#leave-review-row {
+	margin-top: -1em;
+}
+
+#leave-review-row select {
+	text-align: center;
+}
+
+#leave-review-row li {
+	text-align: center;
+}
+
+#leave-review-row .select-dropdown {
+	text-align: center;
+}
+
+.recipe-page-section-header {
+	text-transform: uppercase;
+	font-family: 'Arapey', serif;
+	font-size: 1.5em;
+	font-weight: 700;
+	color: #EE6E74;
+}
+
+#info-row {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+#info-row .col {
+	margin-bottom: 1%;
+}
+
+#info-row .info-row-title {
+	color: #BF5896;
+	font-size: 1.1em;
+	font-weight: 500;
+	font-family: 'Arapey', serif;
+}
+
+#info-row #recipe-page-time-col {
+	margin-top: -1%;
+}
+
+.non-mobile {
+	display: none;
+}
+
+#blurb-row {
+	line-height: 200%;
+	vertical-align: middle;
+}
+
+#blurb {
+	padding-bottom: 3em;
+}
+
+#recipe-page-blurb-row blockquote {
+	font-size: 1.1em;
+	color: #D783B6;
+	font-weight: 600;
+	font-style: italic;
+}
+
+#recipe-page-blurb {
+	font-size: 1.3em;
+}
+
+#recipe-page-ingredients {
+	font-weight: 500;
+}
+
+#recipe-page-ingredients ul,
+#recipe-page-ingredients li {
+	list-style-type: disc !important;
+	margin-bottom: 0.5em;
+}
+
+#instructions-row {
+	margin-top: 3em;
+}
+
+#recipe-page-instructions {
+	font-weight: 500;
+	padding-left: 0;
+}
+
+#recipe-page-instructions ol {
+	padding-left: 1%;
+}
+
+
+/****************Add/Edit Recipe page*/
+
+.ingredient-row {
+	margin-bottom: 0!important;
+}
+
+.add-recipe-header {
+	color: #EE6E74;
+	margin-left: 2%;
+	font-family: 'Arapey', serif;
 }
 
 form .row {
-    padding-left: 10px;
+	padding-left: 10px;
 }
 
 form h6 {
-    padding-left: 10px;
+	padding-left: 10px;
 }
 
 form .btn-row {
-    padding: 0;
-    margin-top: -5%!important;
+	padding: 0;
+	margin-top: -5%!important;
 }
 
 form .btn-row .col {
-    padding: 0 !important;
+	padding: 0 !important;
 }
 
 form .instruction-input-field {
-    margin-top: -1% !important;
-    position: relative;
+	margin-top: -1% !important;
+	position: relative;
 }
 
 form .required-explanation {
-    margin-left: 4%;
-    color: #9e9e9e;
+	margin-left: 4%;
+	color: #9e9e9e;
 }
 
 form .submit-btn {
-    margin-left: 3%;
-    margin-bottom: 2%;
+	margin-left: 3%;
+	margin-bottom: 2%;
 }
 
 .no-recipes-text {
-    text-align: center;
-    font-size: 1.5em;
-    color: #EE6E74;
-    padding-left: 2%;
-    padding-right: 2%;
+	text-align: center;
+	font-size: 1.5em;
+	color: #EE6E74;
+	padding-left: 2%;
+	padding-right: 2%;
 }
+
+
+/**************************************visualize data*/
+
+#visualize-data-header {
+	color: #EE6E74;
+	padding-left: 3%;
+	font-family: 'Arapey', serif;
+}
+
+#visualize-data-subheader {
+	color: #BF5896;
+	font-size: 1.5em;
+	margin-top: 0.5em;
+	padding-left: 3%;
+}
+
+.chart-row {
+	padding-left: 10%;
+}
+
+.chart-header {
+	color: #CC444B;
+	font-family: 'Arapey', serif;
+}
+
+#reset-chart-filters-button {
+	margin-left: 3%;
+}
+
+#categoriesChart .y-axis-label {
+	transform: rotate(-90deg);
+	transform-origin: center;
+}
+
+
+/********Login and register pages*/
+
+.login-header,
+.register-header {
+	color: #EE6E74;
+	text-align: center;
+	font-family: 'Arapey', serif;
+}
+
+#sign-in-button,
+#register-button {
+	color: #fff;
+}
+
+.submit-row {
+	text-align: center;
+}
+
+.register-text {
+	color: #BF5896;
+	font-size: 1.2em;
+}
+
+#no-account-col {
+	text-align: center;
+}
+
+
+/****************Userpage*/
+
+#userpage-header {
+	color: #EE6E74;
+	text-align: center;
+	font-family: 'Arapey', serif;
+}
+
+.userpage-recipes-header {
+	padding-left: 2%;
+	font-size: 2em;
+	color: #CC444B;
+	font-family: 'Arapey', serif;
+}
+
 
 /********************Tablets and above*/
+
 @media(min-width: 750px) {
-    form .row {
-    padding-left: 20px;
+	.home-header-section .home-header {
+		display: block;
+		height: 25vh;
+		width: 100%;
+	}
+	.home-header-section .home-subheader {
+		color: #BF5896;
+		width: 100%;
+		margin-top: -3vh;
+		padding-top: 0;
+	}
+	form .row {
+		padding-left: 20px;
+	}
+	.row {
+		margin-left: 0.75rem;
+		margin-right: 0.75rem;
+	}
+	form h6 {
+		padding-left: 20px;
+	}
+	#recipe-page-header {
+		font-size: 4.5em;
+	}
+	.recipe-page-section-header {
+		font-size: 2.5em;
+	}
+	#recipe-categories {
+		font-size: 2.3em;
+	}
+	#recipe-img-row img {
+		width: 30vw;
+		height: 30vw;
+	}
+	#info-row .col {
+		margin-bottom: 0;
+	}
+	#instructions-row {
+		margin-top: 5em;
+	}
+	#recipe-page-ingredients,
+	#recipe-page-instructions {
+		font-size: 1.4em;
+	}
+	#recipe-page-ingredients ul,
+	#recipe-page-ingredients li {
+		margin-top: 0;
+	}
+	#blurb {
+		padding-bottom: 0;
+	}
+	.non-mobile {
+		display: block;
+	}
+	.mobile {
+		display: none
+	}
+	.userpage-recipes-header {
+		margin-left: 0.5%;
+		font-size: 3em;
+	}
 }
-
- .row {
-    margin-left: 0.75rem;
-    margin-right: 0.75rem;
-}
-
- .brand-logo {
-    padding-left: 1% !important;
-}
-
- form h6 {
-    padding-left: 20px;
-}
-
- #recipe-page-header {
-    font-size: 4.5em;
-}
-
- .recipe-page-section-header {
-    font-size: 2em;
-}
-
- #recipe-categories {
-    font-size: 2em;
-}
-
- #recipe-img-row img {
-    width: 30vw;
-    height: 30vw;
-}
-
- .non-mobile {
-    display: block;
-}
-
- .mobile {
-    display: none }
-
- .userpage-recipes-header {
-    margin-left: 0.5%;
-    font-size: 3em;
-}
-
-}
-

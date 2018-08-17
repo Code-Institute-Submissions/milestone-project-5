@@ -1,19 +1,9 @@
  {% extends 'base.html' %} {% block content %}
 
-<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
 
 <h1 id="visualize-data-header">Recipes Data:</h1>
 <h2 id="visualize-data-subheader">Click on Chart to Filter Results </h2>
-<button onclick="location.href='/visualizedata'" id="reset-chart-filters-button" class="btn waves-effect waves-light submit-btn"  type="submit">Reset Filters</button>
+<button onclick="location.href='/visualizedata'" id="reset-chart-filters-button" class="btn waves-effect waves-light submit-btn" type="submit">Reset Filters</button>
 
 <div class="row chart-row">
     <h3 class="chart-header">All Categories Assigned:</h3>
@@ -37,162 +27,182 @@
 </div>
 
 <!-- scripts for dc and d3. In project folder -->
-    <script type="text/javascript" src="static/js/d3.min.js"></script>
-    <script type="text/javascript" src="static/js/crossfilter.min.js"></script>
-    <script type="text/javascript" src="static/js/dc.min.js"></script>
-    <script type="text/javascript" src="static/js/queue.min.js"></script>
-    <script>
+<script type="text/javascript" src="static/js/d3.min.js"></script>
+<script type="text/javascript" src="static/js/crossfilter.min.js"></script>
+<script type="text/javascript" src="static/js/dc.min.js"></script>
+<script type="text/javascript" src="static/js/queue.min.js"></script>
+<script>
 
-function getParsedData(){
- let stringData = "{{ imported_data|safe }}";
-// below line of code from: https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote
-// changes singe quotes to double quotes
-//required to parse data
-let stringDataWithDoubleQuotes = stringData.replace(/'/g, '"');
-let data = JSON.parse(stringDataWithDoubleQuotes);
-var ndx = crossfilter(data);
-return ndx;
-}
 
-ndx = getParsedData()
-
-//from : https://stackoverflow.com/questions/21114336/how-to-add-axis-labels-for-row-chart-using-dc-js-or-d3-js
-function AddXAxis(chartToUpdate, displayText)
-{
-    chartToUpdate.svg()
-                .append("text")
-                .attr("class", "x-axis-label")
-                .attr("text-anchor", "middle")
-                .attr("x", chartToUpdate.width()/2)
-                .attr("y", chartToUpdate.height()-3.5)
-                .text(displayText);
-}
-
-//variations from the AddXAxis function are my own code
-function AddYAxis(chartToUpdate, displayText)
-{
-    chartToUpdate.svg()
-                .append("text")
-                .attr("class", "y-axis-label")
-                .attr("text-anchor", "start")
-                .attr("x", chartToUpdate.height()/1.5)
-                .attr("y", (0- (chartToUpdate.width()/6)))
-                .text(displayText);
-}
-
-function showCategoriesChart(ndx){
-
-let chart= dc.rowChart("#categoriesChart")
-let dim = ndx.dimension(dc.pluck("Categories"));
-
-// reduce add, remove and initial functions
-// from: https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
-function reduceAdd(p, v) {
-  v.Categories.forEach (function(val, idx) {
-     p[val] = (p[val] || 0) + 1; //increment counts
-  });
-  return p;
-}
-
-function reduceRemove(p, v) {
-  v.Categories.forEach (function(val, idx) {
-     p[val] = (p[val] || 0) - 1; //decrement counts
-  });
-  return p;
-}
-
-function reduceInitial() {
-  return {};
-}
-
-let group = dim.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial).value();;
-
-// hack to make dc.js charts work
-//also from  https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
-group.all = function() {
-  var newObject = [];
-  for (var key in this) {
-    if (this.hasOwnProperty(key) && key != "all") {
-      newObject.push({
-        key: key,
-        value: this[key]
-      });
+    function getParsedData() {
+        let stringData = "{{ imported_data|safe }}";
+        // below line of code from: https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote
+        // changes singe quotes to double quotes
+        //required to parse data
+        let stringDataWithDoubleQuotes = stringData.replace(/'/g, '"');
+        let data = JSON.parse(stringDataWithDoubleQuotes);
+        var ndx = crossfilter(data);
+        return ndx;
     }
-  }
-  return newObject;
-};
 
 
-// chart code largely from: https://github.com/dc-js/dc.js/blob/master/web/examples/row.html
-chart
-    .width(768)
-    .height(480)
-    .filter(function(d){
-        if(d != ""){
-            return d
+    //from : https://stackoverflow.com/questions/21114336/how-to-add-axis-labels-for-row-chart-using-dc-js-or-d3-js
+    function AddXAxis(chartToUpdate, displayText) {
+        chartToUpdate.svg()
+            .append("text")
+            .attr("class", "x-axis-label")
+            .attr("text-anchor", "middle")
+            .attr("x", chartToUpdate.width() / 2)
+            .attr("y", chartToUpdate.height() - 3.5)
+            .text(displayText);
+    }
+
+    //variations from the AddXAxis function are my own code
+    function AddYAxis(chartToUpdate, displayText) {
+        chartToUpdate.svg()
+            .append("text")
+            .attr("class", "y-axis-label")
+            .attr("text-anchor", "start")
+            .attr("x", chartToUpdate.height() / 1.5)
+            .attr("y", (0 - (chartToUpdate.width() / 6)))
+            .text(displayText);
+    }
+
+    function showCategoriesChart(ndx) {
+
+        let chart = dc.rowChart("#categoriesChart")
+        let dim = ndx.dimension(dc.pluck("Categories"));
+
+        // reduce add, remove and initial functions
+        // from: https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
+        function reduceAdd(p, v) {
+            v.Categories.forEach(function(val, idx) {
+                p[val] = (p[val] || 0) + 1; //increment counts
+            });
+            return p;
         }
+
+        function reduceRemove(p, v) {
+            v.Categories.forEach(function(val, idx) {
+                p[val] = (p[val] || 0) - 1; //decrement counts
+            });
+            return p;
+        }
+
+        function reduceInitial() {
+            return {};
+        }
+
+        let group = dim.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial).value();;
+
+        // hack to make dc.js charts work
+        //also from  https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1
+        group.all = function() {
+            var newObject = [];
+            for (var key in this) {
+                if (this.hasOwnProperty(key) && key != "all") {
+                    newObject.push({
+                        key: key,
+                        value: this[key]
+                    });
+                }
+            }
+            return newObject;
+        };
+
+
+        // chart code largely from: https://github.com/dc-js/dc.js/blob/master/web/examples/row.html
+        chart
+            .width(768)
+            .height(480)
+            .filter(function(d) {
+                if (d != "") {
+                    return d
+                }
+            })
+            .x(d3.scale.ordinal())
+            .elasticX(true)
+            .dimension(dim)
+            .group(group)
+            .render();
+
+        AddXAxis(chart, "Count");
+        AddYAxis(chart, "Category")
+        chart.ordering(function(d) { return -d.value; });
+    }
+
+
+    function showDifficultyChart(ndx) {
+        let chart = dc.pieChart("#difficultyChart")
+        let dim = ndx.dimension(dc.pluck("Difficulty"));
+        let group = dim.group()
+
+        // chart code from: https://github.com/dc-js/dc.js/blob/master/web/examples/pie.html
+        chart
+            .width(768)
+            .height(480)
+            .slicesCap(4)
+            .innerRadius(100)
+            .dimension(dim)
+            .group(group)
+            .legend(dc.legend())
+        chart.render();
+    };
+
+
+
+    function showRatingsChart(ndx) {
+        let chart = dc.barChart("#ratingsChart");
+        let dim = ndx.dimension(dc.pluck("Rating"));
+
+        let group = dim.group();
+        //from D3 dashboard lesson
+        chart
+            .width(400)
+            .height(300)
+            .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+            .dimension(dim)
+            .group(group)
+            .transitionDuration(500)
+            .x(d3.scale.ordinal())
+            .xUnits(dc.units.ordinal)
+            .xAxisLabel("Average Rating")
+            .yAxisLabel("Count")
+            .yAxis().ticks(group.max)
+
+            // two lines below from: https://stackoverflow.com/questions/13576906/d3-tick-marks-on-integers-only
+            //makes ticks ints not floats
+            .tickFormat(d3.format("d"))
+            .tickSubdivide(0);
+
+        chart.render();
+    }
+
+    function increaseNavbarWidthOnSmallerDevices() {
+        //  So that the navbar will cover the entire 
+        //  page on smaller devices. 820 px represents 
+        //  content width
+        let windowWidth = $(window).width()
+        if (windowWidth <= 820) {
+            $("nav").css("width", 820)
+        }else{
+            $("nav").css("width", "100%")
+        }
+    }
+
+
+    $(document).ready(function() {
+        let ndx = getParsedData()
+        showCategoriesChart(ndx)
+        showDifficultyChart(ndx)
+        showRatingsChart(ndx);
+        increaseNavbarWidthOnSmallerDevices()
+    });
+    
+    $(window).resize(function(){
+        increaseNavbarWidthOnSmallerDevices()
     })
-    .x(d3.scale.ordinal())
-    .elasticX(true)
-    .dimension(dim)
-    .group(group)
-    .render();
-
-AddXAxis(chart, "Count");
-AddYAxis(chart, "Category")
-chart.ordering(function(d) { return -d.value; });
-}
-
-showCategoriesChart(ndx)
-
-function showDifficultyChart(ndx){
-let chart = dc.pieChart("#difficultyChart")
-let dim = ndx.dimension(dc.pluck("Difficulty"));
-let group = dim.group()
-
-// chart code from: https://github.com/dc-js/dc.js/blob/master/web/examples/pie.html
- chart
-    .width(768)
-    .height(480)
-    .slicesCap(4)
-    .innerRadius(100)
-    .dimension(dim)
-    .group(group)
-    .legend(dc.legend())
-  chart.render();
-};
-
-showDifficultyChart(ndx)
-
-
-function showRatingsChart(ndx){
-let chart= dc.barChart("#ratingsChart");
-let dim = ndx.dimension(dc.pluck("Rating"));
-
-let group = dim.group();
-//from D3 dashboard lesson
-chart
-        .width(400)
-        .height(300)
-        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
-        .dimension(dim)
-        .group(group)
-        .transitionDuration(500)
-        .x(d3.scale.ordinal())
-        .xUnits(dc.units.ordinal)
-        .xAxisLabel("Average Rating")
-        .yAxisLabel("Count")
-        .yAxis().ticks(group.max)
-
-        // two lines below from: https://stackoverflow.com/questions/13576906/d3-tick-marks-on-integers-only
-        //makes ticks ints not floats
-        .tickFormat(d3.format("d"))
-          .tickSubdivide(0);
-
-    chart.render();
-}
-
-showRatingsChart(ndx);
-    </script>
+</script>
 
 {% endblock %}
+ 

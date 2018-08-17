@@ -1,14 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-<!--Displays flask flash messages. Code from: http://flask.pocoo.org/docs/1.0/patterns/flashing/-->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul class=flashes>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
 
 
 <h1 class="add-recipe-header">Edit Recipe</h1>
@@ -80,16 +70,16 @@
     <div class="row">
         <div class="input-field col s6">
             <input id="prep-hours" name="prep-hours" class="col s4" type="number"
-                   value="{{ time_dictionary['PrepHours'] }}" placeholder="Hours" required>
+                   value="{{ time_dictionary['PrepHours'] }}" placeholder="Hrs" required>
             <input id="prep-mins" name="prep-mins" type="number" max="59" class="col s4 offset-s1"
-                   value="{{ time_dictionary['PrepMins'] }}" placeholder="Minutes " required>
+                   value="{{ time_dictionary['PrepMins'] }}" placeholder="Mins " required>
             <label>Preparation Time*</label>
         </div>
         <div class="input-field col s6">
             <input id="cook-hours" name="cook-hours" class="col s4" type="number"
-                   value="{{ time_dictionary['CookHours'] }}" placeholder="Hours" required>
+                   value="{{ time_dictionary['CookHours'] }}" placeholder="Hrs" required>
             <input id="cook-mins" name="cook-mins" class="col s4 offset-s1" type="number" max="59"
-                   value="{{ time_dictionary['CookMins'] }}" placeholder="Minutes " required>
+                   value="{{ time_dictionary['CookMins'] }}" placeholder="Mins " required>
             <label>Cooking Time*</label>
         </div>
     </div>
@@ -155,9 +145,10 @@
 </form>
 <script>
 
-    function autocompleteFunction(){
-        //enables autocomplete functionality for ingredients and categories 
-        //code partly from: https://materializecss.com/autocomplete.html
+//enables autocomplete functionality for ingredients and categories 
+//code partly from: https://materializecss.com/autocomplete.html
+function autocompleteFunction(){
+            
         $('input.categoriesAutocomplete').autocomplete({
             data: {
               {% for category in categories %}  "{{ category }}": null, {% endfor %}
@@ -174,6 +165,8 @@
         $(document).ready(function() {
             autocompleteFunction()
     });
-
+    
+    
+    
 </script>
 {% endblock %}
