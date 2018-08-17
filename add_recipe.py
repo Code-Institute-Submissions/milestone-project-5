@@ -5,7 +5,7 @@ from random import choice
 from flask import request
 from werkzeug.utils import secure_filename  # for uploading images
 
-from app_init import app
+from app_init import app, S3_BUCKET, s3
 from helpers import check_if_string_contains_letters
 
 
@@ -166,10 +166,24 @@ def add_recipe_image_and_return_filename():
 
     file = request.files["recipe-img"]
 
-    # two lines of code below are from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+    # secure filename code from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
     # added random int to file name to avoid duplicate filenames
+    # upload code largly from: http://zabana.me/notes/upload-files-amazon-s3-flask.html
     filename = "{0}{1}".format(choice(range(1000)), secure_filename(file.filename))
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    try:
+        s3.upload_fileobj(
+            file,
+            S3_BUCKET,
+            filename,
+            ExtraArgs={
+                "ACL": "public-read",
+                "ContentType": file.content_type
+            }
+        )
+
+    except Exception as e:
+        print("S3 upload error: {}".format(e))
     return filename
 
 

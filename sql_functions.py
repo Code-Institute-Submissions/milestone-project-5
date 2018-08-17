@@ -754,7 +754,6 @@ def update_recipe(recipe_id):
     values_to_insert = []
     for column in columns_to_set:
         values_to_insert.append(values_dictionary[column])
-    print(values_to_insert[6])
 
     try:
         connection = open_connection_if_not_already_open()

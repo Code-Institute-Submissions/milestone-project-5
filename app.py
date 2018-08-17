@@ -16,16 +16,14 @@ from sql_functions import open_connection_if_not_already_open, close_connection_
     add_to_user_favourites_table, get_username, get_user_favourites, get_user_recipes, \
     get_converted_difficulty, insert_dictionary_into_recipes_table, get_recipe_values, get_recipe_user, update_recipe
 
+"""
+PROJECT SETTINGS
+"""
+
 app.secret_key = 'some_secret'
 
 login_manager.init_app(app)
 login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
-
-
-
-# from: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
-UPLOAD_FOLDER = 'static/images'
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 connection = open_connection_if_not_already_open()
 
