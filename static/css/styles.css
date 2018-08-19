@@ -366,6 +366,10 @@ form .submit-btn {
 	text-align: center;
 }
 
+.error {
+	text-align: center;
+	color: red;
+}
 
 /****************Userpage*/
 
