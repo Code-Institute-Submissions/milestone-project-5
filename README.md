@@ -127,5 +127,5 @@ There is an hourly limit to the database queries that a user can make on the liv
 ### Additional Credits
 - Some of the initial recipes and categories used to populate the database are from [BBC Recipes](https://www.bbcgoodfood.com/recipes)
 - Star icons used to represent average user review scores are from [icons8]( https://icons8.com/icon/new-icons/all)
-- The background of the homepage header is from  [galonamission.com](https://icons8.com/icon/new-icons/all) https://www.galonamission.com/creamy-white-chicken-chili/)
+- The background of the homepage header is from  [galonamission.com](https://www.galonamission.com/creamy-white-chicken-chili/)
 
