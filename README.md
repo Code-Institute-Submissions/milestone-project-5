@@ -1,6 +1,6 @@
 # Recipe Wiki
 ## Overview
-![Screenshot](https://i.snag.gy/GsnEXw.jpg)
+![Screenshot](https://i.snag.gy/Q1KT79.jpg)
 
 ### What it the website for? 
 Sharing and saving recipes 
@@ -25,19 +25,19 @@ Recipes are stored in a MySQL database. Users upload recipes using a HTML POST f
 -	A visualize data page with interactive charts displaying recipe data
 
 ### Features Left to Implement
--	A paid ClearDB plan that will remove query limits. The current query limit may cause the live version of the app to crash.
--	An external storage service for hosting image files. This would allow users to upload images to the live app, and have these images saved permanently. Due to the scope of this project, recipe images are saved in the project repository. Therefore, they are only saved (beyond the current session) if they are uploaded to the testing branch, not the live Heroku branch. This is because changes made on Heroku are not committed to the project repository. 
+-	A more expensive ClearDB plan that will increase the hourly query limit. The current query limit may cause the live version of the app to crash.
 
 ## Database Schema
 
 ### Developing the Database Schema
 The database schema was initially planned out using the Entity Relationship Diagram(ERD) below:
-![ERD]( https://i.snag.gy/xephD3.jpg)
+![ERD](https://i.snag.gy/xephD3.jpg)
+
 The diagram was created before the decision to commit to using an SQL database, rather than a NoSQL database. However, the diagram confirmed that an SQL schema was feasible.  While the SQL design limited the amount that the schema could change throughout development, the final database schema still had some deviations from the initial outline. Most notably, the ‘Allegories/Suitable For’ table was removed, as this data could instead be included in the ‘Categories’ table. 
 
 ### Current Database Schema
-The current database schema is found in the [database_schema]( https://github.com/Paddywc/milestone-project-4/tree/testing/database_schema) directory. 
-Note that there are currently two MySQL databases. The original/testing Cloud9 database, and the ClearDB database used in the live Heroku app. However, as the MongoDB database was initially created as a clone of the Cloud9 database, they have identical schemas. 
+The current database schema is found in the [database_schema](https://github.com/Paddywc/milestone-project-4/tree/testing/database_schema) directory. 
+Note that there are currently two MySQL databases. The original/testing Cloud9 database, and the ClearDB database used in the live Heroku app. However, as the ClearDB database was initially created as a clone of the Cloud9 database, they have identical schemas. 
 
 ## Tech Used
 
@@ -71,18 +71,8 @@ Note that there are currently two MySQL databases. The original/testing Cloud9 d
     *	The live version of the web app is hosted on Heroku
 - [**ClearDB**](https://elements.heroku.com/addons/cleardb)
     *	A Heroku add on used to enable MySQL on Heroku
-
-## Testing
-
-### Unit Tests
-Unit tests are found in [tests.py](https://github.com/Paddywc/milestone-project-4/blob/testing/tests.py). 
-
-### Important Note for Testing
-As mentioned elsewhere in this readme, there are two databases: the testing/Cloud9 database and the ClearDB/Heroku database. If conducting unit tests, you **must** use the testing/Cloud9 database. The reasons for this are:
--	Existing unit tests are designed around the testing database. If you ran these tests using the Heroku database, many of these tests would fail, even if the functions are working correctly
--	This application uses a free/light ClearDB plan. There is therefore a limit on the number of queries you can make in an hour. Running these unit tests on the ClearDB database would cause you to reach this limit, making the application crash and the tests fail
--	Some of the current tests involve adding and removing values from the database. Running tests designed for one database on a different database may affect the data in undesirable ways. 
-Instructions on how to use the testing database are found in the **Contributing** section of this readme. Speaking of…
+- [**Amazon S3**](https://aws.amazon.com/s3/)
+    *	Used to host user-uploaded recipe images
 
 ## Contributing 
 
@@ -100,30 +90,42 @@ Instructions on how to use the testing database are found in the **Contributing*
 7.	Well done! The project is now up and running. Click the link in your terminal to view the web app. If you are missing any dependencies, check the requirments.txt file.
 
 ### Using the Testing Database
-As mentioned throughout this readme, the database used for testing is different than the database used on the live app. It is very important that you use the testing database when contributing to the app, as the Heroku database uses a free plan, and therefore has query limits. It also ensures that you can add data to the database without impacting the live app. 
-Always clone from the default GitHub branch: [Testing](https://github.com/Paddywc/milestone-project-4/tree/testing). This will ensure that you’re using the correct database.
+The default branch in the GitHub repository is the [testing branch](https://github.com/Paddywc/milestone-project-4). As detailed in the [deployment section of this readme](https://github.com/Paddywc/milestone-project-4#deployment), the live version of the app instead uses the [heroku branch](https://github.com/Paddywc/milestone-project-4/tree/heroku). The heroku branch uses a different database.  The password to this database and the app secret key are both hidden. When contributing to this site, you must use the testing branch.  Neither the secret key nor the testing database password are hidden in this branch. However, you will not be able to save photos to the S3 bucket, as the password is hidden as an environ value. This is due to pricing limitations. 
+
+## Testing
+
+### Unit Tests
+Unit tests are found in [tests.py](https://github.com/Paddywc/milestone-project-4/blob/testing/tests.py). 
+
+### Important Note for Testing
+The tests are designed to work with the current version of the testing database. If you change these values, or use a different database, some of the tests may fail. It may also cause unintended changes to your database. As such, it is highly recommended that you run these tests using the testing database. 
 
 ## Deployment
-The app is hosted on [Heroku]( https://paddywc-recipe-wiki.herokuapp.com/). The code used is from the [heroku branch](https://github.com/Paddywc/milestone-project-4/tree/heroku) of the GitHub repository. The code is identical to the [default (testing) branch]( https://github.com/Paddywc/milestone-project-4/tree/testing), except that it connects to the ClearDB database, rather than the testing database. The changes appear in the declaration of the ‘connection’ variable, and the open_connection_if_not_already_open() function, both found near the beginning  of the [sql_functions.py file](https://github.com/Paddywc/milestone-project-4/blob/testing/sql_functions.py). 
+The app is hosted on [Heroku](https://paddywc-recipe-wiki.herokuapp.com/). The code used is from the [heroku branch](https://github.com/Paddywc/milestone-project-4/tree/heroku) of the GitHub repository. The code is identical to the [default (testing) branch]( https://github.com/Paddywc/milestone-project-4/tree/testing), except for the following changes:
+- The secret key is changed and hidden from the code. It is set as an environ value.
+- The Database is changed to the ClearDB database. This is so that it works with Heroku. The password for this database is set as an environ value and hidden from the code. Note that while earlier commits in the heroku GitHub branch have a visible secret key and database password, both these values have since been changed.
+-  Debug mode is set to False at the end of the app.py file
 
 ### ClearDB Query Limits
-There is an hourly limit to the database queries that a user can make on the live Heroku app. This is a limitation of the free ClearDB plan. Using SQL on Heroku requires a service designed to work on the platform, such as ClearDB. However, exceeding the hourly query limit may cause the app to crash. These will normally be TypeErrors, caused by a NoneType object. It will work correctly again once the limit resets. 
+There is an hourly limit to the database queries that a user can make on the live Heroku app. This is a limitation of the current ClearDB plan. The $10 monthly plan allows for [18,000 queries per hour](http://w2.cleardb.net/faqs/). However, exceeding this limit may cause the app to crash. These will normally be TypeErrors, caused by a NoneType object. It will work correctly again once the limit resets. 
 
 ## Credits
 
 ### Code
 - The sources for all non-original code are displayed in comments above the relevant code
-- Code from [Pretty Printed]( https://www.youtube.com/watch?v=2dEM-s3mRLE#%20for%20uploading%20images), [Treehouse]( https://teamtreehouse.com/community/how-usermixin-and-class-inheritance-work), and the [Flask-Login Documentation]( https://flask-login.readthedocs.io/en/latest/#how-it-works) were used  for creating account functions.  They are referenced above the code whenever used.  Any alterations from the source code is original work. Password removed from the UserMixin class because this information is stored in the Users table, and is therefore not required when initializing the object
-- [PyCharm]( https://www.jetbrains.com/pycharm/download/) software was used for separating out the python code into separate files. Therefore, much of the code for importing functions from python files within the project directory was generated using PyCharm. PyCharm was also used to identify dependencies that were installed, but never used. These dependencies were then removed from requirements.txt, and therefore PyCharm played a role in developing this file
+- Code from [Pretty Printed](https://www.youtube.com/watch?v=2dEM-s3mRLE#%20for%20uploading%20images), [Treehouse](https://teamtreehouse.com/community/how-usermixin-and-class-inheritance-work), and the [Flask-Login Documentation]( https://flask-login.readthedocs.io/en/latest/#how-it-works) were used  for creating account functions.  They are referenced above the code whenever used.  Any alterations from the source code is original work. Password removed from the UserMixin class because this information is stored in the Users table, and is therefore not required when initializing the object
+- [PyCharm](https://www.jetbrains.com/pycharm/download/) software was used for separating out the python code into separate files. Therefore, much of the code for importing functions from python files within the project directory was generated using PyCharm. PyCharm was also used to identify dependencies that were installed, but never used. These dependencies were then removed from requirements.txt, and therefore PyCharm played a role in developing this file
 - The redirect_url function was taken from the [Flask Documentation](http://flask.pocoo.org/docs/1.0/reqcontext/)
 - The code for converting a string into a datatime.time object was taken from [Martijn Pieters on stackoverflow](https://stackoverflow.com/questions/14295673/convert-string-into-datetime-time-object)
 - Code for sorting dictionaries in python is from [Mario F on stackoverflow]( https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python)
-- MySQL code for inserting values into a table if they do not already exist in that table is from [user5505982 on stackoverflow]( https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table). Code was changed to reflect the data and tables of the application
-- Code for displaying flask flash messages is from the [Flask Documentation](http://flask.pocoo.org/docs/1.0/patterns/flashing/)
+- MySQL code for inserting values into a table if they do not already exist in that table is from [user5505982 on stackoverflow](https://stackoverflow.com/questions/3164505/mysql-insert-record-if-not-exists-in-table). Code was changed to reflect the data and tables of the application
+- Much of the code used to upload images to S3 was taken from [zabana.me](http://zabana.me/notes/upload-files-amazon-s3-flask.html). The code was changed in the add_recipe_image_and_return_filename() function in app_recipe.py to allow for custom file names   
 - Using SQL data to generate charts required replacing single quotation marks with double quotation marks before parsing. The line of code used to do so was taken from [RafH  on stackoverflow](https://stackoverflow.com/questions/16450250/javascript-replace-single-quote-with-double-quote)
-- Code for creating  and rendering charts on data visualization page is from [DJ Martin on stackoverflow]( https://stackoverflow.com/questions/21114336/how-to-add-axis-labels-for-row-chart-using-dc-js-or-d3-js), the [dc-js Github repository](https://github.com/dc-js/dc.js/blob/master/web/examples/row.html), [Kostya Marchenko on stackoverflow](https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1) and [cssndrx  on stackoverflow](https://stackoverflow.com/questions/13576906/d3-tick-marks-on-integers-only). The sources are referenced as comments above where the code is used. 
-- Code for implementing Materialize styles and functions are from the [Materialize documentation]( https://materializecss.com/)
+- Code for creating  and rendering charts on data visualization page is from [DJ Martin on stackoverflow](https://stackoverflow.com/questions/21114336/how-to-add-axis-labels-for-row-chart-using-dc-js-or-d3-js), the [dc-js Github repository](https://github.com/dc-js/dc.js/blob/master/web/examples/row.html), [Kostya Marchenko on stackoverflow](https://stackoverflow.com/questions/17524627/is-there-a-way-to-tell-crossfilter-to-treat-elements-of-array-as-separate-record?noredirect=1&lq=1) and [cssndrx  on stackoverflow](https://stackoverflow.com/questions/13576906/d3-tick-marks-on-integers-only). The sources are referenced as comments above where the code is used. 
+- Code for implementing Materialize styles and functions are from the [Materialize documentation](https://materializecss.com/)
 
 ### Additional Credits
-- Some of the initial recipes and categories used to populate the database are from [BBC Recipes]( https://www.bbcgoodfood.com/recipes)
+- Some of the initial recipes and categories used to populate the database are from [BBC Recipes](https://www.bbcgoodfood.com/recipes)
 - Star icons used to represent average user review scores are from [icons8]( https://icons8.com/icon/new-icons/all)
+- The background of the homepage header is from  [galonamission.com](https://icons8.com/icon/new-icons/all) https://www.galonamission.com/creamy-white-chicken-chili/)
+

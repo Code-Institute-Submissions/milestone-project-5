@@ -5,22 +5,17 @@ from flask import request
 from flask_login import current_user
 from passlib.handlers.sha2_crypt import \
     sha256_crypt  # informed by: https://pythonprogramming.net/password-hashing-flask-tutorial/
+import env
 
 from add_recipe import get_form_values
 from helpers import convert_list_to_string_for_sql_search, get_average_review_score, create_recipe_values_with_image, \
     create_recipe_values_without_image
 
-# <<<<<<< heroku
-# username = "b3fca7f37ee0f5"
+username = os.environ.get("SQL_USERNAME")
+password = os.environ.get("SQL_PASSWORD")
 
-# connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-#                               db="heroku_12eaf3a664b1763")
-# =======
-test_username = "paddywc"
-
-connection = pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
-# >>>>>>> testing
-
+connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password=password,
+                              db="heroku_12eaf3a664b1763")
 
 def open_connection_if_not_already_open():
     """
@@ -31,12 +26,8 @@ def open_connection_if_not_already_open():
     if connection.open:
         return connection
     else:
-# <<<<<<< heroku
-#         return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-#           db="heroku_12eaf3a664b1763")
-# =======
-        return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
-# >>>>>>> testing
+        return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password=password,
+          db="heroku_12eaf3a664b1763")
 
 
 def close_connection_if_open():

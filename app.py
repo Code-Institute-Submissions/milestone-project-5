@@ -2,6 +2,7 @@ import os
 from flask import render_template, request, redirect, flash, url_for
 from flask_login import UserMixin, login_user, \
     login_required, current_user, logout_user  # informed by: https://www.youtube.com/watch?v=2dEM-s3mRLE
+import env
 
 from add_recipe import get_form_values
 from app_init import app, login_manager
@@ -20,7 +21,8 @@ from sql_functions import open_connection_if_not_already_open, close_connection_
 PROJECT SETTINGS
 """
 
-app.secret_key = 'some_secret'
+app.secret_key =  os.environ.get("SECRET_KEY")
+
 
 login_manager.init_app(app)
 login_manager.login_view = 'login'  # from https://stackoverflow.com/questions/33724161/flask-login-shows-401-instead-of-redirecting-to-login-view
@@ -455,4 +457,4 @@ def add_to_favourites(recipe_id):
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
-            debug=True)
+            debug=False)

@@ -170,7 +170,6 @@ def add_recipe_image_and_return_filename():
     # added random int to file name to avoid duplicate filenames
     # upload code largly from: http://zabana.me/notes/upload-files-amazon-s3-flask.html
     filename = "{0}{1}".format(choice(range(1000)), secure_filename(file.filename))
-    # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     try:
         s3.upload_fileobj(
             file,
