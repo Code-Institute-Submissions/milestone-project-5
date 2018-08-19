@@ -10,16 +10,10 @@ from add_recipe import get_form_values
 from helpers import convert_list_to_string_for_sql_search, get_average_review_score, create_recipe_values_with_image, \
     create_recipe_values_without_image
 
-# <<<<<<< heroku
-# username = "b3fca7f37ee0f5"
 
-# connection = pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-#                               db="heroku_12eaf3a664b1763")
-# =======
 test_username = "paddywc"
 
 connection = pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
-# >>>>>>> testing
 
 
 def open_connection_if_not_already_open():
@@ -31,12 +25,7 @@ def open_connection_if_not_already_open():
     if connection.open:
         return connection
     else:
-# <<<<<<< heroku
-#         return pymysql.connect(host='eu-cdbr-west-02.cleardb.net', user=username, password="6e996cb2",
-#           db="heroku_12eaf3a664b1763")
-# =======
         return pymysql.connect(host='localhost', user=test_username, password="", db="milestoneProjectFour")
-# >>>>>>> testing
 
 
 def close_connection_if_open():
