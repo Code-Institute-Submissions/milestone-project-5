@@ -20,8 +20,6 @@ from sql_functions import open_connection_if_not_already_open, close_connection_
 PROJECT SETTINGS
 """
 
-
-
 app.secret_key =  os.environ.get("SECRET_KEY")
 
 

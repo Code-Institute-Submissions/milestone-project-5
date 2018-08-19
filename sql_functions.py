@@ -5,11 +5,13 @@ from flask import request
 from flask_login import current_user
 from passlib.handlers.sha2_crypt import \
     sha256_crypt  # informed by: https://pythonprogramming.net/password-hashing-flask-tutorial/
-import env
-
 from add_recipe import get_form_values
 from helpers import convert_list_to_string_for_sql_search, get_average_review_score, create_recipe_values_with_image, \
     create_recipe_values_without_image
+    
+# from e-commerce lesson
+if os.path.exists('env.py'):
+    import env
 
 username = os.environ.get("SQL_USERNAME")
 password = os.environ.get("SQL_PASSWORD")
